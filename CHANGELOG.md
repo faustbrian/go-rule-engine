@@ -12,6 +12,9 @@ Keep a Changelog and semantic versioning.
 
 ### Changed
 
+- Upgrade the competitor benchmark's Git, cryptography, and network
+  dependencies to current security-fixed releases.
+
 - Exclude intentional nested modules from root local-proxy archives so local,
   bootstrap, CI, and public module checksums describe the same source
   boundary.
