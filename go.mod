@@ -1,3 +1,3 @@
-module github.com/faustbrian/golib/pkg/rule-engine
+module github.com/faustbrian/go-rule-engine
 
 go 1.26.6

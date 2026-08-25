@@ -3,7 +3,7 @@
 // unknown or variant-incompatible fields are rejected.
 package jsonast
 
-import ruleengine "github.com/faustbrian/golib/pkg/rule-engine"
+import ruleengine "github.com/faustbrian/go-rule-engine"
 
 // Parse decodes and validates a JSON AST definition.
 func Parse(data []byte, limits ruleengine.Limits) (ruleengine.RuleSet, []ruleengine.Diagnostic, error) {

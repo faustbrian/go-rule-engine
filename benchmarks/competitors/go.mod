@@ -1,11 +1,11 @@
-module github.com/faustbrian/golib/pkg/rule-engine/benchmarks/competitors
+module github.com/faustbrian/go-rule-engine/benchmarks/competitors
 
 go 1.26.6
 
 require (
 	github.com/ccpgames/grule-rule-engine v1.20.6
 	github.com/expr-lang/expr v1.17.8
-	github.com/faustbrian/golib/pkg/rule-engine v0.0.0
+	github.com/faustbrian/go-rule-engine v1.0.0
 )
 
 require (

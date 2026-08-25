@@ -1,0 +1,148 @@
+{
+  "schema_version": 3,
+  "reason": "Exact mutation checkpoints retained across history rewrites only when the approved old and replacement package input fingerprints, tool version, and report digest match.",
+  "verifier_migration_review": {
+    "gremlins_verifier_sha256": "9a9499ff68a8dfd49a0be7995590297a8ee563a1aa226bfd8b9361dc53058108",
+    "reason": "Each listed checkpoint was executed with the complete current Gremlins semantic patch set introduced by ac300cf3; the four omitted checkpoints require fresh campaigns.",
+    "reviewed_at": "2026-08-20"
+  },
+  "verifier_migrations": [
+    {
+      "execution_revision": "c09c5268b1facb88317f933913b2e7cf4377948b",
+      "gate_input_digest": "c57f59474206a65a19d9683fa18d6a25da0945de6b7c2c7ef9fe1117107c6eed",
+      "gremlins_verifier_sha256": "9a9499ff68a8dfd49a0be7995590297a8ee563a1aa226bfd8b9361dc53058108",
+      "gremlins_version": "v0.6.0",
+      "module": ".",
+      "package": ".",
+      "report_sha256": "711189a4d27e6c44c65841ad9089928073ba3f164098e790faff1e6358a1771b"
+    },
+    {
+      "execution_revision": "d7d487f309f3921eff48c5bb277ff11a4fef7077",
+      "gate_input_digest": "e3cd29855397408a523d52521ca1a93a0b1ff25fa4d8299ea765291a87e3a06b",
+      "gremlins_verifier_sha256": "9a9499ff68a8dfd49a0be7995590297a8ee563a1aa226bfd8b9361dc53058108",
+      "gremlins_version": "v0.6.0",
+      "module": "adapters/math",
+      "package": ".",
+      "report_sha256": "61c3c86efc83813f82af576160612ee7690974ef0d52666bc140b142c8d8c7c7"
+    },
+    {
+      "execution_revision": "c09c5268b1facb88317f933913b2e7cf4377948b",
+      "gate_input_digest": "0333d644b3e4191deb92c254b7044879f5775f4d9208992ebfe5bb1fd7f29c6d",
+      "gremlins_verifier_sha256": "9a9499ff68a8dfd49a0be7995590297a8ee563a1aa226bfd8b9361dc53058108",
+      "gremlins_version": "v0.6.0",
+      "module": "adapters/measurement",
+      "package": ".",
+      "report_sha256": "4f78b8090fc79fc0da88732fee4aaf44c431020fbd697d442ee082273eae4683"
+    },
+    {
+      "execution_revision": "05947f57f731152e8bad708b238ea3f6e0509ee0",
+      "gate_input_digest": "01f8685ca8d0aea9c723c5da26ea904c404b258e49139e3a2abc1e9cfdd7c2f1",
+      "gremlins_verifier_sha256": "9a9499ff68a8dfd49a0be7995590297a8ee563a1aa226bfd8b9361dc53058108",
+      "gremlins_version": "v0.6.0",
+      "module": "adapters/temporal",
+      "package": ".",
+      "report_sha256": "1945212274a0bb6fb1ab2192ce3ed8e034371cd4d71b721ccce9d2c49ca3df33"
+    },
+    {
+      "module": ".",
+      "package": "jsonast",
+      "execution_revision": "61805082782695a3197ac1218ffeafb85cf570f5",
+      "gate_input_digest": "334e21f2f1fd8bd377f1e8c6977b555bb82028eec6d522bee9e001891d5ae17f",
+      "gremlins_version": "v0.6.0",
+      "gremlins_verifier_sha256": "9a9499ff68a8dfd49a0be7995590297a8ee563a1aa226bfd8b9361dc53058108",
+      "report_sha256": "72094c8b2dcf0bfb4f1d7ef1e19f4be87352e3165051f0a9f28b3169215a5896"
+    }
+  ],
+  "entries": [
+    {
+      "execution_revision": "8cb85e2f184a5fd013396bdb6521ecead1a61cc4",
+      "gate_input_digest": "9c78a10cac592dbc4f331056d7e159fbcb1db0567babcafe666291798fa678f6",
+      "gremlins_version": "v0.6.0",
+      "module": ".",
+      "package": ".",
+      "report_sha256": "53e49716a2c7fc477c58feb91b7760fd880d2630c615306b01f3ad40e2227edf"
+    },
+    {
+      "execution_revision": "8cb85e2f184a5fd013396bdb6521ecead1a61cc4",
+      "gate_input_digest": "bdea1a837793965a1ac189d16192ce0980a4ef31d3826eb9c076b66c4a462440",
+      "gremlins_version": "v0.6.0",
+      "module": ".",
+      "package": "jsonast",
+      "report_sha256": "72094c8b2dcf0bfb4f1d7ef1e19f4be87352e3165051f0a9f28b3169215a5896"
+    },
+    {
+      "execution_revision": "ec8589307cac453899e2b7057e887895d3b3a107",
+      "gate_input_digest": "c2c86df9f77da788f147d9732acc20add8d5c7c91ce07a531a584bc18af32058",
+      "gremlins_version": "v0.6.0",
+      "module": "adapters/gomath",
+      "package": ".",
+      "report_sha256": "f82db3309c15ff0f59166c8f86c9211536b5f9efcccd8e1358eccec8cb70a9e7"
+    },
+    {
+      "execution_revision": "ec8589307cac453899e2b7057e887895d3b3a107",
+      "gate_input_digest": "8bc22442bfb72b1075923561ca21d898294b5164f74551b53bbd416c996f4bbe",
+      "gremlins_version": "v0.6.0",
+      "module": "adapters/gomeasurement",
+      "package": ".",
+      "report_sha256": "4f7596487b912ee1ee5671832cf9bd15aebb0161954ad53be55eed37c5345870"
+    },
+    {
+      "execution_revision": "ec8589307cac453899e2b7057e887895d3b3a107",
+      "gate_input_digest": "37a5b50ceb53674193db2deac9878b62c0e31edb694dc034a9ee5b1bcc876187",
+      "gremlins_version": "v0.6.0",
+      "module": "adapters/gotemporal",
+      "package": ".",
+      "report_sha256": "4c7212e2a19d4d907abeb36ed1e42ade42dea4d4c7ee78441547c07e4ed81f9b"
+    },
+    {
+      "module": ".",
+      "package": ".",
+      "execution_revision": "c09c5268b1facb88317f933913b2e7cf4377948b",
+      "gate_input_digest": "c57f59474206a65a19d9683fa18d6a25da0945de6b7c2c7ef9fe1117107c6eed",
+      "replacement_gate_input_digest": "135212ec08bcfe452aeb26df276172fda6330052bb908c74c5780cf53cbb5984",
+      "gremlins_version": "v0.6.0",
+      "gremlins_verifier_sha256": "9a9499ff68a8dfd49a0be7995590297a8ee563a1aa226bfd8b9361dc53058108",
+      "report_sha256": "711189a4d27e6c44c65841ad9089928073ba3f164098e790faff1e6358a1771b"
+    },
+    {
+      "module": ".",
+      "package": "jsonast",
+      "execution_revision": "61805082782695a3197ac1218ffeafb85cf570f5",
+      "gate_input_digest": "334e21f2f1fd8bd377f1e8c6977b555bb82028eec6d522bee9e001891d5ae17f",
+      "replacement_gate_input_digest": "97b7de5930e5e9557a7b52159b9db9bf5456aa3184618e3a6b6e9a208d499826",
+      "gremlins_version": "v0.6.0",
+      "gremlins_verifier_sha256": "9a9499ff68a8dfd49a0be7995590297a8ee563a1aa226bfd8b9361dc53058108",
+      "report_sha256": "72094c8b2dcf0bfb4f1d7ef1e19f4be87352e3165051f0a9f28b3169215a5896"
+    },
+    {
+      "module": "adapters/math",
+      "package": ".",
+      "execution_revision": "d7d487f309f3921eff48c5bb277ff11a4fef7077",
+      "gate_input_digest": "e3cd29855397408a523d52521ca1a93a0b1ff25fa4d8299ea765291a87e3a06b",
+      "replacement_gate_input_digest": "8c8d0e9db69b9b4834b8f4d5da967852469afd8b323b1360668d66058f8f86b8",
+      "gremlins_version": "v0.6.0",
+      "gremlins_verifier_sha256": "9a9499ff68a8dfd49a0be7995590297a8ee563a1aa226bfd8b9361dc53058108",
+      "report_sha256": "61c3c86efc83813f82af576160612ee7690974ef0d52666bc140b142c8d8c7c7"
+    },
+    {
+      "module": "adapters/measurement",
+      "package": ".",
+      "execution_revision": "c09c5268b1facb88317f933913b2e7cf4377948b",
+      "gate_input_digest": "0333d644b3e4191deb92c254b7044879f5775f4d9208992ebfe5bb1fd7f29c6d",
+      "replacement_gate_input_digest": "cfbfd038b9ab02f8d022767f7c45146adc0d984453d439d9eea06f8adc3238d9",
+      "gremlins_version": "v0.6.0",
+      "gremlins_verifier_sha256": "9a9499ff68a8dfd49a0be7995590297a8ee563a1aa226bfd8b9361dc53058108",
+      "report_sha256": "4f78b8090fc79fc0da88732fee4aaf44c431020fbd697d442ee082273eae4683"
+    },
+    {
+      "module": "adapters/temporal",
+      "package": ".",
+      "execution_revision": "05947f57f731152e8bad708b238ea3f6e0509ee0",
+      "gate_input_digest": "01f8685ca8d0aea9c723c5da26ea904c404b258e49139e3a2abc1e9cfdd7c2f1",
+      "replacement_gate_input_digest": "b879a9cac4361b8d6a7b2756a55090d18477c0e661db107149e875a50f53119a",
+      "gremlins_version": "v0.6.0",
+      "gremlins_verifier_sha256": "9a9499ff68a8dfd49a0be7995590297a8ee563a1aa226bfd8b9361dc53058108",
+      "report_sha256": "1945212274a0bb6fb1ab2192ce3ed8e034371cd4d71b721ccce9d2c49ca3df33"
+    }
+  ]
+}

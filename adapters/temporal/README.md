@@ -139,7 +139,7 @@ civil dates, durations with calendar units, recurrence, or probabilistic time.
 
 ## Compatibility and migration
 
-This module is pre-v1. The `instant:` and `period:` tags, `|` separators, bound
+This module follows stable v1 compatibility. The `instant:` and `period:` tags, `|` separators, bound
 markers, operator names, and relation meanings above form its current persisted
 contract. Unknown tag versions are rejected rather than guessed.
 

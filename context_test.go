@@ -4,7 +4,7 @@ import (
 	"math"
 	"testing"
 
-	ruleengine "github.com/faustbrian/golib/pkg/rule-engine"
+	ruleengine "github.com/faustbrian/go-rule-engine"
 )
 
 func TestContextDistinguishesMissingNullAndValues(t *testing.T) {

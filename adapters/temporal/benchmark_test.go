@@ -6,10 +6,10 @@ import (
 	"testing"
 	"time"
 
-	ruleengine "github.com/faustbrian/golib/pkg/rule-engine"
-	ruleenginetemporal "github.com/faustbrian/golib/pkg/rule-engine/adapters/temporal"
-	temporal "github.com/faustbrian/golib/pkg/temporal"
-	"github.com/faustbrian/golib/pkg/temporal/instant"
+	ruleengine "github.com/faustbrian/go-rule-engine"
+	ruleenginetemporal "github.com/faustbrian/go-rule-engine/adapters/temporal"
+	temporal "github.com/faustbrian/go-temporal"
+	"github.com/faustbrian/go-temporal/instant"
 )
 
 func BenchmarkPeriodContainsInstant(b *testing.B) {

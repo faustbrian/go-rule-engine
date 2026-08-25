@@ -6,8 +6,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/faustbrian/golib/pkg/math/decimal"
-	ruleengine "github.com/faustbrian/golib/pkg/rule-engine"
+	"github.com/faustbrian/go-math/decimal"
+	ruleengine "github.com/faustbrian/go-rule-engine"
 )
 
 func TestDecimalOperatorTruthAndFailureTable(t *testing.T) {

@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "packages": [
+    {
+      "gremlins_verifier_sha256": "9a9499ff68a8dfd49a0be7995590297a8ee563a1aa226bfd8b9361dc53058108",
+      "gremlins_version": "v0.6.0",
+      "module_directory": ".",
+      "package_directory": "jsonast",
+      "reason": "The bounded JSON facade consists only of direct parse and marshal delegations; the complete enabled Gremlins operator set discovers no viable transformations.",
+      "source_digest": "81f8d34ecb56cb337262067bc077fa5b948a483f99608e305ffe3264c59a2373"
+    }
+  ]
+}

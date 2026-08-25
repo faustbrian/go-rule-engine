@@ -4,10 +4,10 @@ import (
 	"context"
 	"testing"
 
-	"github.com/faustbrian/golib/pkg/math/decimal"
-	"github.com/faustbrian/golib/pkg/measurement"
-	ruleengine "github.com/faustbrian/golib/pkg/rule-engine"
-	ruleenginemeasurement "github.com/faustbrian/golib/pkg/rule-engine/adapters/measurement"
+	"github.com/faustbrian/go-math/decimal"
+	"github.com/faustbrian/go-measurement"
+	ruleengine "github.com/faustbrian/go-rule-engine"
+	ruleenginemeasurement "github.com/faustbrian/go-rule-engine/adapters/measurement"
 )
 
 func BenchmarkQuantityComparison(b *testing.B) {

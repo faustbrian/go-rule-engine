@@ -8,9 +8,9 @@ import (
 	"strings"
 	"time"
 
-	ruleengine "github.com/faustbrian/golib/pkg/rule-engine"
-	temporal "github.com/faustbrian/golib/pkg/temporal"
-	"github.com/faustbrian/golib/pkg/temporal/instant"
+	ruleengine "github.com/faustbrian/go-rule-engine"
+	temporal "github.com/faustbrian/go-temporal"
+	"github.com/faustbrian/go-temporal/instant"
 )
 
 const (

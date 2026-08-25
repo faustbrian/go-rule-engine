@@ -4,8 +4,8 @@ import (
 	"context"
 	"testing"
 
-	ruleengine "github.com/faustbrian/golib/pkg/rule-engine"
-	ruleenginetemporal "github.com/faustbrian/golib/pkg/rule-engine/adapters/temporal"
+	ruleengine "github.com/faustbrian/go-rule-engine"
+	ruleenginetemporal "github.com/faustbrian/go-rule-engine/adapters/temporal"
 )
 
 func TestPersistedEncodingCompatibilityFixtures(t *testing.T) {

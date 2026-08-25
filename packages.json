@@ -1,0 +1,66 @@
+{
+  "schema_version": 1,
+  "repository": "github.com/faustbrian/go-rule-engine",
+  "packages": [
+    {
+      "module_directory": ".",
+      "directory": ".",
+      "name": "ruleengine",
+      "import_path": "github.com/faustbrian/go-rule-engine",
+      "kind": "public",
+      "production": true,
+      "executable": true,
+      "coverage_required": true,
+      "build_required": true,
+      "build_tags": []
+    },
+    {
+      "module_directory": "adapters/math",
+      "directory": ".",
+      "name": "ruleenginemath",
+      "import_path": "github.com/faustbrian/go-rule-engine/adapters/math",
+      "kind": "public",
+      "production": true,
+      "executable": true,
+      "coverage_required": true,
+      "build_required": true,
+      "build_tags": []
+    },
+    {
+      "module_directory": "adapters/measurement",
+      "directory": ".",
+      "name": "ruleenginemeasurement",
+      "import_path": "github.com/faustbrian/go-rule-engine/adapters/measurement",
+      "kind": "public",
+      "production": true,
+      "executable": true,
+      "coverage_required": true,
+      "build_required": true,
+      "build_tags": []
+    },
+    {
+      "module_directory": "adapters/temporal",
+      "directory": ".",
+      "name": "ruleenginetemporal",
+      "import_path": "github.com/faustbrian/go-rule-engine/adapters/temporal",
+      "kind": "public",
+      "production": true,
+      "executable": true,
+      "coverage_required": true,
+      "build_required": true,
+      "build_tags": []
+    },
+    {
+      "module_directory": ".",
+      "directory": "jsonast",
+      "name": "jsonast",
+      "import_path": "github.com/faustbrian/go-rule-engine/jsonast",
+      "kind": "public",
+      "production": true,
+      "executable": true,
+      "coverage_required": true,
+      "build_required": true,
+      "build_tags": []
+    }
+  ]
+}

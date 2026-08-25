@@ -4,7 +4,7 @@ import (
 	"context"
 	"fmt"
 
-	ruleengine "github.com/faustbrian/golib/pkg/rule-engine"
+	ruleengine "github.com/faustbrian/go-rule-engine"
 )
 
 func Example() {

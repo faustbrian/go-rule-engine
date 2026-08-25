@@ -1,4 +1,5 @@
-/coverage.out
-**/coverage.out
-/mutation-results*.json
-/.tools/
+.artifacts/
+.tools/
+.gocache*/
+.DS_Store
+coverage.out

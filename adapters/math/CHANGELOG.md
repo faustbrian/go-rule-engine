@@ -4,6 +4,8 @@ All notable changes to this module are documented here.
 
 ## Unreleased
 
+## 1.0.0 - 2026-08-25
+
 ### Documentation
 
 - Link the package README to the repository-wide Golib documentation portal.
@@ -33,6 +35,7 @@ All notable changes to this module are documented here.
 
 ### Changed
 
+- Publish the module from its standalone `github.com/faustbrian/go-rule-engine/adapters/math` identity while preserving its documented API and behavior.
 - Rename the unpublished module from `adapters/gomath` to `adapters/math` so
   the path identifies its target without a redundant language prefix.
 - Require owned sibling modules at local `v0.0.0`; clean external consumers

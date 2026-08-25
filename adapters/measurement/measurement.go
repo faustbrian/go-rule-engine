@@ -8,9 +8,9 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/faustbrian/golib/pkg/math/decimal"
-	measurement "github.com/faustbrian/golib/pkg/measurement"
-	ruleengine "github.com/faustbrian/golib/pkg/rule-engine"
+	"github.com/faustbrian/go-math/decimal"
+	measurement "github.com/faustbrian/go-measurement"
+	ruleengine "github.com/faustbrian/go-rule-engine"
 )
 
 const quantityPrefix = "quantity:v1|"

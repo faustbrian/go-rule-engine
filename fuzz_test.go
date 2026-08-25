@@ -3,7 +3,7 @@ package ruleengine_test
 import (
 	"testing"
 
-	ruleengine "github.com/faustbrian/golib/pkg/rule-engine"
+	ruleengine "github.com/faustbrian/go-rule-engine"
 )
 
 func FuzzParseJSON(f *testing.F) {

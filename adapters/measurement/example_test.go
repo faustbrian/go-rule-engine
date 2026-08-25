@@ -4,9 +4,9 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/faustbrian/golib/pkg/math/decimal"
-	measurement "github.com/faustbrian/golib/pkg/measurement"
-	ruleenginemeasurement "github.com/faustbrian/golib/pkg/rule-engine/adapters/measurement"
+	"github.com/faustbrian/go-math/decimal"
+	measurement "github.com/faustbrian/go-measurement"
+	ruleenginemeasurement "github.com/faustbrian/go-rule-engine/adapters/measurement"
 )
 
 func ExampleQuantity() {

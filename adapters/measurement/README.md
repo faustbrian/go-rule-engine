@@ -57,7 +57,7 @@ Release history is in [CHANGELOG.md](CHANGELOG.md).
 ## Development
 
 ```console
-make check MODULES=pkg/rule-engine/adapters/measurement
+make check MODULES=adapters/measurement
 ```
 
 ## License

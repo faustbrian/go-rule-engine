@@ -9,7 +9,7 @@ import (
 	gruleengine "github.com/ccpgames/grule-rule-engine/engine"
 	grulepkg "github.com/ccpgames/grule-rule-engine/pkg"
 	"github.com/expr-lang/expr"
-	ruleengine "github.com/faustbrian/golib/pkg/rule-engine"
+	ruleengine "github.com/faustbrian/go-rule-engine"
 )
 
 type facts struct {

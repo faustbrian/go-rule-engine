@@ -7,9 +7,9 @@ import (
 	"testing"
 	"time"
 
-	ruleengine "github.com/faustbrian/golib/pkg/rule-engine"
-	ruleenginetemporal "github.com/faustbrian/golib/pkg/rule-engine/adapters/temporal"
-	temporal "github.com/faustbrian/golib/pkg/temporal"
+	ruleengine "github.com/faustbrian/go-rule-engine"
+	ruleenginetemporal "github.com/faustbrian/go-rule-engine/adapters/temporal"
+	temporal "github.com/faustbrian/go-temporal"
 )
 
 func TestOperatorsAreSafeForConcurrentReuse(t *testing.T) {

@@ -6,8 +6,8 @@ import (
 	"strings"
 	"testing"
 
-	ruleengine "github.com/faustbrian/golib/pkg/rule-engine"
-	ruleenginemeasurement "github.com/faustbrian/golib/pkg/rule-engine/adapters/measurement"
+	ruleengine "github.com/faustbrian/go-rule-engine"
+	ruleenginemeasurement "github.com/faustbrian/go-rule-engine/adapters/measurement"
 )
 
 func FuzzQuantityTaggedValues(f *testing.F) {

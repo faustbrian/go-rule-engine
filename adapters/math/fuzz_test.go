@@ -6,10 +6,10 @@ import (
 	"strings"
 	"testing"
 
-	gomath "github.com/faustbrian/golib/pkg/math"
-	"github.com/faustbrian/golib/pkg/math/decimal"
-	ruleengine "github.com/faustbrian/golib/pkg/rule-engine"
-	ruleenginemath "github.com/faustbrian/golib/pkg/rule-engine/adapters/math"
+	gomath "github.com/faustbrian/go-math"
+	"github.com/faustbrian/go-math/decimal"
+	ruleengine "github.com/faustbrian/go-rule-engine"
+	ruleenginemath "github.com/faustbrian/go-rule-engine/adapters/math"
 )
 
 func FuzzDecimalTaggedValues(f *testing.F) {

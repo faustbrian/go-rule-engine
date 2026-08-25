@@ -5,12 +5,15 @@ Keep a Changelog and semantic versioning.
 
 ## Unreleased
 
+## 1.0.0 - 2026-08-25
+
 ### Documentation
 
 - Link the package README to the repository-wide Golib documentation portal.
 
 ### Changed
 
+- Publish the module from its standalone `github.com/faustbrian/go-rule-engine` identity while preserving its documented API and behavior.
 - Delegate core and adapter mutation checks to the canonical exact-100
   repository runner instead of package-specific thresholds and exclusions.
 - Keep standalone module tidiness in the release gate instead of requiring an

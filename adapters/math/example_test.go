@@ -4,9 +4,9 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/faustbrian/golib/pkg/math/decimal"
-	ruleengine "github.com/faustbrian/golib/pkg/rule-engine"
-	ruleenginemath "github.com/faustbrian/golib/pkg/rule-engine/adapters/math"
+	"github.com/faustbrian/go-math/decimal"
+	ruleengine "github.com/faustbrian/go-rule-engine"
+	ruleenginemath "github.com/faustbrian/go-rule-engine/adapters/math"
 )
 
 func Example() {

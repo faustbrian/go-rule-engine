@@ -9,7 +9,7 @@ import (
 	"sync/atomic"
 	"testing"
 
-	ruleengine "github.com/faustbrian/golib/pkg/rule-engine"
+	ruleengine "github.com/faustbrian/go-rule-engine"
 )
 
 type concurrentOperator struct{ calls atomic.Int64 }
