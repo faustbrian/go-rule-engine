@@ -5,6 +5,8 @@ Keep a Changelog and semantic versioning.
 
 ## Unreleased
 
+## 1.0.0 - 2026-08-25
+
 ### Fixed
 
 - Bind the reviewed zero-mutant `jsonast` delegation facade to its exact
@@ -29,8 +31,6 @@ Keep a Changelog and semantic versioning.
 - Harden standalone documentation validation with deterministic spelling and
   link checks, package-specific documentation gates, and repository-local
   contributor guidance.
-
-## 1.0.0 - 2026-08-25
 
 ### Documentation
 
