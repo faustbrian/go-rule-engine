@@ -7,7 +7,7 @@
       "module_directory": ".",
       "package_directory": "jsonast",
       "reason": "The bounded JSON facade consists only of direct parse and marshal delegations; the complete enabled Gremlins operator set discovers no viable transformations.",
-      "source_digest": "81f8d34ecb56cb337262067bc077fa5b948a483f99608e305ffe3264c59a2373"
+      "source_digest": "1edc477e66116c04315233cfd27705bd5178e62b0d8833d90836da233faca43f"
     }
   ]
 }

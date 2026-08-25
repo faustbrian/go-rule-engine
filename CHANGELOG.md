@@ -5,6 +5,11 @@ Keep a Changelog and semantic versioning.
 
 ## Unreleased
 
+### Fixed
+
+- Bind the reviewed zero-mutant `jsonast` delegation facade to its exact
+  standalone source identity.
+
 ### Changed
 
 - Exclude intentional nested modules from root local-proxy archives so local,
