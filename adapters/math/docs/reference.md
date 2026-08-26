@@ -4,7 +4,8 @@ This guide contains the complete behavioral and operational reference. Start
 with the [package overview](../README.md).
 
 The `rule-engine/adapters/math` module is the optional bridge between
-[`math/decimal`](../../../../math/decimal) and [`rule-engine`](../../..). It encodes
+[`math/decimal`](https://pkg.go.dev/github.com/faustbrian/go-math/decimal) and
+[`rule-engine`](../../..). It encodes
 finite decimals as tagged string values and supplies deterministic equality and
 ordering operators. The core rule engine does not depend on the math module.
 
