@@ -115,7 +115,7 @@ Operator implementations are immutable and concurrency-safe. Returned slices,
 including signature slices, are caller-owned. Evaluation checks cancellation
 before parsing either operand and returns the context error.
 
-## Adoption and tradeoffs
+## When to use this adapter
 
 Use this adapter when rules must persist exact instants or bounded periods and
 evaluate temporal set relations without adding temporal behavior to the core
@@ -187,7 +187,6 @@ See [CHANGELOG.md](CHANGELOG.md).
 
 MIT. See [LICENSE](LICENSE).
 
-## Ecosystem
+## Documentation
 
-Use the [Golib documentation portal](https://github.com/faustbrian/golib/blob/main/docs/index.md)
-to choose companion packages, supported stacks, recipes, and operations guidance.
+See the [root package documentation](../../README.md) for rule semantics, adapter boundaries, and related packages.

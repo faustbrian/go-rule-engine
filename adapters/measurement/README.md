@@ -32,7 +32,7 @@ goroutine or I/O.
 - operator and signature slices are fresh values safe for concurrent reuse;
 - cancellation is checked before and between bounded evaluation stages.
 
-## Tradeoffs
+## Limitations
 
 The adapter intentionally rejects exact conversions whose decimal result does
 not terminate, even when a rounded result might be operationally useful.
@@ -64,7 +64,6 @@ make check MODULES=adapters/measurement
 
 MIT.
 
-## Ecosystem
+## Documentation
 
-Use the [Golib documentation portal](https://github.com/faustbrian/golib/blob/main/docs/index.md)
-to choose companion packages, supported stacks, recipes, and operations guidance.
+See the [root package documentation](../../README.md) for rule semantics, adapter boundaries, and related packages.
