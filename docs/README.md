@@ -23,6 +23,12 @@
 - [Performance](performance.md)
 - [Security](security.md)
 
+## Optional modules
+
+- [Exact decimal operators](../adapters/math/docs/README.md)
+- [Measurement operators](../adapters/measurement/docs/README.md)
+- [Temporal operators](../adapters/temporal/docs/README.md)
+
 ## Reference and maintenance
 
 - [Compatibility](compatibility.md)
