@@ -5,6 +5,12 @@ Keep a Changelog and semantic versioning.
 
 ## Unreleased
 
+### Changed
+
+- Adopt the released shared `go-library-tools` workflow and configuration for
+  repository checks while retaining the rule-engine-specific integration,
+  competitor, and documentation checks.
+
 ### Documentation
 
 - Replace archived monorepo links and completed execution artifacts with a
