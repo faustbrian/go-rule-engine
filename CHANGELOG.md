@@ -5,6 +5,17 @@ Keep a Changelog and semantic versioning.
 
 ## Unreleased
 
+### Changed
+
+- Adopt the released shared `go-library-tools` workflow and configuration for
+  repository checks while retaining the rule-engine-specific integration,
+  competitor, and documentation checks.
+
+### Documentation
+
+- Replace archived monorepo links and completed execution artifacts with a
+  standalone, human-oriented documentation structure.
+
 ## 1.0.0 - 2026-08-25
 
 ### Fixed
@@ -34,7 +45,7 @@ Keep a Changelog and semantic versioning.
 
 ### Documentation
 
-- Link the package README to the repository-wide Golib documentation portal.
+- Link the package README to package-owned documentation.
 
 ### Changed
 

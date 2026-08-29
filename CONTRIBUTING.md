@@ -48,6 +48,14 @@ make ci
 The full scheduled and release gate is `make ci`. Report every unavailable or
 failing command; do not describe partial results as release-ready.
 
+## Repository Tooling
+
+The repository uses the released `go-library-tools` workflow for shared
+formatting, module hygiene, safety, tests, coverage, race, fuzz, mutation,
+benchmark, API, documentation, and security gates. Repository-specific checks
+live under `verification/` and are declared in `.golib.yaml`; do not copy the
+shared tooling into this repository or add package-local workflows.
+
 ## Adding A Module
 
 Follow [repository structure policy](AGENTS.md#repository-structure). New modules

@@ -1,0 +1,19 @@
+{
+  "schema_version": 1,
+  "repository": "github.com/faustbrian/go-rule-engine",
+  "module": "adapters/measurement",
+  "package": ".",
+  "gate": "mutation",
+  "input_digest": "sha256:1a9cac302a35c5119dec75fb5a43743b3efc98213822b41d256e9936dfcc8282",
+  "verifier_digest": "sha256:9a9499ff68a8dfd49a0be7995590297a8ee563a1aa226bfd8b9361dc53058108",
+  "result": "passed",
+  "report_digest": "sha256:4e04d17cce1d916edebdaf656d1d1cf72182c29457189a7cd8c0a36f2b7373b4",
+  "environment": {
+    "CGO_ENABLED": "1",
+    "GOARCH": "arm64",
+    "GOOS": "darwin",
+    "GOVERSION": "go1.27.0",
+    "gremlins_binary_sha256": "sha256:6a2beddc477eb410f8a670b6c9049558563d3c4327498fe31604d31c773a959e"
+  },
+  "completed_at": "2026-08-29T07:25:10.071927Z"
+}

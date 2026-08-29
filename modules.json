@@ -58,83 +58,9 @@
       "specifications": [],
       "conformance_corpora": [],
       "provenance": [],
-      "goal_files": [
-        ".ai/GOAL.md",
-        ".ai/GOAL_HARDEN.md"
-      ],
-      "goal_status": "implementation-evidence-inventoried",
-      "goal_evidence": [
-        {
-          "file": ".ai/GOAL.md",
-          "requirements_sha256": "53e029fa45ad893cf3d3a90b49d80cc7e28352614f560419df13374808c26bad",
-          "implementation_evidence": [
-            "CHANGELOG.md",
-            "README.md",
-            "docs/compatibility.md",
-            "docs/performance.md",
-            "docs/security.md"
-          ],
-          "verification_gates": [
-            "format-check",
-            "tidy-check",
-            "safety",
-            "vet",
-            "test",
-            "race",
-            "coverage",
-            "lint",
-            "staticcheck",
-            "vulnerability",
-            "secrets",
-            "licenses",
-            "sbom",
-            "fuzz",
-            "mutation",
-            "nilaway",
-            "docs",
-            "api",
-            "conformance",
-            "interoperability",
-            "benchmark"
-          ],
-          "implementation_status": "implemented-requires-fresh-verification"
-        },
-        {
-          "file": ".ai/GOAL_HARDEN.md",
-          "requirements_sha256": "9e500ea19ea9e3f4fd52f96364d766067fe626112b81dbb9dbeec884c655856a",
-          "implementation_evidence": [
-            "CHANGELOG.md",
-            "README.md",
-            "docs/compatibility.md",
-            "docs/performance.md",
-            "docs/security.md"
-          ],
-          "verification_gates": [
-            "format-check",
-            "tidy-check",
-            "safety",
-            "vet",
-            "test",
-            "race",
-            "coverage",
-            "lint",
-            "staticcheck",
-            "vulnerability",
-            "secrets",
-            "licenses",
-            "sbom",
-            "fuzz",
-            "mutation",
-            "nilaway",
-            "docs",
-            "api",
-            "conformance",
-            "interoperability",
-            "benchmark"
-          ],
-          "implementation_status": "implemented-requires-fresh-verification"
-        }
-      ],
+      "goal_files": [],
+      "goal_status": "not-applicable",
+      "goal_evidence": [],
       "gates": {
         "api_compatibility": true,
         "benchmarks": true,
@@ -190,77 +116,9 @@
       "specifications": [],
       "conformance_corpora": [],
       "provenance": [],
-      "goal_files": [
-        "adapters/math/.ai/GOAL.md",
-        "adapters/math/.ai/GOAL_HARDEN.md"
-      ],
-      "goal_status": "implementation-evidence-inventoried",
-      "goal_evidence": [
-        {
-          "file": "adapters/math/.ai/GOAL.md",
-          "requirements_sha256": "220bc542fc10ba57bb678e29e066521608e86c0019c7e116456b73df3cc2cb6a",
-          "implementation_evidence": [
-            "adapters/math/CHANGELOG.md",
-            "adapters/math/README.md"
-          ],
-          "verification_gates": [
-            "format-check",
-            "tidy-check",
-            "safety",
-            "vet",
-            "test",
-            "race",
-            "coverage",
-            "lint",
-            "staticcheck",
-            "vulnerability",
-            "secrets",
-            "licenses",
-            "sbom",
-            "fuzz",
-            "mutation",
-            "nilaway",
-            "docs",
-            "api",
-            "conformance",
-            "interoperability",
-            "benchmark"
-          ],
-          "implementation_status": "implemented-requires-fresh-verification"
-        },
-        {
-          "file": "adapters/math/.ai/GOAL_HARDEN.md",
-          "requirements_sha256": "16c00312d8f1e926984f2f61396b609371ab51f6beec1f56b7b1ac4771e6f139",
-          "implementation_evidence": [
-            "adapters/math/CHANGELOG.md",
-            "adapters/math/README.md"
-          ],
-          "verification_gates": [
-            "format-check",
-            "tidy-check",
-            "safety",
-            "vet",
-            "test",
-            "race",
-            "coverage",
-            "lint",
-            "staticcheck",
-            "vulnerability",
-            "secrets",
-            "licenses",
-            "sbom",
-            "fuzz",
-            "mutation",
-            "nilaway",
-            "docs",
-            "api",
-            "conformance",
-            "interoperability",
-            "benchmark"
-          ],
-          "implementation_status": "implemented-requires-fresh-verification"
-        }
-      ],
+      "goal_files": [],
+      "goal_status": "not-applicable",
+      "goal_evidence": [],
       "gates": {
         "api_compatibility": true,
         "benchmarks": true,
@@ -317,83 +175,9 @@
       "specifications": [],
       "conformance_corpora": [],
       "provenance": [],
-      "goal_files": [
-        "adapters/measurement/.ai/GOAL.md",
-        "adapters/measurement/.ai/GOAL_HARDEN.md"
-      ],
-      "goal_status": "implementation-evidence-inventoried",
-      "goal_evidence": [
-        {
-          "file": "adapters/measurement/.ai/GOAL.md",
-          "requirements_sha256": "dd36c8e75e9e5edfd142c8ea28002d5fae38ab97c26fba86ceb124122671068d",
-          "implementation_evidence": [
-            "adapters/measurement/CHANGELOG.md",
-            "adapters/measurement/README.md",
-            "adapters/measurement/docs/api.md",
-            "adapters/measurement/docs/compatibility.md",
-            "adapters/measurement/docs/security.md"
-          ],
-          "verification_gates": [
-            "format-check",
-            "tidy-check",
-            "safety",
-            "vet",
-            "test",
-            "race",
-            "coverage",
-            "lint",
-            "staticcheck",
-            "vulnerability",
-            "secrets",
-            "licenses",
-            "sbom",
-            "fuzz",
-            "mutation",
-            "nilaway",
-            "docs",
-            "api",
-            "conformance",
-            "interoperability",
-            "benchmark"
-          ],
-          "implementation_status": "implemented-requires-fresh-verification"
-        },
-        {
-          "file": "adapters/measurement/.ai/GOAL_HARDEN.md",
-          "requirements_sha256": "f5f21f9821822563e6a80e4fd9c1652832272a5effa7baa0b0032ed7a5925a52",
-          "implementation_evidence": [
-            "adapters/measurement/CHANGELOG.md",
-            "adapters/measurement/README.md",
-            "adapters/measurement/docs/api.md",
-            "adapters/measurement/docs/compatibility.md",
-            "adapters/measurement/docs/security.md"
-          ],
-          "verification_gates": [
-            "format-check",
-            "tidy-check",
-            "safety",
-            "vet",
-            "test",
-            "race",
-            "coverage",
-            "lint",
-            "staticcheck",
-            "vulnerability",
-            "secrets",
-            "licenses",
-            "sbom",
-            "fuzz",
-            "mutation",
-            "nilaway",
-            "docs",
-            "api",
-            "conformance",
-            "interoperability",
-            "benchmark"
-          ],
-          "implementation_status": "implemented-requires-fresh-verification"
-        }
-      ],
+      "goal_files": [],
+      "goal_status": "not-applicable",
+      "goal_evidence": [],
       "gates": {
         "api_compatibility": true,
         "benchmarks": true,
@@ -450,77 +234,9 @@
       "specifications": [],
       "conformance_corpora": [],
       "provenance": [],
-      "goal_files": [
-        "adapters/temporal/.ai/GOAL.md",
-        "adapters/temporal/.ai/GOAL_HARDEN.md"
-      ],
-      "goal_status": "implementation-evidence-inventoried",
-      "goal_evidence": [
-        {
-          "file": "adapters/temporal/.ai/GOAL.md",
-          "requirements_sha256": "25fa67e8e71e4a8f082cc3cf9a0a9470dd27e04c30e388e69377147caefbfb15",
-          "implementation_evidence": [
-            "adapters/temporal/CHANGELOG.md",
-            "adapters/temporal/README.md"
-          ],
-          "verification_gates": [
-            "format-check",
-            "tidy-check",
-            "safety",
-            "vet",
-            "test",
-            "race",
-            "coverage",
-            "lint",
-            "staticcheck",
-            "vulnerability",
-            "secrets",
-            "licenses",
-            "sbom",
-            "fuzz",
-            "mutation",
-            "nilaway",
-            "docs",
-            "api",
-            "conformance",
-            "interoperability",
-            "benchmark"
-          ],
-          "implementation_status": "implemented-requires-fresh-verification"
-        },
-        {
-          "file": "adapters/temporal/.ai/GOAL_HARDEN.md",
-          "requirements_sha256": "3b716edb8cccb702a5952d6e575041bc91d54d3c30f77119e6b0145c25a00be3",
-          "implementation_evidence": [
-            "adapters/temporal/CHANGELOG.md",
-            "adapters/temporal/README.md"
-          ],
-          "verification_gates": [
-            "format-check",
-            "tidy-check",
-            "safety",
-            "vet",
-            "test",
-            "race",
-            "coverage",
-            "lint",
-            "staticcheck",
-            "vulnerability",
-            "secrets",
-            "licenses",
-            "sbom",
-            "fuzz",
-            "mutation",
-            "nilaway",
-            "docs",
-            "api",
-            "conformance",
-            "interoperability",
-            "benchmark"
-          ],
-          "implementation_status": "implemented-requires-fresh-verification"
-        }
-      ],
+      "goal_files": [],
+      "goal_status": "not-applicable",
+      "goal_evidence": [],
       "gates": {
         "api_compatibility": true,
         "benchmarks": true,

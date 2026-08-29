@@ -1,0 +1,19 @@
+{
+  "schema_version": 1,
+  "repository": "github.com/faustbrian/go-rule-engine",
+  "module": "adapters/temporal",
+  "package": ".",
+  "gate": "mutation",
+  "input_digest": "sha256:71adca36cf2b1b6f68e03a549a90ae2d84be512e1acfc1bce47448ab33f339e7",
+  "verifier_digest": "sha256:9a9499ff68a8dfd49a0be7995590297a8ee563a1aa226bfd8b9361dc53058108",
+  "result": "passed",
+  "report_digest": "sha256:b1a960fa40e5e1e4d14620df69eb7cb3436be1c9f72dab0d31149388f79e78e0",
+  "environment": {
+    "CGO_ENABLED": "1",
+    "GOARCH": "arm64",
+    "GOOS": "darwin",
+    "GOVERSION": "go1.27.0",
+    "gremlins_binary_sha256": "sha256:6a2beddc477eb410f8a670b6c9049558563d3c4327498fe31604d31c773a959e"
+  },
+  "completed_at": "2026-08-29T07:27:47.901803Z"
+}
