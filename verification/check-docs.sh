@@ -22,7 +22,7 @@ while IFS=: read -r source match; do
     echo "broken local documentation link: $source -> $link" >&2
     exit 1
   }
-done < <(rg -o --with-filename '\[[^]]+\]\([^)]+\)' README.md docs)
+done < <(grep -REo '\[[^]]+\]\([^)]+\)' README.md docs)
 
 go test ./... -run '^Example' -count=1
 go vet ./...
