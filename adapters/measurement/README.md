@@ -55,7 +55,7 @@ model, so callers must use `Quantity` instead of constructing tags manually.
 Release history is in [CHANGELOG.md](CHANGELOG.md).
 
 Shared package-selection and ownership guidance is in the versioned
-[Golib ecosystem index](https://github.com/faustbrian/go-library-tools/blob/v1.3.0/docs/ecosystem/README.md).
+[Golib ecosystem index](https://github.com/faustbrian/go-library-tools/blob/v1.4.0/docs/ecosystem/README.md).
 
 ## Development
 

@@ -4,9 +4,15 @@ All notable changes to this module are documented here.
 
 ## Unreleased
 
+### Changed
+
+- Verify this adapter with the checksum-verified `go-library-tools` v1.4.0
+  CLI and immutable W14 workflow, and use canonical public module checksums
+  without changing runtime behavior.
+
 ### Documentation
 
-- Link this independently released adapter to the immutable v1.3.0 Golib
+- Link this independently released adapter to the immutable v1.4.0 Golib
   ecosystem index and publish its schema-v2 selection metadata.
 - Add a module documentation index for direct navigation.
 

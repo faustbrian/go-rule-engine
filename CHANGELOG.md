@@ -7,6 +7,11 @@ Keep a Changelog and semantic versioning.
 
 ### Changed
 
+- Adopt the checksum-verified `go-library-tools` v1.4.0 CLI and immutable
+  W14 workflow so repository verification prefers canonical public module
+  identities before source-built fallback, and record canonical public
+  module checksums in every reverse consumer.
+
 - Adopt the checksum-verified `go-library-tools` v1.3.0 CLI, schema-v2
   cohesion metadata for all four releasable modules, a local cohesion gate,
   and immutable reusable-workflow enforcement.
@@ -17,7 +22,7 @@ Keep a Changelog and semantic versioning.
 
 ### Documentation
 
-- Link the core and adapter documentation to the immutable v1.3.0 ecosystem
+- Link the core and adapter documentation to the immutable v1.4.0 ecosystem
   index and publish package selection, ownership, lifecycle, compatibility,
   and delivery metadata.
 
