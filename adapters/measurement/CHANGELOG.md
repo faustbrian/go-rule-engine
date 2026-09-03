@@ -6,7 +6,10 @@ All notable changes to this module are documented here.
 
 ### Documentation
 
+- Link this independently released adapter to the immutable v1.3.0 Golib
+  ecosystem index and publish its schema-v2 selection metadata.
 - Add a module documentation index for direct navigation.
+
 ## 1.0.0 - 2026-08-25
 
 ### Documentation

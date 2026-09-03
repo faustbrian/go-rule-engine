@@ -59,6 +59,9 @@ additional guarantees beyond the documented module boundary.
 This module follows Semantic Versioning. Report vulnerabilities through the
 [parent security policy](../../SECURITY.md).
 
+Shared package-selection and ownership guidance is in the versioned
+[Golib ecosystem index](https://github.com/faustbrian/go-library-tools/blob/v1.3.0/docs/ecosystem/README.md).
+
 ## License
 
 MIT. See [LICENSE](LICENSE).
