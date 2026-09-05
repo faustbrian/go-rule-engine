@@ -12,6 +12,8 @@ All notable changes to this module are documented here.
 
 ### Documentation
 
+- State the exact Go 1.26.6 support floor and complete installation, package
+  selection, lifecycle, security, testing, support, and project navigation.
 - Link this independently released adapter to the immutable v1.4.0 Golib
   ecosystem index and publish its schema-v2 selection metadata.
 - Move detailed module guidance behind a concise README and documentation index.

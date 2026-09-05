@@ -35,6 +35,10 @@
 - [FAQ](faq.md)
 - [Migration](migration.md)
 
+## Engineering evidence
+
+- [Competitor benchmark harness](../benchmarks/competitors/README.md)
+
 ## Contributing
 
 - [Contribution guide](../CONTRIBUTING.md)
