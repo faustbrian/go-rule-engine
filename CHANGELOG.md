@@ -22,6 +22,9 @@ Keep a Changelog and semantic versioning.
 
 ### Documentation
 
+- Add a direct engineering entry point for the non-releasable competitor
+  benchmark harness and replace its placeholder inventory purpose.
+
 - Link the core and adapter documentation to the immutable v1.4.0 ecosystem
   index and publish package selection, ownership, lifecycle, compatibility,
   and delivery metadata.

@@ -553,7 +553,7 @@
       "module_path": "github.com/faustbrian/go-rule-engine/benchmarks/competitors",
       "go_version": "1.26.6",
       "packages": [],
-      "purpose": "See the module README and goal files.",
+      "purpose": "Internal benchmark harness comparing one equivalent country-and-weight decision across go-rule-engine, Expr, and Grule while isolating competitor dependencies from public modules.",
       "lifecycle": "internal",
       "kind": "benchmark harness",
       "releasable": false,
