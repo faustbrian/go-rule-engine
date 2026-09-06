@@ -25,6 +25,8 @@
 
 - [Migration](migration.md)
 
+- [Performance and troubleshooting](performance.md)
+
 - [Security](security.md)
 
 ## Security and compatibility
@@ -35,3 +37,4 @@
 ## Related packages
 
 - [Parent package documentation](../../../docs/README.md)
+- [Domain utilities family](https://github.com/faustbrian/go-library-tools/blob/v1.4.0/docs/ecosystem/design-language.md#package-families-and-selection)

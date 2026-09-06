@@ -90,7 +90,7 @@ and security guidance applies to persisted or otherwise hostile values.
 - [Compatibility](docs/compatibility.md)
 - [Migration](docs/migration.md)
 - [FAQ](docs/faq.md)
-- [Troubleshooting](docs/faq.md)
+- [Troubleshooting and performance](docs/performance.md)
 - [Executable example](example_test.go)
 - [Performance benchmark](benchmark_test.go)
 - [Go API reference](https://pkg.go.dev/github.com/faustbrian/go-rule-engine/adapters/measurement)
@@ -104,6 +104,8 @@ Release history is in the [Changelog](CHANGELOG.md).
 
 Shared package-selection and ownership guidance is in the versioned
 [Golib ecosystem index](https://github.com/faustbrian/go-library-tools/blob/v1.4.0/docs/ecosystem/README.md).
+The adapter belongs to the
+[Domain utilities family](https://github.com/faustbrian/go-library-tools/blob/v1.4.0/docs/ecosystem/design-language.md#package-families-and-selection).
 
 This module follows Semantic Versioning. Its v1 tag, operator names, exact
 conversion policy, and error categories are compatibility contracts. The

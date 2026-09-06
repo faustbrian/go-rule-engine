@@ -12,6 +12,10 @@ All notable changes to this module are documented here.
 
 ### Documentation
 
+- Add a dedicated performance and troubleshooting guide, bind module metadata
+  to its direct performance and FAQ targets, and link the Domain utilities
+  family.
+
 - State the exact Go 1.26.6 support floor and complete installation, package
   selection, lifecycle, security, testing, support, and project navigation.
 - Link this independently released adapter to the immutable v1.4.0 Golib

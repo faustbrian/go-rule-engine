@@ -133,6 +133,33 @@ errors contain classifications rather than operand contents. Registration is
 caller-owned, so applications should reject duplicate operator names during
 compiler construction instead of selecting an implementation dynamically.
 
+## Performance and verification
+
+`BenchmarkDecimalComparison` measures tagged-value parsing and exact decimal
+comparison through the adapter. Run it from this module:
+
+```sh
+go test -run '^$' -bench '^BenchmarkDecimalComparison$' -benchmem -count=10
+```
+
+Record the CPU, operating system, Go version, corpus, benchmark duration, and
+sample count, and compare equivalent runs with `benchstat`. Do not present this
+result as the cost of already-parsed direct decimal comparison.
+
+## Troubleshooting
+
+### Why is a decimal tag rejected as noncanonical?
+
+Construct values with `Decimal` instead of assembling the tag manually. The
+payload must use the strict non-exponent grammar and round-trip to identical
+canonical text.
+
+### Why does an apparently small value exceed limits?
+
+The configured math limits independently bound digits, coefficient size, and
+exponent magnitude. Inspect the error with `errors.Is` or `errors.As`, then
+raise only the domain limit whose bound is intentionally too small.
+
 ## FAQ
 
 ### Why are decimals represented as strings?

@@ -22,6 +22,13 @@ Keep a Changelog and semantic versioning.
 
 ### Documentation
 
+- Complete the stable-v1 installation, package-selection, lifecycle,
+  troubleshooting, performance, and project-navigation contract for the root
+  module and all three optional adapters.
+- Publish a dedicated measurement performance and troubleshooting guide and
+  bind module metadata and documentation checks to the complete guide set.
+- Correct support and private security-reporting routes.
+
 - Add a direct engineering entry point for the non-releasable competitor
   benchmark harness and replace its placeholder inventory purpose.
 

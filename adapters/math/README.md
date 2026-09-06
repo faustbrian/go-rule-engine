@@ -80,8 +80,9 @@ persisted input or publishing benchmark results.
 - [Complete technical guide](docs/reference.md)
 - [Go API reference](https://pkg.go.dev/github.com/faustbrian/go-rule-engine/adapters/math)
 - [Executable example](example_test.go)
-- [Performance benchmark](benchmark_test.go)
-- [FAQ and troubleshooting](docs/reference.md#faq)
+- [Performance and verification](docs/reference.md#performance-and-verification)
+- [FAQ](docs/reference.md#faq)
+- [Troubleshooting](docs/reference.md#troubleshooting)
 - [Exactness and limits](docs/reference.md#exactness-and-limits)
 - [Changelog](CHANGELOG.md)
 - [Support](../../SUPPORT.md)
@@ -101,6 +102,8 @@ engine's ordinary compiler and context APIs without global setup.
 
 Shared package-selection and ownership guidance is in the versioned
 [Golib ecosystem index](https://github.com/faustbrian/go-library-tools/blob/v1.4.0/docs/ecosystem/README.md).
+The adapter belongs to the
+[Domain utilities family](https://github.com/faustbrian/go-library-tools/blob/v1.4.0/docs/ecosystem/design-language.md#package-families-and-selection).
 
 ## License
 

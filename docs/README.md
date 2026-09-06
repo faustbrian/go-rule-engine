@@ -42,4 +42,8 @@
 ## Contributing
 
 - [Contribution guide](../CONTRIBUTING.md)
+- [Support](../SUPPORT.md)
+- [Security reporting](../SECURITY.md)
 - [Release history](../CHANGELOG.md)
+- [License](../LICENSE)
+- [Domain utilities family](https://github.com/faustbrian/go-library-tools/blob/v1.4.0/docs/ecosystem/design-language.md#package-families-and-selection)
