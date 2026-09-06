@@ -12,6 +12,9 @@ All notable changes to this module are documented here.
 
 ### Documentation
 
+- Add direct troubleshooting and Domain utilities family navigation to the
+  adapter guide and documentation index.
+
 - State the exact Go 1.26.6 support floor and complete installation, package
   selection, lifecycle, security, testing, support, and project navigation.
 - Link this independently released adapter to the immutable v1.4.0 Golib

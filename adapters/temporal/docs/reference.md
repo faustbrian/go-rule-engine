@@ -151,6 +151,21 @@ Earlier snapshots returned a `ruleengine.Value` directly from `Instant` and
 values remain readable; values with subnanosecond precision were previously
 silently truncated by Go parsing and are now rejected.
 
+## Troubleshooting
+
+### Why is an RFC 3339 timestamp rejected?
+
+The persisted value must include the required tag, stay within the four-digit
+year range, use a valid numeric offset or `Z`, and contain at most nanosecond
+precision. Encode supplied `time.Time` values with `Instant` rather than
+assembling tags manually.
+
+### Why do adjacent periods not satisfy `period_before`?
+
+The before and after operators retain formal Allen relations. Equal endpoints
+are adjacency, regardless of open or closed bounds. Use overlap or containment
+when the domain question is about shared set membership.
+
 ## FAQ
 
 ### Does the adapter use the current time?

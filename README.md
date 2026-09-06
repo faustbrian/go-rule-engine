@@ -20,6 +20,23 @@ validator, workflow engine, database query layer, or action runner. Those
 products may adapt its decisions while retaining their own fail-closed and
 domain semantics.
 
+The root module is stable at v1, requires Go 1.26.6 or newer, and follows
+Semantic Versioning.
+
+## Install
+
+```sh
+go get github.com/faustbrian/go-rule-engine@v1
+```
+
+Import the canonical module path directly:
+
+```go
+import ruleengine "github.com/faustbrian/go-rule-engine"
+```
+
+## Quick start
+
 ```go
 country := ruleengine.MustPath("shipment", "country")
 set := ruleengine.RuleSet{ID: "routing", Rules: []ruleengine.Rule{{
@@ -36,6 +53,20 @@ plan, diagnostics, err := ruleengine.NewCompiler(
 See the executable [package example](example_test.go), the
 [quick start](docs/quickstart.md), and the [JSON AST fixture](jsonast/testdata/location-routing.json).
 
+## Package map
+
+| Package | Use |
+| --- | --- |
+| `github.com/faustbrian/go-rule-engine` | Construct typed facts and rules, compile immutable bounded plans, and evaluate them deterministically. |
+| `github.com/faustbrian/go-rule-engine/jsonast` | Parse and marshal the versioned core JSON AST without adapter-specific operators. |
+| `github.com/faustbrian/go-rule-engine/adapters/math` | Add explicitly registered exact-decimal comparison operators. |
+| `github.com/faustbrian/go-rule-engine/adapters/measurement` | Add explicitly registered exact compatible-unit comparison operators. |
+| `github.com/faustbrian/go-rule-engine/adapters/temporal` | Add explicitly registered exact instant and period relation operators. |
+
+The compiler and compiled plans are caller-owned values. The root module
+performs no hidden I/O, starts no background work, and owns no runtime resource
+that requires shutdown. Applications own any resolver I/O and its lifecycle.
+
 ## Guarantees
 
 - Missing and null are distinct typed values; there is no truthiness or
@@ -51,6 +82,7 @@ See the executable [package example](example_test.go), the
 
 ## Documentation
 
+- [Documentation index](docs/README.md)
 - [Model](docs/model.md)
 - [Operators](docs/operators.md)
 - [Types and coercion](docs/types-and-coercion.md)
@@ -67,6 +99,10 @@ See the executable [package example](example_test.go), the
 - [Cookbook](docs/cookbook.md)
 - [FAQ](docs/faq.md)
 - [Compatibility](docs/compatibility.md)
+- [Support](SUPPORT.md)
+- [Security reporting](SECURITY.md)
+- [Changelog](CHANGELOG.md)
+- [Contributing](CONTRIBUTING.md)
 
 ## Verification
 

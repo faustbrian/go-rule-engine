@@ -2,12 +2,18 @@
 set -euo pipefail
 
 required=(
-  README.md CHANGELOG.md SECURITY.md CONTRIBUTING.md CODE_OF_CONDUCT.md
+  README.md CHANGELOG.md SECURITY.md SUPPORT.md CONTRIBUTING.md CODE_OF_CONDUCT.md
   docs/quickstart.md docs/model.md docs/operators.md
   docs/types-and-coercion.md docs/compilation.md docs/evaluation.md
   docs/rule-sets.md docs/extensions.md docs/json-ast.md docs/limits.md
   docs/security.md docs/performance.md docs/migration.md
   docs/integration.md docs/cookbook.md docs/faq.md docs/compatibility.md
+  adapters/math/README.md adapters/math/docs/README.md
+  adapters/math/docs/reference.md
+  adapters/measurement/README.md adapters/measurement/docs/README.md
+  adapters/measurement/docs/performance.md adapters/measurement/docs/faq.md
+  adapters/temporal/README.md adapters/temporal/docs/README.md
+  adapters/temporal/docs/reference.md
 )
 for path in "${required[@]}"; do
   test -s "$path"
@@ -22,7 +28,7 @@ while IFS=: read -r source match; do
     echo "broken local documentation link: $source -> $link" >&2
     exit 1
   }
-done < <(grep -REo '\[[^]]+\]\([^)]+\)' README.md docs)
+done < <(grep -REo '\[[^]]+\]\([^)]+\)' README.md SUPPORT.md SECURITY.md docs adapters/*/README.md adapters/*/docs)
 
 go test ./... -run '^Example' -count=1
 go vet ./...
