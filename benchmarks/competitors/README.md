@@ -6,7 +6,7 @@ dependencies from every public rule-engine module and provides engineering
 evidence; it is not a package-selection guide or a claim that one engine is
 universally faster.
 
-The harness requires Go 1.26.6 or newer. It has no supported installation path,
+The harness requires Go 1.27.0 or newer. It has no supported installation path,
 public package, semantic-version release, or runtime dependency relationship
 with consumers.
 

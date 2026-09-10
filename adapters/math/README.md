@@ -6,7 +6,7 @@ The `rule-engine/adapters/math` module is the optional bridge between
 finite decimals as tagged string values and supplies deterministic equality and
 ordering operators. The core rule engine does not depend on the math module.
 
-This stable, independently released module requires Go 1.26.6 or newer. Its
+This stable, independently released module requires Go 1.27.0 or newer. Its
 releases use `adapters/math/v*` tags.
 
 ## Install

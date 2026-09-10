@@ -1,6 +1,6 @@
 module github.com/faustbrian/go-rule-engine/benchmarks/competitors
 
-go 1.26.6
+go 1.27.0
 
 require (
 	github.com/ccpgames/grule-rule-engine v1.20.6
