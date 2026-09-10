@@ -5,7 +5,7 @@
 custom operators. It compares compatible dimensions with
 `measurement.ExactConversion()` and never supplies a unit or rounding policy.
 
-This stable, independently released module requires Go 1.26.6 or newer. Its
+This stable, independently released module requires Go 1.27.0 or newer. Its
 releases use `adapters/measurement/v*` tags.
 
 ## Install

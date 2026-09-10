@@ -7,6 +7,7 @@ Keep a Changelog and semantic versioning.
 
 ### Changed
 
+- Raise the minimum supported Go version from 1.26.6 to 1.27.0.
 - Adopt the checksum-verified `go-library-tools` v1.4.0 CLI and immutable
   W14 workflow so repository verification prefers canonical public module
   identities before source-built fallback, and record canonical public

@@ -10,7 +10,7 @@ The adapter does not read a clock, resolve named time zones, perform calendar
 arithmetic, register global state, start goroutines, schedule work, or perform
 I/O.
 
-This stable, independently released module requires Go 1.26.6 or newer. Its
+This stable, independently released module requires Go 1.27.0 or newer. Its
 releases use `adapters/temporal/v*` tags.
 
 ## Install

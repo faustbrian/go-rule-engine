@@ -1,6 +1,6 @@
 module github.com/faustbrian/go-rule-engine/adapters/temporal
 
-go 1.26.6
+go 1.27.0
 
 require (
 	github.com/faustbrian/go-rule-engine v1.0.0

@@ -1,12 +1,12 @@
 {
   "schema_version": 2,
   "repository": "github.com/faustbrian/go-rule-engine",
-  "go_version": "1.26.6",
+  "go_version": "1.27.0",
   "modules": [
     {
       "directory": ".",
       "module_path": "github.com/faustbrian/go-rule-engine",
-      "go_version": "1.26.6",
+      "go_version": "1.27.0",
       "packages": [
         {
           "module_directory": ".",
@@ -112,9 +112,9 @@
           "github.com/faustbrian/go-feature-flags"
         ],
         "supported_go": {
-          "minimum": "1.26.6",
+          "minimum": "1.27.0",
           "tested": [
-            "1.26.6"
+            "1.27.0"
           ]
         },
         "supported_platforms": [
@@ -161,7 +161,7 @@
     {
       "directory": "adapters/math",
       "module_path": "github.com/faustbrian/go-rule-engine/adapters/math",
-      "go_version": "1.26.6",
+      "go_version": "1.27.0",
       "packages": [
         {
           "module_directory": "adapters/math",
@@ -243,9 +243,9 @@
           "github.com/faustbrian/go-rule-engine/adapters/temporal"
         ],
         "supported_go": {
-          "minimum": "1.26.6",
+          "minimum": "1.27.0",
           "tested": [
-            "1.26.6"
+            "1.27.0"
           ]
         },
         "supported_platforms": [
@@ -290,7 +290,7 @@
     {
       "directory": "adapters/measurement",
       "module_path": "github.com/faustbrian/go-rule-engine/adapters/measurement",
-      "go_version": "1.26.6",
+      "go_version": "1.27.0",
       "packages": [
         {
           "module_directory": "adapters/measurement",
@@ -372,9 +372,9 @@
           "github.com/faustbrian/go-rule-engine/adapters/temporal"
         ],
         "supported_go": {
-          "minimum": "1.26.6",
+          "minimum": "1.27.0",
           "tested": [
-            "1.26.6"
+            "1.27.0"
           ]
         },
         "supported_platforms": [
@@ -419,7 +419,7 @@
     {
       "directory": "adapters/temporal",
       "module_path": "github.com/faustbrian/go-rule-engine/adapters/temporal",
-      "go_version": "1.26.6",
+      "go_version": "1.27.0",
       "packages": [
         {
           "module_directory": "adapters/temporal",
@@ -502,9 +502,9 @@
           "github.com/faustbrian/go-rule-engine/adapters/measurement"
         ],
         "supported_go": {
-          "minimum": "1.26.6",
+          "minimum": "1.27.0",
           "tested": [
-            "1.26.6"
+            "1.27.0"
           ]
         },
         "supported_platforms": [
@@ -551,7 +551,7 @@
     {
       "directory": "benchmarks/competitors",
       "module_path": "github.com/faustbrian/go-rule-engine/benchmarks/competitors",
-      "go_version": "1.26.6",
+      "go_version": "1.27.0",
       "packages": [],
       "purpose": "Internal benchmark harness comparing one equivalent country-and-weight decision across go-rule-engine, Expr, and Grule while isolating competitor dependencies from public modules.",
       "lifecycle": "internal",

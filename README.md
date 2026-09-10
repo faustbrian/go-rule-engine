@@ -7,7 +7,7 @@
 [![Documentation](https://img.shields.io/badge/docs-checked_in_CI-blue)](docs/)
 [![Go Reference](https://pkg.go.dev/badge/github.com/faustbrian/go-rule-engine.svg)](https://pkg.go.dev/github.com/faustbrian/go-rule-engine)
 [![Release](https://img.shields.io/github/v/release/faustbrian/go-rule-engine?sort=semver)](https://github.com/faustbrian/go-rule-engine/releases)
-[![Go](https://img.shields.io/badge/go-1.26.6-00ADD8?logo=go)](https://go.dev/)
+[![Go](https://img.shields.io/badge/go-1.27.0-00ADD8?logo=go)](https://go.dev/)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
 `rule-engine` is a deterministic, typed, inspectable engine for evaluating
@@ -20,7 +20,7 @@ validator, workflow engine, database query layer, or action runner. Those
 products may adapt its decisions while retaining their own fail-closed and
 domain semantics.
 
-The root module is stable at v1, requires Go 1.26.6 or newer, and follows
+The root module is stable at v1, requires Go 1.27.0 or newer, and follows
 Semantic Versioning.
 
 ## Install
@@ -111,7 +111,7 @@ tests, meaningful 100% production coverage, race tests, fuzz smoke tests,
 mutation tests, benchmarks, documentation checks, API compatibility,
 security policy checks, vulnerability scanning, and workflow validation.
 
-The module requires Go 1.26.6 and has no runtime dependencies.
+The module requires Go 1.27.0 and has no runtime dependencies.
 Exact decimal, temporal-period, and measurement adapters live in isolated
 nested modules described in the [extension guide](docs/extensions.md), so core
 consumers do not inherit their dependency graphs.
