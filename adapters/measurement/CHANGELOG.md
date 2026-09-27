@@ -4,6 +4,8 @@ All notable changes to this module are documented here.
 
 ## Unreleased
 
+## 2.0.0 - 2026-09-27
+
 ### Changed
 
 - Move this optional module to `adapters/measurement/v2` and accept quantities

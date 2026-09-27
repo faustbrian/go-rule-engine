@@ -5,13 +5,16 @@
 custom operators. It compares compatible dimensions with
 `measurement.ExactConversion()` and never supplies a unit or rounding policy.
 
-This stable, independently released module requires Go 1.27.0 or newer. Its
-releases use `adapters/measurement/v*` tags.
+This independently versioned module requires Go 1.27.0 or newer. Its v2
+release uses the `adapters/measurement/v2.0.0` tag; the parent rule-engine
+module remains on v1.
 
 ## Install
 
+After `adapters/measurement/v2.0.0` is published:
+
 ```console
-go get github.com/faustbrian/go-rule-engine/adapters/measurement/v2@v2
+go get github.com/faustbrian/go-rule-engine/adapters/measurement/v2@v2.0.0
 ```
 
 Import the canonical module path directly:
