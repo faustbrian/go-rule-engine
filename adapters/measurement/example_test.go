@@ -5,8 +5,8 @@ import (
 	"fmt"
 
 	"github.com/faustbrian/go-math/decimal"
-	measurement "github.com/faustbrian/go-measurement"
-	ruleenginemeasurement "github.com/faustbrian/go-rule-engine/adapters/measurement"
+	measurement "github.com/faustbrian/go-measurement/v2"
+	ruleenginemeasurement "github.com/faustbrian/go-rule-engine/adapters/measurement/v2"
 )
 
 func ExampleQuantity() {

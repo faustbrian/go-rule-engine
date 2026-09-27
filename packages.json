@@ -30,7 +30,7 @@
       "module_directory": "adapters/measurement",
       "directory": ".",
       "name": "ruleenginemeasurement",
-      "import_path": "github.com/faustbrian/go-rule-engine/adapters/measurement",
+      "import_path": "github.com/faustbrian/go-rule-engine/adapters/measurement/v2",
       "kind": "public",
       "production": true,
       "executable": true,

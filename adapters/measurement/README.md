@@ -11,13 +11,13 @@ releases use `adapters/measurement/v*` tags.
 ## Install
 
 ```console
-go get github.com/faustbrian/go-rule-engine/adapters/measurement@v1
+go get github.com/faustbrian/go-rule-engine/adapters/measurement/v2@v2
 ```
 
 Import the canonical module path directly:
 
 ```go
-import ruleenginemeasurement "github.com/faustbrian/go-rule-engine/adapters/measurement"
+import ruleenginemeasurement "github.com/faustbrian/go-rule-engine/adapters/measurement/v2"
 ```
 
 ## Quick start
@@ -41,7 +41,7 @@ goroutine or I/O.
 
 | Package | Use |
 | --- | --- |
-| `github.com/faustbrian/go-rule-engine/adapters/measurement` | Encode exact quantities and register five compatible-dimension comparison operators. |
+| `github.com/faustbrian/go-rule-engine/adapters/measurement/v2` | Encode exact quantities and register five compatible-dimension comparison operators. |
 
 This module has no public subpackages. `Quantity` returns an immutable rule
 value, and `Operators` returns fresh caller-owned operator and signature
@@ -93,7 +93,7 @@ and security guidance applies to persisted or otherwise hostile values.
 - [Troubleshooting and performance](docs/performance.md)
 - [Executable example](example_test.go)
 - [Performance benchmark](benchmark_test.go)
-- [Go API reference](https://pkg.go.dev/github.com/faustbrian/go-rule-engine/adapters/measurement)
+- [Go API reference](https://pkg.go.dev/github.com/faustbrian/go-rule-engine/adapters/measurement/v2)
 - [Support](../../SUPPORT.md)
 - [Contributing](../../CONTRIBUTING.md)
 - [Security reporting](../../SECURITY.md)
@@ -107,7 +107,8 @@ Shared package-selection and ownership guidance is in the versioned
 The adapter belongs to the
 [Domain utilities family](https://github.com/faustbrian/go-library-tools/blob/v1.4.0/docs/ecosystem/design-language.md#package-families-and-selection).
 
-This module follows Semantic Versioning. Its v1 tag, operator names, exact
+This module follows Semantic Versioning. Its persisted `quantity:v1` tag
+grammar, operator names, exact
 conversion policy, and error categories are compatibility contracts. The
 module exports no dedicated test helper; tests can construct fresh operators
 and use ordinary rule-engine compiler APIs without global setup.

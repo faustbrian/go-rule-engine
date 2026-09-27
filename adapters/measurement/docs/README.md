@@ -3,7 +3,7 @@
 ## Getting started
 
 - [Package overview](../README.md)
-- [Go package documentation](https://pkg.go.dev/github.com/faustbrian/go-rule-engine/adapters/measurement)
+- [Go package documentation](https://pkg.go.dev/github.com/faustbrian/go-rule-engine/adapters/measurement/v2)
 
 ## Guides and reference
 

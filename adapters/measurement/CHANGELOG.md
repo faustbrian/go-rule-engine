@@ -6,6 +6,10 @@ All notable changes to this module are documented here.
 
 ### Changed
 
+- Move this optional module to `adapters/measurement/v2` and accept quantities
+  from `go-measurement/v2`. Update both imports together; the parent rule-engine
+  v1 dependency and persisted `quantity:v1` grammar remain unchanged.
+
 - Raise the minimum supported Go version from 1.26.6 to 1.27.0.
 - Verify this adapter with the checksum-verified `go-library-tools` v1.4.0
   CLI and immutable W14 workflow, and use canonical public module checksums

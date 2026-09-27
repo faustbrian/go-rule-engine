@@ -5,9 +5,9 @@ import (
 	"testing"
 
 	"github.com/faustbrian/go-math/decimal"
-	"github.com/faustbrian/go-measurement"
+	"github.com/faustbrian/go-measurement/v2"
 	ruleengine "github.com/faustbrian/go-rule-engine"
-	ruleenginemeasurement "github.com/faustbrian/go-rule-engine/adapters/measurement"
+	ruleenginemeasurement "github.com/faustbrian/go-rule-engine/adapters/measurement/v2"
 )
 
 func BenchmarkQuantityComparison(b *testing.B) {

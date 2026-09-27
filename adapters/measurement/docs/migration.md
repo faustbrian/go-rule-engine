@@ -1,5 +1,15 @@
 # Migration
 
+## Module v2
+
+Update the adapter import to
+`github.com/faustbrian/go-rule-engine/adapters/measurement/v2` and construct
+quantities with `github.com/faustbrian/go-measurement/v2`. The parent
+`github.com/faustbrian/go-rule-engine` stays on v1. Existing quantity:v1
+persisted values and operator names require no rewrite for this module upgrade.
+
+## Historical unversioned encoding
+
 The current encoding replaces the historical unversioned form:
 
 ```text

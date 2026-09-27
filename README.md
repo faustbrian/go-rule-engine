@@ -60,7 +60,7 @@ See the executable [package example](example_test.go), the
 | `github.com/faustbrian/go-rule-engine` | Construct typed facts and rules, compile immutable bounded plans, and evaluate them deterministically. |
 | `github.com/faustbrian/go-rule-engine/jsonast` | Parse and marshal the versioned core JSON AST without adapter-specific operators. |
 | `github.com/faustbrian/go-rule-engine/adapters/math` | Add explicitly registered exact-decimal comparison operators. |
-| `github.com/faustbrian/go-rule-engine/adapters/measurement` | Add explicitly registered exact compatible-unit comparison operators. |
+| `github.com/faustbrian/go-rule-engine/adapters/measurement/v2` | Add explicitly registered exact compatible-unit comparison operators. |
 | `github.com/faustbrian/go-rule-engine/adapters/temporal` | Add explicitly registered exact instant and period relation operators. |
 
 The compiler and compiled plans are caller-owned values. The root module
