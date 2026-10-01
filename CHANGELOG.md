@@ -7,6 +7,11 @@ Keep a Changelog and semantic versioning.
 
 ### Changed
 
+- Adopt the checksum-verified Golib v1.6.1 CLI and immutable v1.7.2 workflow
+  so independently versioned adapters can select a module for release
+  rehearsal. A blank selector retains the all-module default and required CI
+  checks remain strict.
+
 - Raise the minimum supported Go version from 1.26.6 to 1.27.0.
 - Adopt the checksum-verified `go-library-tools` v1.4.0 CLI and immutable
   W14 workflow so repository verification prefers canonical public module
