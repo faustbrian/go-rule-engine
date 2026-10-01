@@ -4,7 +4,12 @@ All notable changes to this module are documented here.
 
 ## Unreleased
 
+## 1.0.1 - 2026-10-01
+
 ### Changed
+
+- Adopt Math v1.1.2 resource admission and arithmetic fixes while preserving
+  exact decimal comparisons, canonical tags, and caller-selected limits.
 
 - Raise the minimum supported Go version from 1.26.6 to 1.27.0.
 - Verify this adapter with the checksum-verified `go-library-tools` v1.4.0
