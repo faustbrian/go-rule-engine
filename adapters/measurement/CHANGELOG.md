@@ -4,6 +4,14 @@ All notable changes to this module are documented here.
 
 ## Unreleased
 
+## 2.0.1 - 2026-10-01
+
+### Changed
+
+- Adopt Measurement v2.0.1 and Math v1.1.2 resource admission and arithmetic
+  fixes while preserving exact unit comparisons, quantity tags, error
+  classifications, and caller-owned registration.
+
 ## 2.0.0 - 2026-09-27
 
 ### Changed
