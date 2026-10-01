@@ -7,7 +7,7 @@ Keep a Changelog and semantic versioning.
 
 ### Changed
 
-- Adopt the checksum-verified Golib v1.6.1 CLI and immutable v1.7.2 workflow
+- Adopt the checksum-verified Golib v1.8.5 CLI and immutable v1.7.2 workflow
   so independently versioned adapters can select a module for release
   rehearsal. A blank selector retains the all-module default and required CI
   checks remain strict.
