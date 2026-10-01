@@ -13,6 +13,11 @@ on:
         required: false
         default: false
         type: boolean
+      release_module:
+        description: Module directory to rehearse; blank selects all releasable modules
+        required: false
+        default: ''
+        type: string
 
 permissions:
   contents: read
@@ -20,10 +25,11 @@ permissions:
 
 jobs:
   ci:
-    uses: faustbrian/go-library-tools/.github/workflows/library-ci.yml@531e4db50fd81a7201257a7b488a0cf22d333aca # v1.4.0 W14 enforcement
+    uses: faustbrian/go-library-tools/.github/workflows/library-ci.yml@47269f1aa78baa637a8c377b0af24c113b34c1c9 # v1.7.2
     with:
-      tooling_sha: 531e4db50fd81a7201257a7b488a0cf22d333aca
+      tooling_sha: 47269f1aa78baa637a8c377b0af24c113b34c1c9
       release_dry_run: ${{ inputs.release_dry_run || false }}
+      release_module: ${{ inputs.release_module || '' }}
 
   required:
     name: Required
