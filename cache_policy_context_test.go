@@ -61,6 +61,48 @@ type observingPlanCache struct {
 	get, put func(context.Context)
 }
 
+func TestOwnedCachePropagatesCompileFailureAfterMiss(t *testing.T) {
+	for _, test := range []struct {
+		name       string
+		invalidate bool
+	}{{"changed predicate", true}, {"unchanged predicate", false}} {
+		t.Run(test.name, func(t *testing.T) {
+			set := ruleengine.RuleSet{ID: "ordinary", Rules: []ruleengine.Rule{{ID: "one", When: ruleengine.True()}}}
+			cache := &observingPlanCache{get: func(context.Context) {
+				// The synchronous cache collaborator shares the caller-owned rules.
+				if test.invalidate {
+					set.Rules[0].When = nil
+				}
+			}}
+			plan, diagnostics, err := ruleengine.NewCompiler(ruleengine.DefaultLimits()).CompileCached(context.Background(), set, cache)
+			if cache.gets != 1 {
+				t.Fatalf("cache gets = %d, want 1", cache.gets)
+			}
+			if test.invalidate {
+				if !ruleengine.IsCode(err, ruleengine.CodeInvalidRule) || !reflect.DeepEqual(plan, ruleengine.Plan{}) {
+					t.Fatalf("changed rule compile = %#v, %v; want zero plan and invalid rule", plan, err)
+				}
+				want := []ruleengine.Diagnostic{{RuleID: "one", Code: ruleengine.CodeInvalidRule, Severity: ruleengine.SeverityError, Message: "rule is incomplete"}}
+				if !reflect.DeepEqual(diagnostics, want) || cache.puts != 0 {
+					t.Fatalf("changed rule diagnostics = %#v, puts = %d; want %#v and no write", diagnostics, cache.puts, want)
+				}
+				return
+			}
+			if err != nil || diagnostics != nil || cache.puts != 1 || plan.Hash() == "" || cache.key != plan.Hash() || !reflect.DeepEqual(cache.plan, plan) {
+				t.Fatalf("unchanged miss = %#v, %#v, %v; cache = %#v", plan, diagnostics, err, cache)
+			}
+			facts, err := ruleengine.NewContext()
+			if err != nil {
+				t.Fatal(err)
+			}
+			result := plan.Evaluate(context.Background(), facts)
+			if result.Decision != ruleengine.Matched || !reflect.DeepEqual(result.MatchedRules, []string{"one"}) || len(result.Errors) != 0 {
+				t.Fatalf("unchanged plan result = %#v", result)
+			}
+		})
+	}
+}
+
 func (cache *observingPlanCache) Get(ctx context.Context, key string) (ruleengine.Plan, bool, error) {
 	if cache.get != nil {
 		cache.get(ctx)
