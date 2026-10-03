@@ -4,6 +4,11 @@ All notable changes to this module are documented here.
 
 ## Unreleased
 
+### Changed
+
+- Prepare unpublished v2 for Rule Engine v2 nominal types; retain Math
+  v1.1.2 and exact comparison behavior. Published v1.0.1 remains unchanged.
+
 ## 1.0.1 - 2026-10-01
 
 ### Changed

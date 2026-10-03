@@ -75,7 +75,11 @@ func MarshalCanonical(set RuleSet) ([]byte, error) {
 // representation using compiler's registered custom operators. Custom
 // predicates cannot be serialized.
 func (compiler Compiler) MarshalCanonical(set RuleSet) ([]byte, error) {
-	plan, _, err := compiler.Compile(context.Background(), set)
+	return compiler.marshalCanonical(context.Background(), set)
+}
+
+func (compiler Compiler) marshalCanonical(ctx context.Context, set RuleSet) ([]byte, error) {
+	plan, _, err := compiler.Compile(ctx, set)
 	if err != nil {
 		return nil, err
 	}
@@ -86,13 +90,23 @@ func (compiler Compiler) MarshalCanonical(set RuleSet) ([]byte, error) {
 		Rules:    make([]jsonRule, len(plan.rules)),
 	}
 	for index, rule := range plan.rules {
+		if err := ctx.Err(); err != nil {
+			return nil, err
+		}
 		encodedRule, encodeErr := encodeRule(rule)
 		if encodeErr != nil {
 			return nil, encodeErr
 		}
 		definition.Rules[index] = encodedRule
 	}
-	return json.Marshal(definition)
+	encoded, err := json.Marshal(definition)
+	if err != nil {
+		return nil, err
+	}
+	if err := ctx.Err(); err != nil {
+		return nil, err
+	}
+	return encoded, nil
 }
 
 // CanonicalHash returns the lowercase SHA-256 digest of MarshalCanonical.
@@ -103,11 +117,18 @@ func CanonicalHash(set RuleSet) (string, error) {
 // CanonicalHash returns the lowercase SHA-256 digest of compiler's canonical
 // representation, including definitions using its registered custom operators.
 func (compiler Compiler) CanonicalHash(set RuleSet) (string, error) {
-	encoded, err := compiler.MarshalCanonical(set)
+	return compiler.canonicalHash(context.Background(), set)
+}
+
+func (compiler Compiler) canonicalHash(ctx context.Context, set RuleSet) (string, error) {
+	encoded, err := compiler.marshalCanonical(ctx, set)
 	if err != nil {
 		return "", err
 	}
 	digest := sha256.Sum256(encoded)
+	if err := ctx.Err(); err != nil {
+		return "", err
+	}
 	return hex.EncodeToString(digest[:]), nil
 }
 

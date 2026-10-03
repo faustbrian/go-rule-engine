@@ -4,8 +4,8 @@ import (
 	"os"
 	"testing"
 
-	ruleengine "github.com/faustbrian/go-rule-engine"
-	"github.com/faustbrian/go-rule-engine/jsonast"
+	ruleengine "github.com/faustbrian/go-rule-engine/v2"
+	"github.com/faustbrian/go-rule-engine/v2/jsonast"
 )
 
 func TestFixtures(t *testing.T) {

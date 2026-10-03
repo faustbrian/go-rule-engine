@@ -61,14 +61,22 @@ func (plan Plan) EvaluateResolved(ctx context.Context, base Context, resolver Fa
 	if resolver == nil {
 		return Result{Decision: Indeterminate, Errors: []error{newError(CodeEvaluation, "fact resolver is nil")}}
 	}
+	evaluationContext, cancel := context.WithTimeout(ctx, plan.limits.EvaluationTimeout)
+	defer cancel()
 	working := base
 	for _, path := range plan.requiredPaths {
+		if err := evaluationContext.Err(); err != nil {
+			return Result{Decision: Indeterminate, Errors: []error{newError(CodeEvaluation, "fact resolution canceled or timed out")}}
+		}
 		if working.Lookup(path).kind != KindMissing {
 			continue
 		}
-		value, owner, found, err := resolver.Resolve(ctx, path)
+		value, owner, found, err := resolver.Resolve(evaluationContext, path)
 		if err != nil {
 			return Result{Decision: Indeterminate, Errors: []error{newError(CodeEvaluation, "fact resolution failed")}}
+		}
+		if err := evaluationContext.Err(); err != nil {
+			return Result{Decision: Indeterminate, Errors: []error{newError(CodeEvaluation, "fact resolution canceled or timed out")}}
 		}
 		if !found {
 			continue
@@ -79,7 +87,7 @@ func (plan Plan) EvaluateResolved(ctx context.Context, base Context, resolver Fa
 		}
 		working = working.withFact(fact)
 	}
-	return plan.Evaluate(ctx, working)
+	return plan.Evaluate(evaluationContext, working)
 }
 
 // Evaluate applies the compiled plan to an immutable fact snapshot.

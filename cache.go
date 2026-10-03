@@ -7,35 +7,49 @@ import (
 )
 
 // PlanCache stores compiled immutable plans by canonical definition hash.
+// Callers must scope each cache to compatible compiler/operator registries;
+// hash and Limits equality do not identify custom callback implementations.
 type PlanCache interface {
 	Get(context.Context, string) (Plan, bool, error)
 	Put(context.Context, string, Plan) error
 }
 
 // CompileCached returns a matching cached plan or compiles and stores a new
-// plan. Cache entries with a different embedded hash are ignored.
+// plan. Cache entries with a different embedded hash or compiler limits are
+// ignored.
 func (compiler Compiler) CompileCached(ctx context.Context, set RuleSet, cache PlanCache) (Plan, []Diagnostic, error) {
 	if cache == nil {
 		return Plan{}, nil, newError(CodeCache, "plan cache is nil")
 	}
-	hash, err := CanonicalHash(set)
+	if err := compiler.limits.validate(); err != nil {
+		return Plan{}, nil, err
+	}
+	operationContext, cancel := context.WithTimeout(ctx, compiler.limits.EvaluationTimeout)
+	defer cancel()
+	hash, err := compiler.canonicalHash(operationContext, set)
 	if err != nil {
 		return Plan{}, nil, err
 	}
-	plan, found, err := cache.Get(ctx, hash)
+	plan, found, err := cache.Get(operationContext, hash)
 	if err != nil {
 		return Plan{}, nil, newError(CodeCache, "plan cache read failed")
 	}
-	if found && plan.hash == hash {
+	if err := operationContext.Err(); err != nil {
+		return Plan{}, nil, err
+	}
+	if found && plan.hash == hash && plan.limits == compiler.limits {
 		return plan, nil, nil
 	}
-	plan, diagnostics, err := compiler.Compile(ctx, set)
+	plan, diagnostics, err := compiler.Compile(operationContext, set)
 	if err != nil {
 		return Plan{}, diagnostics, err
 	}
 	plan.hash = hash
-	if err := cache.Put(ctx, hash, plan); err != nil {
+	if err := cache.Put(operationContext, hash, plan); err != nil {
 		return Plan{}, nil, newError(CodeCache, "plan cache write failed")
+	}
+	if err := operationContext.Err(); err != nil {
+		return Plan{}, nil, err
 	}
 	return plan, diagnostics, nil
 }

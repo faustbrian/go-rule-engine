@@ -8,7 +8,7 @@ import (
 	"strings"
 	"time"
 
-	ruleengine "github.com/faustbrian/go-rule-engine"
+	ruleengine "github.com/faustbrian/go-rule-engine/v2"
 	temporal "github.com/faustbrian/go-temporal"
 	"github.com/faustbrian/go-temporal/instant"
 )

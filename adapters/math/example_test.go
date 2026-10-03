@@ -5,8 +5,8 @@ import (
 	"fmt"
 
 	"github.com/faustbrian/go-math/decimal"
-	ruleengine "github.com/faustbrian/go-rule-engine"
-	ruleenginemath "github.com/faustbrian/go-rule-engine/adapters/math"
+	ruleengine "github.com/faustbrian/go-rule-engine/v2"
+	ruleenginemath "github.com/faustbrian/go-rule-engine/adapters/math/v2"
 )
 
 func Example() {

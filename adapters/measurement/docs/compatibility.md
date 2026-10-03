@@ -1,10 +1,10 @@
 # Compatibility
 
-The v2 adapter is `github.com/faustbrian/go-rule-engine/adapters/measurement/v2`
+The pending v3 adapter is `github.com/faustbrian/go-rule-engine/adapters/measurement/v3`
 and accepts `github.com/faustbrian/go-measurement/v2` quantities. These types
 are distinct from measurement v1, so callers update both imports together.
-The parent rule-engine module stays on v1 and the persisted quantity:v1 tag is
-retained. Published adapter v1 versions remain unchanged historical dependencies.
+The parent rule-engine module becomes v2 and the persisted quantity:v1 tag is
+retained. Published adapter v1 and v2 versions remain unchanged historical dependencies.
 
 The stable public contract consists of the five operator names, their string
 signatures, the v1 tag grammar, exact conversion policy, error classifications,

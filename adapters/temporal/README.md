@@ -10,19 +10,20 @@ The adapter does not read a clock, resolve named time zones, perform calendar
 arithmetic, register global state, start goroutines, schedule work, or perform
 I/O.
 
-This stable, independently released module requires Go 1.27.0 or newer. Its
-releases use `adapters/temporal/v*` tags.
+This source prepares unpublished temporal adapter v2 for root Rule Engine v2
+types. Published v1 remains unchanged; Temporal v1.0.0 and algorithms are
+retained. Install the new path only after publication.
 
 ## Install
 
 ```sh
-go get github.com/faustbrian/go-rule-engine/adapters/temporal@v1
+go get github.com/faustbrian/go-rule-engine/adapters/temporal/v2@v2.0.0
 ```
 
 Import the canonical module path directly:
 
 ```go
-import ruleenginetemporal "github.com/faustbrian/go-rule-engine/adapters/temporal"
+import ruleenginetemporal "github.com/faustbrian/go-rule-engine/adapters/temporal/v2"
 ```
 
 ## Quick start
@@ -54,7 +55,7 @@ The compiling examples in this module contain complete imports and setup.
 
 | Package | Use |
 | --- | --- |
-| `github.com/faustbrian/go-rule-engine/adapters/temporal` | Encode exact instants and periods and register deterministic relation operators. |
+| `github.com/faustbrian/go-rule-engine/adapters/temporal/v2` | Encode exact instants and periods and register deterministic relation operators. |
 
 This module has no public subpackages. `Instant` and `Period` return immutable
 tagged rule values, while `Operators` returns fresh caller-owned operator and
@@ -84,7 +85,7 @@ year range.
 
 - [Documentation index](docs/README.md)
 - [Complete technical guide](docs/reference.md)
-- [Go API reference](https://pkg.go.dev/github.com/faustbrian/go-rule-engine/adapters/temporal)
+- [Go API reference](https://pkg.go.dev/github.com/faustbrian/go-rule-engine/adapters/temporal/v2)
 - [Executable example](example_test.go)
 - [FAQ](docs/reference.md#faq)
 - [Troubleshooting](docs/reference.md#troubleshooting)

@@ -10,7 +10,7 @@ import (
 
 	"github.com/faustbrian/go-math/decimal"
 	measurement "github.com/faustbrian/go-measurement/v2"
-	ruleengine "github.com/faustbrian/go-rule-engine"
+	ruleengine "github.com/faustbrian/go-rule-engine/v2"
 )
 
 const quantityPrefix = "quantity:v1|"
