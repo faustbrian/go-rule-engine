@@ -2,6 +2,7 @@ package ruleengine_test
 
 import (
 	"context"
+	"reflect"
 	"testing"
 	"time"
 
@@ -9,6 +10,51 @@ import (
 )
 
 type policyContextKey struct{}
+
+func TestOwnedCacheRejectsZeroCompilerBeforeCacheAccess(t *testing.T) {
+	var compiler ruleengine.Compiler
+	cache := &recordingCache{}
+	set := ruleengine.RuleSet{ID: "ordinary", Rules: []ruleengine.Rule{{ID: "one", When: ruleengine.True()}}}
+	plan, diagnostics, err := compiler.CompileCached(context.Background(), set, cache)
+	if !ruleengine.IsCode(err, ruleengine.CodeInvalidLimit) {
+		t.Fatalf("zero compiler error = %v, want invalid limit", err)
+	}
+	if !reflect.DeepEqual(plan, ruleengine.Plan{}) || diagnostics != nil {
+		t.Fatalf("rejected compile returned plan or diagnostics: %#v, %#v", plan, diagnostics)
+	}
+	if cache.gets != 0 || cache.puts != 0 {
+		t.Fatalf("invalid compiler reached cache: gets=%d puts=%d", cache.gets, cache.puts)
+	}
+}
+
+func TestOwnedResolutionRejectsCanceledCallerBeforeResolver(t *testing.T) {
+	missing := ruleengine.MustPath("facts", "missing")
+	retained := ruleengine.MustPath("facts", "retained")
+	set := ruleengine.RuleSet{ID: "ordinary", Rules: []ruleengine.Rule{{ID: "one", When: ruleengine.Exists(missing)}}}
+	plan, _, err := ruleengine.NewCompiler(ruleengine.DefaultLimits()).Compile(context.Background(), set)
+	if err != nil {
+		t.Fatal(err)
+	}
+	base, err := ruleengine.NewContext(ruleengine.Fact{Path: retained, Value: ruleengine.Int(7), Owner: ruleengine.OwnerResource})
+	if err != nil {
+		t.Fatal(err)
+	}
+	before := base.Lookup(retained)
+	resolver := &mapResolver{values: map[string]ruleengine.Value{missing.String(): ruleengine.Int(1)}}
+	ctx, cancel := context.WithCancel(context.Background())
+	cancel()
+	result := plan.EvaluateResolved(ctx, base, resolver)
+	if result.Decision != ruleengine.Indeterminate || len(result.Errors) != 1 || !ruleengine.IsCode(result.Errors[0], ruleengine.CodeEvaluation) {
+		t.Fatalf("canceled resolution result = %#v", result)
+	}
+	if len(resolver.calls) != 0 || len(result.MatchedRules) != 0 || len(result.Explanation) != 0 {
+		t.Fatalf("canceled resolution performed work: calls=%v result=%#v", resolver.calls, result)
+	}
+	owner, found := base.Owner(retained)
+	if !reflect.DeepEqual(base.Lookup(retained), before) || !found || owner != ruleengine.OwnerResource || base.Lookup(missing).Kind() != ruleengine.KindMissing {
+		t.Fatal("canceled resolution changed the caller's base snapshot")
+	}
+}
 
 type observingPlanCache struct {
 	recordingCache
