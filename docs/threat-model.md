@@ -81,5 +81,7 @@ and task-local adapter composition are not public release/consumer evidence.
 
 New adapter majors are math v2, measurement v3 and temporal v2 because public
 signatures expose root v2 types. Published adapter algorithms and domain
-dependency versions are retained. Review this model after changes to callback
+dependency versions are retained. Root-first source delivery leaves those
+adapters on their published root-v1 baselines; nominal migrations resume after
+root v2 public availability. Review this model after changes to callback
 registries, cache sharing, limits or adapter dependencies.

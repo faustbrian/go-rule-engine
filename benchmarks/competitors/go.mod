@@ -5,7 +5,7 @@ go 1.27.0
 require (
 	github.com/ccpgames/grule-rule-engine v1.20.6
 	github.com/expr-lang/expr v1.17.8
-	github.com/faustbrian/go-rule-engine/v2 v2.0.0
+	github.com/faustbrian/go-rule-engine v1.0.0
 )
 
 require (

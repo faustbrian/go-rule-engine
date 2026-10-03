@@ -6,11 +6,6 @@ All notable changes to this module are documented here.
 
 ### Changed
 
-- Prepare unpublished v2 for Rule Engine v2 nominal types; retain Temporal
-  v1.0.0 and exact comparison behavior. Published v1 remains unchanged.
-
-### Changed
-
 - Raise the minimum supported Go version from 1.26.6 to 1.27.0.
 - Verify this adapter with the checksum-verified `go-library-tools` v1.4.0
   CLI and immutable W14 workflow, and use canonical public module checksums

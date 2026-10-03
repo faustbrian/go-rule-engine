@@ -90,8 +90,8 @@ func (compiler Compiler) marshalCanonical(ctx context.Context, set RuleSet) ([]b
 		Rules:    make([]jsonRule, len(plan.rules)),
 	}
 	for index, rule := range plan.rules {
-		if err := ctx.Err(); err != nil {
-			return nil, err
+		if contextErr := ctx.Err(); contextErr != nil {
+			return nil, contextErr
 		}
 		encodedRule, encodeErr := encodeRule(rule)
 		if encodeErr != nil {

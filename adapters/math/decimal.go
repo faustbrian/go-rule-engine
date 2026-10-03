@@ -10,7 +10,7 @@ import (
 
 	gomath "github.com/faustbrian/go-math"
 	"github.com/faustbrian/go-math/decimal"
-	ruleengine "github.com/faustbrian/go-rule-engine/v2"
+	ruleengine "github.com/faustbrian/go-rule-engine"
 )
 
 // EncodingV1Prefix identifies the first canonical persisted decimal encoding.

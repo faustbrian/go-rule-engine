@@ -34,8 +34,8 @@ func (compiler Compiler) CompileCached(ctx context.Context, set RuleSet, cache P
 	if err != nil {
 		return Plan{}, nil, newError(CodeCache, "plan cache read failed")
 	}
-	if err := operationContext.Err(); err != nil {
-		return Plan{}, nil, err
+	if contextErr := operationContext.Err(); contextErr != nil {
+		return Plan{}, nil, contextErr
 	}
 	if found && plan.hash == hash && plan.limits == compiler.limits {
 		return plan, nil, nil
@@ -48,8 +48,8 @@ func (compiler Compiler) CompileCached(ctx context.Context, set RuleSet, cache P
 	if err := cache.Put(operationContext, hash, plan); err != nil {
 		return Plan{}, nil, newError(CodeCache, "plan cache write failed")
 	}
-	if err := operationContext.Err(); err != nil {
-		return Plan{}, nil, err
+	if contextErr := operationContext.Err(); contextErr != nil {
+		return Plan{}, nil, contextErr
 	}
 	return plan, diagnostics, nil
 }

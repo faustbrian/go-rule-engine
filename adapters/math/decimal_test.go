@@ -10,8 +10,8 @@ import (
 
 	gomath "github.com/faustbrian/go-math"
 	"github.com/faustbrian/go-math/decimal"
-	ruleengine "github.com/faustbrian/go-rule-engine/v2"
-	ruleenginemath "github.com/faustbrian/go-rule-engine/adapters/math/v2"
+	ruleengine "github.com/faustbrian/go-rule-engine"
+	ruleenginemath "github.com/faustbrian/go-rule-engine/adapters/math"
 )
 
 func TestDecimalEncodingIsCanonicalAndVersioned(t *testing.T) {

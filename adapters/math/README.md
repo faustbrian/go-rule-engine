@@ -6,20 +6,19 @@ The `rule-engine/adapters/math` module is the optional bridge between
 finite decimals as tagged string values and supplies deterministic equality and
 ordering operators. The core rule engine does not depend on the math module.
 
-This source prepares unpublished math adapter v2 for root Rule Engine v2
-types. Published v1.0.1 remains unchanged. Math v1.1.2 and comparison
-algorithms are retained. Install the new path only after publication.
+This stable, independently released module requires Go 1.27.0 or newer. Its
+releases use `adapters/math/v*` tags.
 
 ## Install
 
 ```sh
-go get github.com/faustbrian/go-rule-engine/adapters/math/v2@v2.0.0
+go get github.com/faustbrian/go-rule-engine/adapters/math@v1
 ```
 
 Import the canonical module path directly:
 
 ```go
-import ruleenginemath "github.com/faustbrian/go-rule-engine/adapters/math/v2"
+import ruleenginemath "github.com/faustbrian/go-rule-engine/adapters/math"
 ```
 
 ## Quick start
@@ -48,7 +47,7 @@ The compiling examples in this module contain complete imports and setup.
 
 | Package | Use |
 | --- | --- |
-| `github.com/faustbrian/go-rule-engine/adapters/math/v2` | Encode exact decimals and register the five versioned decimal comparison operators. |
+| `github.com/faustbrian/go-rule-engine/adapters/math` | Encode exact decimals and register the five versioned decimal comparison operators. |
 
 This module has no public subpackages. The application owns the returned
 operator slice and explicitly registers it on each compiler that needs decimal
@@ -79,7 +78,7 @@ persisted input or publishing benchmark results.
 
 - [Documentation index](docs/README.md)
 - [Complete technical guide](docs/reference.md)
-- [Go API reference](https://pkg.go.dev/github.com/faustbrian/go-rule-engine/adapters/math/v2)
+- [Go API reference](https://pkg.go.dev/github.com/faustbrian/go-rule-engine/adapters/math)
 - [Executable example](example_test.go)
 - [Performance and verification](docs/reference.md#performance-and-verification)
 - [FAQ](docs/reference.md#faq)

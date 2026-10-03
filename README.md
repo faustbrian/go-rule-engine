@@ -22,7 +22,9 @@ domain semantics.
 
 This source prepares unpublished root v2 on Go 1.27.0. Published root v1.0.0
 remains available under its original import path. The three optional adapters
-also prepare new majors because their public signatures expose root types.
+remain at their published root-v1 baselines in this root-first delivery.
+Their successor majors will resume after root v2 is publicly available,
+because their public signatures expose root types.
 See [migration](docs/migration.md) before adopting the pending releases.
 
 ## Install

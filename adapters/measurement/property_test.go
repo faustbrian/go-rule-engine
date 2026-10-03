@@ -10,8 +10,8 @@ import (
 	gomath "github.com/faustbrian/go-math"
 	"github.com/faustbrian/go-math/decimal"
 	measurement "github.com/faustbrian/go-measurement/v2"
-	ruleengine "github.com/faustbrian/go-rule-engine/v2"
-	ruleenginemeasurement "github.com/faustbrian/go-rule-engine/adapters/measurement/v3"
+	ruleengine "github.com/faustbrian/go-rule-engine"
+	ruleenginemeasurement "github.com/faustbrian/go-rule-engine/adapters/measurement/v2"
 )
 
 var dimensions = []measurement.Dimension{

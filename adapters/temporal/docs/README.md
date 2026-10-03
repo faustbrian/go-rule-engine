@@ -10,7 +10,7 @@
 
 ## API reference
 
-- [Go package documentation](https://pkg.go.dev/github.com/faustbrian/go-rule-engine/adapters/temporal/v2)
+- [Go package documentation](https://pkg.go.dev/github.com/faustbrian/go-rule-engine/adapters/temporal)
 
 ## Security and compatibility
 

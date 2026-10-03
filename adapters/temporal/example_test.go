@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"time"
 
-	ruleengine "github.com/faustbrian/go-rule-engine/v2"
-	ruleenginetemporal "github.com/faustbrian/go-rule-engine/adapters/temporal/v2"
+	ruleengine "github.com/faustbrian/go-rule-engine"
+	ruleenginetemporal "github.com/faustbrian/go-rule-engine/adapters/temporal"
 	temporal "github.com/faustbrian/go-temporal"
 	"github.com/faustbrian/go-temporal/instant"
 )
