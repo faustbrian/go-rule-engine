@@ -1,5 +1,10 @@
 # Evaluation
 
+Planned v2 `EvaluateResolved` uses one `EvaluationTimeout` deadline for fact
+resolution and subsequent evaluation. Earlier caller deadlines and context
+values are preserved. Trusted resolvers and operators must honor cancellation;
+the engine does not detach or forcibly preempt callbacks.
+
 Evaluation applies the compiled order to one immutable context. The result
 contains `Decision`, ordered matched rule IDs, a bounded explanation, bounded
 redacted errors, duration, and derived facts.

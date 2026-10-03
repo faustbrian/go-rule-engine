@@ -1,5 +1,35 @@
 # Migration from Shipit and Cline Ruler
 
+## Pending family major versions
+
+Root v2.0.0, math adapter v2.0.0, measurement adapter v3.0.0 and temporal
+adapter v2.0.0 are pending publication. Current users must keep published
+versions until the successor modules are available through the public proxy.
+After publication update all exposed root and adapter types together:
+
+Delivery is ordered root first. This source keeps the delivered math v1.0.1,
+measurement v2.0.1 and temporal v1.0.0 adapters, and the competitor module,
+on their existing public root v1 dependency. Their complete nominal migration
+is retained in commit `6668aa1721dd38988e42e1106a89a9e25bd184d4` and resumes
+after actual root v2 publication. No local replacement or unpublished module
+proxy substitutes for that public dependency. Successor major versions remain
+required before adopting root v2 types in adapter signatures.
+
+| Module | Published baseline | Pending import path |
+| --- | --- | --- |
+| Root | v1.0.0 | `github.com/faustbrian/go-rule-engine/v2` |
+| Math adapter | v1.0.1 | `github.com/faustbrian/go-rule-engine/adapters/math/v2` |
+| Measurement adapter | v2.0.1 | `github.com/faustbrian/go-rule-engine/adapters/measurement/v3` |
+| Temporal adapter | v1.0.0 | `github.com/faustbrian/go-rule-engine/adapters/temporal/v2` |
+
+The adapters retain Math v1.1.2, Measurement v2.0.1 and Temporal v1.0.0;
+only the Rule Engine nominal types change. Historical API snapshots and
+released tags remain unchanged. Rebuild caller-scoped caches when compiler
+limits or operator implementations change. Verify all trusted callbacks
+cooperate with the bounded context. Public `MarshalCanonical` and
+`CanonicalHash` still use a background context; only internal cached
+canonicalization receives the operation context. JSON grammar remains version 1.
+
 Inventory every existing rule's identifier, input fields, missing/null
 behavior, priority, conflict behavior, output, and failure policy. Do not begin
 by translating syntax.

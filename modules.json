@@ -5,14 +5,14 @@
   "modules": [
     {
       "directory": ".",
-      "module_path": "github.com/faustbrian/go-rule-engine",
+      "module_path": "github.com/faustbrian/go-rule-engine/v2",
       "go_version": "1.27.0",
       "packages": [
         {
           "module_directory": ".",
           "directory": ".",
           "name": "ruleengine",
-          "import_path": "github.com/faustbrian/go-rule-engine",
+          "import_path": "github.com/faustbrian/go-rule-engine/v2",
           "kind": "public",
           "production": true,
           "executable": true,
@@ -24,7 +24,7 @@
           "module_directory": ".",
           "directory": "jsonast",
           "name": "jsonast",
-          "import_path": "github.com/faustbrian/go-rule-engine/jsonast",
+          "import_path": "github.com/faustbrian/go-rule-engine/v2/jsonast",
           "kind": "public",
           "production": true,
           "executable": true,
@@ -41,15 +41,10 @@
       "family_label": "Domain Utilities",
       "family_description": "Domain-specific immutable values, algorithms, parsers, proofs, and calculations.",
       "family_order": 8,
-      "version": "1.0.0",
+      "version": "2.0.0",
       "tag_prefix": "v",
       "owned_dependencies": [],
-      "reverse_owned_dependencies": [
-        "github.com/faustbrian/go-rule-engine/adapters/math",
-        "github.com/faustbrian/go-rule-engine/adapters/measurement/v2",
-        "github.com/faustbrian/go-rule-engine/adapters/temporal",
-        "github.com/faustbrian/go-rule-engine/benchmarks/competitors"
-      ],
+      "reverse_owned_dependencies": [],
       "external_runtime_dependencies": [],
       "required_services": [],
       "build_tags": [],
@@ -74,11 +69,11 @@
         ],
         "public_package_identifier": "ruleengine",
         "primary_entry_packages": [
-          "github.com/faustbrian/go-rule-engine"
+          "github.com/faustbrian/go-rule-engine/v2"
         ],
         "package_selection": {
-          "github.com/faustbrian/go-rule-engine": "Use to construct typed facts and rules, compile bounded immutable execution plans, evaluate them deterministically, and encode canonical definitions.",
-          "github.com/faustbrian/go-rule-engine/jsonast": "Use for the compatibility facade that parses and marshals the core versioned JSON AST without importing adapter-specific operators."
+          "github.com/faustbrian/go-rule-engine/v2": "Use to construct typed facts and rules, compile bounded immutable execution plans, evaluate them deterministically, and encode canonical definitions.",
+          "github.com/faustbrian/go-rule-engine/v2/jsonast": "Use for the compatibility facade that parses and marshals the core versioned JSON AST without importing adapter-specific operators."
         },
         "lifecycle_status": "active",
         "maturity": "stable",
@@ -102,11 +97,7 @@
           "background_work": "none"
         },
         "optional_owned_dependencies": [],
-        "adapters": [
-          "github.com/faustbrian/go-rule-engine/adapters/math",
-          "github.com/faustbrian/go-rule-engine/adapters/measurement/v2",
-          "github.com/faustbrian/go-rule-engine/adapters/temporal"
-        ],
+        "adapters": [],
         "companions": [
           "github.com/faustbrian/go-authorization",
           "github.com/faustbrian/go-feature-flags"
@@ -134,7 +125,7 @@
           "examples": "docs/cookbook.md",
           "faq": "docs/faq.md",
           "changelog": "CHANGELOG.md",
-          "pkg_go_dev": "https://pkg.go.dev/github.com/faustbrian/go-rule-engine",
+          "pkg_go_dev": "https://pkg.go.dev/github.com/faustbrian/go-rule-engine/v2",
           "ecosystem_index": "https://github.com/faustbrian/go-library-tools/blob/v1.4.0/docs/ecosystem/README.md"
         },
         "known_good_compatibility_sets": [],

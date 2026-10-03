@@ -12,3 +12,6 @@ plans. They do not mutate globally.
 Definition byte limits apply before JSON decoding. Path and value limits apply
 during construction. AST and operator limits apply during compilation.
 Iteration, output, diagnostics, and time limits apply during evaluation.
+In planned v2, `EvaluationTimeout` also bounds the total `CompileCached`
+operation and the combined resolver/evaluation operation. The caller's earlier
+deadline takes precedence; callbacks remain trusted and must cooperate.

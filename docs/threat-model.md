@@ -60,3 +60,28 @@ Review this model when parser, cache identity, limits, callbacks, adapters,
 dependencies or security-sensitive consumers change. Scanner results, runtime
 regressions and release/consumer evidence remain separate requirements.
 Report suspected vulnerabilities through [SECURITY.md](../SECURITY.md).
+
+## Version 2 controls (2026-10-03, unpublished source)
+
+The Version 1 analysis above remains the historical released-source model.
+Planned root v2 checks complete `Limits` equality when admitting cached plans,
+uses compiler-aware canonicalization, and passes one bounded operation context
+through canonicalization/cache compilation and resolver/evaluation. Earlier
+caller deadlines and values are preserved. Checkpoints stop subsequent owned
+steps after cancellation; completed callback side effects are not rolled back.
+Public canonical helpers retain background-context behavior.
+
+Custom registries are not identified by hash plus limits. The application owns
+cache isolation per compatible compiler/operator registry, invalidates entries
+when callback semantics change, and reviews that isolation for every registry
+or cache integration. Trusted callbacks still own prompt cancellation, bounded
+I/O and data disclosure; synchronous encoding/hash/value work is not forcibly
+preemptible. Core maintainers own exact-source CI and publication. Local tests
+and task-local adapter composition are not public release/consumer evidence.
+
+New adapter majors are math v2, measurement v3 and temporal v2 because public
+signatures expose root v2 types. Published adapter algorithms and domain
+dependency versions are retained. Root-first source delivery leaves those
+adapters on their published root-v1 baselines; nominal migrations resume after
+root v2 public availability. Review this model after changes to callback
+registries, cache sharing, limits or adapter dependencies.

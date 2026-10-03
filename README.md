@@ -20,19 +20,23 @@ validator, workflow engine, database query layer, or action runner. Those
 products may adapt its decisions while retaining their own fail-closed and
 domain semantics.
 
-The root module is stable at v1, requires Go 1.27.0 or newer, and follows
-Semantic Versioning.
+This source prepares unpublished root v2 on Go 1.27.0. Published root v1.0.0
+remains available under its original import path. The three optional adapters
+remain at their published root-v1 baselines in this root-first delivery.
+Their successor majors will resume after root v2 is publicly available,
+because their public signatures expose root types.
+See [migration](docs/migration.md) before adopting the pending releases.
 
 ## Install
 
 ```sh
-go get github.com/faustbrian/go-rule-engine@v1
+go get github.com/faustbrian/go-rule-engine/v2@v2.0.0
 ```
 
 Import the canonical module path directly:
 
 ```go
-import ruleengine "github.com/faustbrian/go-rule-engine"
+import ruleengine "github.com/faustbrian/go-rule-engine/v2"
 ```
 
 ## Quick start
@@ -57,11 +61,11 @@ See the executable [package example](example_test.go), the
 
 | Package | Use |
 | --- | --- |
-| `github.com/faustbrian/go-rule-engine` | Construct typed facts and rules, compile immutable bounded plans, and evaluate them deterministically. |
-| `github.com/faustbrian/go-rule-engine/jsonast` | Parse and marshal the versioned core JSON AST without adapter-specific operators. |
-| `github.com/faustbrian/go-rule-engine/adapters/math` | Add explicitly registered exact-decimal comparison operators. |
-| `github.com/faustbrian/go-rule-engine/adapters/measurement/v2` | Add explicitly registered exact compatible-unit comparison operators. |
-| `github.com/faustbrian/go-rule-engine/adapters/temporal` | Add explicitly registered exact instant and period relation operators. |
+| `github.com/faustbrian/go-rule-engine/v2` | Construct typed facts and rules, compile immutable bounded plans, and evaluate them deterministically. |
+| `github.com/faustbrian/go-rule-engine/v2/jsonast` | Parse and marshal the versioned core JSON AST without adapter-specific operators. |
+| `github.com/faustbrian/go-rule-engine/adapters/math/v2` | Add explicitly registered exact-decimal comparison operators. |
+| `github.com/faustbrian/go-rule-engine/adapters/measurement/v3` | Add explicitly registered exact compatible-unit comparison operators. |
+| `github.com/faustbrian/go-rule-engine/adapters/temporal/v2` | Add explicitly registered exact instant and period relation operators. |
 
 The compiler and compiled plans are caller-owned values. The root module
 performs no hidden I/O, starts no background work, and owns no runtime resource
