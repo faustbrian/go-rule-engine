@@ -42,7 +42,7 @@ func TestCanonicalMarshalHonorsLateCancellation(t *testing.T) {
 			if encoded != nil || !errors.Is(err, context.Canceled) {
 				t.Fatalf("marshalCanonical() = %q, %v; want nil bytes and cancellation", encoded, err)
 			}
-			assertCanonicalContextCanceled(t, ctx)
+			assertCanonicalContextCanceled(ctx, t)
 		})
 	}
 }
@@ -57,7 +57,7 @@ func TestCanonicalHashHonorsLateCancellation(t *testing.T) {
 	if hash != "" || !errors.Is(err, context.Canceled) {
 		t.Fatalf("canonicalHash() = %q, %v; want empty hash and cancellation", hash, err)
 	}
-	assertCanonicalContextCanceled(t, ctx)
+	assertCanonicalContextCanceled(ctx, t)
 }
 
 func TestCanonicalSerializationUncanceledControl(t *testing.T) {
@@ -87,7 +87,7 @@ func TestCanonicalSerializationUncanceledControl(t *testing.T) {
 	}
 }
 
-func assertCanonicalContextCanceled(t *testing.T, ctx context.Context) {
+func assertCanonicalContextCanceled(ctx context.Context, t *testing.T) {
 	t.Helper()
 	select {
 	case <-ctx.Done():
