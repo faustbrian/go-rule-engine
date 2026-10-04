@@ -17,7 +17,17 @@ side effects and return stable snapshots.
 
 `PlanCache` stores immutable plans by canonical hash. `MemoryPlanCache` is a
 bounded, locked LRU implementation. Cache failures stop compilation; entries
-whose embedded hash differs from the requested hash are ignored.
+whose embedded hash or complete compiler limits differ are ignored.
+`CompileCached` uses one `EvaluationTimeout` context across compiler-aware
+canonicalization, cache reads, compilation and cache writes. An earlier caller
+deadline is preserved. Cache implementations must honor cancellation; the
+engine cannot preempt trusted callbacks. Cancellation observed after `Put`
+returns an error but does not roll back a cache write already performed.
+
+Hash and limits do not identify custom operator implementations. Applications
+must scope caches to one compatible compiler/operator registry and rebuild
+them when callback semantics change; sharing a cache across different
+registries is unsupported.
 
 Authorization and feature-flag adapters must preserve their own fail-closed
 behavior. They must map `Indeterminate` to denial or disabled state, never to

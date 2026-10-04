@@ -1,5 +1,10 @@
 # Compatibility
 
+Source prepares unpublished root v2 and adapter majors math v2, measurement v3,
+temporal v2. Historical `api/baseline.txt` files retain the published baselines;
+separate versioned snapshots describe the pending nominal APIs. No published
+release identity is rewritten. See [migration](migration.md).
+
 The module requires Go 1.27.0. The core module has no runtime dependencies.
 The public API fingerprint and canonical JSON grammar are checked in CI.
 

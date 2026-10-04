@@ -29,7 +29,7 @@ api:
   baselines:
     - module: .
       mode: apidiff
-      path: api/baseline.txt
+      path: api/v2.txt
     - module: adapters/math
       mode: apidiff
       path: adapters/math/api/baseline.txt

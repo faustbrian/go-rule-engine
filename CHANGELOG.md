@@ -7,6 +7,20 @@ Keep a Changelog and semantic versioning.
 
 ### Changed
 
+- Prepare root v2: cache reuse requires complete compiler-limit equality,
+  canonicalization uses the compiler registry, and one bounded operation
+  context covers cache compilation and resolver evaluation. Caller deadlines
+  and cancellation remain authoritative. Public canonical helpers retain
+  their background-context API.
+- Prepare math adapter v2, measurement adapter v3, and temporal adapter v2
+  for root v2 nominal types; algorithms and published domain dependencies
+  remain unchanged. These four module versions are not yet published.
+- Order delivery root first: retain published adapter and competitor sources
+  on root v1 until root v2 is public, then resume the retained successor-major
+  migrations. No pending adapter release is declared completed by this batch.
+
+### Changed
+
 - Adopt the checksum-verified Golib v1.8.5 CLI and immutable v1.7.2 workflow
   so independently versioned adapters can select a module for release
   rehearsal. A blank selector retains the all-module default and required CI

@@ -22,6 +22,7 @@
 
 - [Performance](performance.md)
 - [Security](security.md)
+- [Threat model](threat-model.md)
 
 ## Optional modules
 

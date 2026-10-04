@@ -5,7 +5,7 @@ import (
 	"reflect"
 	"testing"
 
-	ruleengine "github.com/faustbrian/go-rule-engine"
+	ruleengine "github.com/faustbrian/go-rule-engine/v2"
 )
 
 func TestForwardChainingReachesAStableDecision(t *testing.T) {

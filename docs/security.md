@@ -16,4 +16,7 @@ concurrency safety, I/O, and value disclosure. Do not register a custom
 predicate in authorization or feature-flag paths unless its failure maps to
 the owning product's fail-closed state.
 
+The versioned [threat model](threat-model.md) distinguishes current controls,
+caller-owned risks and unresolved cache/context assurance boundaries.
+
 Report vulnerabilities according to [SECURITY.md](../SECURITY.md).
