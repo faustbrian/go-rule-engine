@@ -4,6 +4,8 @@ All notable changes to this module are documented here.
 
 ## Unreleased
 
+## 1.0.1 - 2026-10-05
+
 ### Changed
 
 - Select `go-temporal` v1.1.0 for the existing period and instant operators,
