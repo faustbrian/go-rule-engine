@@ -6,6 +6,9 @@ All notable changes to this module are documented here.
 
 ### Changed
 
+- Select `go-temporal` v1.1.0 for the existing period and instant operators,
+  preserving canonical persisted values, bound-sensitive relations, and the
+  independently released adapter's published rule-engine v1 dependency.
 - Raise the minimum supported Go version from 1.26.6 to 1.27.0.
 - Verify this adapter with the checksum-verified `go-library-tools` v1.4.0
   CLI and immutable W14 workflow, and use canonical public module checksums
