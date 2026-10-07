@@ -10,9 +10,9 @@ The adapter does not read a clock, resolve named time zones, perform calendar
 arithmetic, register global state, start goroutines, schedule work, or perform
 I/O.
 
-This independently versioned module requires Go 1.27.0 or newer. This source
-prepares v2.0.0 for the published rule-engine v2 root. Its release tag is
-`adapters/temporal/v2.0.0`; publication remains pending.
+This independently versioned module requires Go 1.27.0 or newer. Published
+v2.0.0 consumes the rule-engine v2 root. Its release tag is
+`adapters/temporal/v2.0.0`.
 
 ## Install
 

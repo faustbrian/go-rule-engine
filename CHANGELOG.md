@@ -5,6 +5,12 @@ Keep a Changelog and semantic versioning.
 
 ## Unreleased
 
+### Documentation
+
+- Document published root v2.0.0 and math v2.0.0, measurement v3.0.0 and
+  temporal v2.0.0 adapters, with coordinated migration and installation guidance.
+  Earlier preparation entries below record their state before publication.
+
 ### Security
 
 - Update the development-only documentation parser `smol-toml` to 1.9.0
