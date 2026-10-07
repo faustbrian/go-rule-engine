@@ -10,6 +10,14 @@ All notable changes to this module are documented here.
   published root v2 types. Update both imports together. The quantity:v1
   encoding, exact comparisons and Measurement v2.0.1 dependency are unchanged.
 
+## 3.0.1 - 2026-10-07
+
+### Maintenance
+
+- Select Math v1.1.3 while retaining quantity:v1 encodings, exact unit
+  comparisons, and public v3 types. Clarify adoption of the already-published
+  adapter major without changing the Measurement v2.0.1 dependency.
+
 ## 2.0.1 - 2026-10-01
 
 ### Changed

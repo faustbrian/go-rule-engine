@@ -10,6 +10,14 @@ All notable changes to this module are documented here.
   root v2 types. Update both imports together. Exact decimal encodings,
   operators, limits and the Math v1.1.2 dependency remain unchanged.
 
+## 2.0.1 - 2026-10-07
+
+### Maintenance
+
+- Select Math v1.1.3 while retaining exact decimal comparisons, canonical
+  tags, public v2 types, and caller-selected limits. Clarify adoption of
+  the already-published adapter major without introducing another migration.
+
 ## 1.0.1 - 2026-10-01
 
 ### Changed
