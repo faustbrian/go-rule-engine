@@ -1,20 +1,18 @@
 # Migration from Shipit and Cline Ruler
 
-## Root v2 and pending adapter majors
+## Root v2 and published adapter majors
 
 Root v2.0.0 uses `github.com/faustbrian/go-rule-engine/v2`. Math adapter
-v2.0.0, measurement adapter v3.0.0 and temporal adapter v2.0.0 remain pending
-publication. Select only released tags available through the public proxy.
-Applications using adapters must keep their root-v1-compatible module set
-until every required successor is published; then update exposed root and
-adapter types together.
+v2.0.0, measurement adapter v3.0.0 and temporal adapter v2.0.0 are published
+through the public proxy. Applications using adapters must update exposed
+root and adapter types together.
 
-Delivery is ordered root first. Root v2.0.0 is now public; this source migrates
-the three adapters and competitor module to that public dependency. Released
+Delivery was ordered root first, followed by the three adapter major releases.
+The competitor module also consumes the public root v2 dependency. Historical
 math v1.0.1, measurement v2.0.1 and temporal v1.0.1 remain unchanged and expose
 root v1 types. No local replacement or unpublished module proxy substitutes
-for the public dependency. Publish the successor major tags before adopting
-their root v2 signatures in applications.
+for the public dependency. Adopt the published successor majors when updating
+applications to root v2.
 
 | Module | Baseline before migration | Successor import path |
 | --- | --- | --- |

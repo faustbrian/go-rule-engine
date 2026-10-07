@@ -1,7 +1,7 @@
 # Compatibility
 
-Source on main defines the root-v2 release line. Adapter majors math v2,
-measurement v3 and temporal v2 remain pending. Historical `api/baseline.txt`
+Root v2.0.0 and adapter majors math v2.0.0, measurement v3.0.0 and temporal
+v2.0.0 are published. Historical `api/baseline.txt`
 files retain the published baselines; separate versioned snapshots describe
 the successor nominal APIs. No published release identity is rewritten.
 Tagged public releases, not source on main, establish availability.

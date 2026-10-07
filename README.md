@@ -20,20 +20,22 @@ validator, workflow engine, database query layer, or action runner. Those
 products may adapt its decisions while retaining their own fail-closed and
 domain semantics.
 
-Root v2.0.0 is published on Go 1.27.0. Published root v1.0.0 remains available
-under its original import path. This source prepares the three optional
-adapter successor majors against the public root v2 dependency because their
-public signatures expose root types. Their releases remain pending.
-See [migration](docs/migration.md) before adopting root v2 or its pending
-adapter successors. Source on main alone does not establish publication.
+Root v2.0.0 and the optional math v2.0.0, measurement v3.0.0 and temporal
+v2.0.0 adapters are published on Go 1.27.0. Their public signatures expose
+root v2 types. Published root v1.0.0 and its compatible adapter releases remain
+available under their original import paths.
+See [migration](docs/migration.md) before updating root and adapter types together.
 
 ## Install
 
-Select the published root-v2 release through the public Go proxy. The three
-adapter successors remain separate pending releases:
+Select the published root-v2 release through the public Go proxy. Install only
+the optional adapters your application uses:
 
 ```sh
 go get github.com/faustbrian/go-rule-engine/v2@v2.0.0
+go get github.com/faustbrian/go-rule-engine/adapters/math/v2@v2.0.0
+go get github.com/faustbrian/go-rule-engine/adapters/measurement/v3@v3.0.0
+go get github.com/faustbrian/go-rule-engine/adapters/temporal/v2@v2.0.0
 ```
 
 Import the canonical root-v2 module path directly:
@@ -66,15 +68,15 @@ See the executable [package example](example_test.go), the
 | --- | --- |
 | `github.com/faustbrian/go-rule-engine/v2` | Construct typed facts and rules, compile immutable bounded plans, and evaluate them deterministically. |
 | `github.com/faustbrian/go-rule-engine/v2/jsonast` | Parse and marshal the versioned core JSON AST without adapter-specific operators. |
-| `github.com/faustbrian/go-rule-engine/adapters/math/v2` | Pending successor, not currently available: exact-decimal comparison operators for root v2. |
-| `github.com/faustbrian/go-rule-engine/adapters/measurement/v3` | Pending successor, not currently available: exact compatible-unit comparison operators for root v2. |
-| `github.com/faustbrian/go-rule-engine/adapters/temporal/v2` | Pending successor, not currently available: exact instant and period relation operators for root v2. |
+| `github.com/faustbrian/go-rule-engine/adapters/math/v2` | Exact-decimal comparison operators for root v2. |
+| `github.com/faustbrian/go-rule-engine/adapters/measurement/v3` | Exact compatible-unit comparison operators for root v2. |
+| `github.com/faustbrian/go-rule-engine/adapters/temporal/v2` | Exact instant and period relation operators for root v2. |
 
-The currently published adapter paths are `adapters/math`,
+The historical root-v1-compatible adapter paths are `adapters/math`,
 `adapters/measurement/v2`, and `adapters/temporal` beneath
 `github.com/faustbrian/go-rule-engine`. They expose root-v1 types and cannot be
-composed directly with root v2. The current nested modules use the successor
-paths above; source on main does not make their pending tags available.
+composed directly with root v2. Use the published successor paths above for
+root v2 applications.
 
 The compiler and compiled plans are caller-owned values. The root module
 performs no hidden I/O, starts no background work, and owns no runtime resource
