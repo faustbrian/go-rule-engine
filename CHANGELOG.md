@@ -75,6 +75,14 @@ Keep a Changelog and semantic versioning.
 - Replace archived monorepo links and completed execution artifacts with a
   standalone, human-oriented documentation structure.
 
+## 2.0.1 - 2026-10-07
+
+### Documentation
+
+- Refresh published root-v2 and adapter-major adoption guidance, retaining
+  the existing public API and runtime behavior. The earlier preparation
+  records remain historical; those major versions are already published.
+
 ## 1.0.0 - 2026-08-25
 
 ### Fixed

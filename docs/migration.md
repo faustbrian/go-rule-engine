@@ -21,8 +21,10 @@ applications to root v2.
 | Measurement adapter | v2.0.1 | `github.com/faustbrian/go-rule-engine/adapters/measurement/v3` |
 | Temporal adapter | v1.0.1 | `github.com/faustbrian/go-rule-engine/adapters/temporal/v2` |
 
-The adapters retain Math v1.1.2, Measurement v2.0.1 and Temporal v1.1.0;
-only the Rule Engine nominal types change. Historical API snapshots and
+The initial adapter major releases retained Math v1.1.2, Measurement
+v2.0.1 and Temporal v1.1.0; only the Rule Engine nominal types changed.
+The compatible math v2.0.1 and measurement v3.0.1 patches select Math
+v1.1.3 without changing arithmetic behavior or the other domain dependencies. Historical API snapshots and
 released tags remain unchanged. Rebuild caller-scoped caches when compiler
 limits or operator implementations change. Verify all trusted callbacks
 cooperate with the bounded context. Public `MarshalCanonical` and

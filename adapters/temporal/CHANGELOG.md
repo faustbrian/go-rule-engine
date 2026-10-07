@@ -10,6 +10,14 @@ All notable changes to this module are documented here.
   root v2 types. Update both imports together. Persisted instants and periods,
   relation operators and the Temporal v1.1.0 dependency remain unchanged.
 
+## 2.0.1 - 2026-10-07
+
+### Documentation
+
+- Clarify adoption of the published adapter v2 with root v2 types. Persisted
+  instants and periods, relation operators, and the Temporal v1.1.0
+  dependency remain unchanged.
+
 ## 1.0.1 - 2026-10-05
 
 ### Changed
