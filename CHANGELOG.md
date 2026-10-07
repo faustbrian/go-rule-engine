@@ -5,6 +5,11 @@ Keep a Changelog and semantic versioning.
 
 ## Unreleased
 
+### Security
+
+- Update the development-only documentation parser `smol-toml` to 1.9.0
+  for GHSA-r4xh-jqrq-34v2. The root Go runtime has no external dependencies.
+
 ### Changed
 
 - Prepare root v2: cache reuse requires complete compiler-limit equality,
