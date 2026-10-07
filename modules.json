@@ -151,14 +151,14 @@
     },
     {
       "directory": "adapters/math",
-      "module_path": "github.com/faustbrian/go-rule-engine/adapters/math",
+      "module_path": "github.com/faustbrian/go-rule-engine/adapters/math/v2",
       "go_version": "1.27.0",
       "packages": [
         {
           "module_directory": "adapters/math",
           "directory": ".",
           "name": "ruleenginemath",
-          "import_path": "github.com/faustbrian/go-rule-engine/adapters/math",
+          "import_path": "github.com/faustbrian/go-rule-engine/adapters/math/v2",
           "kind": "public",
           "production": true,
           "executable": true,
@@ -175,11 +175,11 @@
       "family_label": "Domain Utilities",
       "family_description": "Domain-specific immutable values, algorithms, parsers, proofs, and calculations.",
       "family_order": 8,
-      "version": "1.0.1",
+      "version": "2.0.0",
       "tag_prefix": "adapters/math/v",
       "owned_dependencies": [
         "github.com/faustbrian/go-math",
-        "github.com/faustbrian/go-rule-engine"
+        "github.com/faustbrian/go-rule-engine/v2"
       ],
       "reverse_owned_dependencies": [],
       "external_runtime_dependencies": [],
@@ -205,10 +205,10 @@
         ],
         "public_package_identifier": "ruleenginemath",
         "primary_entry_packages": [
-          "github.com/faustbrian/go-rule-engine/adapters/math"
+          "github.com/faustbrian/go-rule-engine/adapters/math/v2"
         ],
         "package_selection": {
-          "github.com/faustbrian/go-rule-engine/adapters/math": "Use when rule definitions need exact go-math decimal values and explicitly registered comparison operators."
+          "github.com/faustbrian/go-rule-engine/adapters/math/v2": "Use when rule definitions need exact go-math decimal values and explicitly registered comparison operators."
         },
         "lifecycle_status": "active",
         "maturity": "stable",
@@ -230,8 +230,8 @@
         "optional_owned_dependencies": [],
         "adapters": [],
         "companions": [
-          "github.com/faustbrian/go-rule-engine/adapters/measurement/v2",
-          "github.com/faustbrian/go-rule-engine/adapters/temporal"
+          "github.com/faustbrian/go-rule-engine/adapters/measurement/v3",
+          "github.com/faustbrian/go-rule-engine/adapters/temporal/v2"
         ],
         "supported_go": {
           "minimum": "1.27.0",
@@ -254,7 +254,7 @@
           "examples": "adapters/math/example_test.go",
           "faq": "adapters/math/docs/reference.md",
           "changelog": "adapters/math/CHANGELOG.md",
-          "pkg_go_dev": "https://pkg.go.dev/github.com/faustbrian/go-rule-engine/adapters/math",
+          "pkg_go_dev": "https://pkg.go.dev/github.com/faustbrian/go-rule-engine/adapters/math/v2",
           "ecosystem_index": "https://github.com/faustbrian/go-library-tools/blob/v1.4.0/docs/ecosystem/README.md"
         },
         "known_good_compatibility_sets": [],
@@ -280,14 +280,14 @@
     },
     {
       "directory": "adapters/measurement",
-      "module_path": "github.com/faustbrian/go-rule-engine/adapters/measurement/v2",
+      "module_path": "github.com/faustbrian/go-rule-engine/adapters/measurement/v3",
       "go_version": "1.27.0",
       "packages": [
         {
           "module_directory": "adapters/measurement",
           "directory": ".",
           "name": "ruleenginemeasurement",
-          "import_path": "github.com/faustbrian/go-rule-engine/adapters/measurement/v2",
+          "import_path": "github.com/faustbrian/go-rule-engine/adapters/measurement/v3",
           "kind": "public",
           "production": true,
           "executable": true,
@@ -304,12 +304,12 @@
       "family_label": "Domain Utilities",
       "family_description": "Domain-specific immutable values, algorithms, parsers, proofs, and calculations.",
       "family_order": 8,
-      "version": "2.0.1",
+      "version": "3.0.0",
       "tag_prefix": "adapters/measurement/v",
       "owned_dependencies": [
         "github.com/faustbrian/go-math",
         "github.com/faustbrian/go-measurement/v2",
-        "github.com/faustbrian/go-rule-engine"
+        "github.com/faustbrian/go-rule-engine/v2"
       ],
       "reverse_owned_dependencies": [],
       "external_runtime_dependencies": [],
@@ -335,10 +335,10 @@
         ],
         "public_package_identifier": "ruleenginemeasurement",
         "primary_entry_packages": [
-          "github.com/faustbrian/go-rule-engine/adapters/measurement/v2"
+          "github.com/faustbrian/go-rule-engine/adapters/measurement/v3"
         ],
         "package_selection": {
-          "github.com/faustbrian/go-rule-engine/adapters/measurement/v2": "Use when rule definitions need exact go-measurement quantities and explicitly registered dimension-safe comparison operators."
+          "github.com/faustbrian/go-rule-engine/adapters/measurement/v3": "Use when rule definitions need exact go-measurement quantities and explicitly registered dimension-safe comparison operators."
         },
         "lifecycle_status": "active",
         "maturity": "stable",
@@ -360,7 +360,7 @@
         "optional_owned_dependencies": [],
         "adapters": [],
         "companions": [
-          "github.com/faustbrian/go-rule-engine/adapters/temporal"
+          "github.com/faustbrian/go-rule-engine/adapters/temporal/v2"
         ],
         "supported_go": {
           "minimum": "1.27.0",
@@ -383,7 +383,7 @@
           "examples": "adapters/measurement/docs/examples.md",
           "faq": "adapters/measurement/docs/faq.md",
           "changelog": "adapters/measurement/CHANGELOG.md",
-          "pkg_go_dev": "https://pkg.go.dev/github.com/faustbrian/go-rule-engine/adapters/measurement/v2",
+          "pkg_go_dev": "https://pkg.go.dev/github.com/faustbrian/go-rule-engine/adapters/measurement/v3",
           "ecosystem_index": "https://github.com/faustbrian/go-library-tools/blob/v1.4.0/docs/ecosystem/README.md"
         },
         "known_good_compatibility_sets": [],
@@ -409,14 +409,14 @@
     },
     {
       "directory": "adapters/temporal",
-      "module_path": "github.com/faustbrian/go-rule-engine/adapters/temporal",
+      "module_path": "github.com/faustbrian/go-rule-engine/adapters/temporal/v2",
       "go_version": "1.27.0",
       "packages": [
         {
           "module_directory": "adapters/temporal",
           "directory": ".",
           "name": "ruleenginetemporal",
-          "import_path": "github.com/faustbrian/go-rule-engine/adapters/temporal",
+          "import_path": "github.com/faustbrian/go-rule-engine/adapters/temporal/v2",
           "kind": "public",
           "production": true,
           "executable": true,
@@ -433,11 +433,11 @@
       "family_label": "Domain Utilities",
       "family_description": "Domain-specific immutable values, algorithms, parsers, proofs, and calculations.",
       "family_order": 8,
-      "version": "1.0.1",
+      "version": "2.0.0",
       "tag_prefix": "adapters/temporal/v",
       "owned_dependencies": [
         "github.com/faustbrian/go-calendar",
-        "github.com/faustbrian/go-rule-engine",
+        "github.com/faustbrian/go-rule-engine/v2",
         "github.com/faustbrian/go-temporal"
       ],
       "reverse_owned_dependencies": [],
@@ -464,10 +464,10 @@
         ],
         "public_package_identifier": "ruleenginetemporal",
         "primary_entry_packages": [
-          "github.com/faustbrian/go-rule-engine/adapters/temporal"
+          "github.com/faustbrian/go-rule-engine/adapters/temporal/v2"
         ],
         "package_selection": {
-          "github.com/faustbrian/go-rule-engine/adapters/temporal": "Use when rule definitions need exact go-temporal instants and periods with explicitly registered relation operators."
+          "github.com/faustbrian/go-rule-engine/adapters/temporal/v2": "Use when rule definitions need exact go-temporal instants and periods with explicitly registered relation operators."
         },
         "lifecycle_status": "active",
         "maturity": "stable",
@@ -489,8 +489,8 @@
         "optional_owned_dependencies": [],
         "adapters": [],
         "companions": [
-          "github.com/faustbrian/go-rule-engine/adapters/math",
-          "github.com/faustbrian/go-rule-engine/adapters/measurement/v2"
+          "github.com/faustbrian/go-rule-engine/adapters/math/v2",
+          "github.com/faustbrian/go-rule-engine/adapters/measurement/v3"
         ],
         "supported_go": {
           "minimum": "1.27.0",
@@ -515,7 +515,7 @@
           "examples": "adapters/temporal/example_test.go",
           "faq": "adapters/temporal/docs/reference.md",
           "changelog": "adapters/temporal/CHANGELOG.md",
-          "pkg_go_dev": "https://pkg.go.dev/github.com/faustbrian/go-rule-engine/adapters/temporal",
+          "pkg_go_dev": "https://pkg.go.dev/github.com/faustbrian/go-rule-engine/adapters/temporal/v2",
           "ecosystem_index": "https://github.com/faustbrian/go-library-tools/blob/v1.4.0/docs/ecosystem/README.md"
         },
         "known_good_compatibility_sets": [],
@@ -555,7 +555,7 @@
       "version": "unreleased",
       "tag_prefix": "benchmarks/competitors/v",
       "owned_dependencies": [
-        "github.com/faustbrian/go-rule-engine"
+        "github.com/faustbrian/go-rule-engine/v2"
       ],
       "reverse_owned_dependencies": [],
       "external_runtime_dependencies": [

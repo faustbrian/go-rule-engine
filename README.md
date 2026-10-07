@@ -20,18 +20,17 @@ validator, workflow engine, database query layer, or action runner. Those
 products may adapt its decisions while retaining their own fail-closed and
 domain semantics.
 
-This source is the root-v2 release line on Go 1.27.0. Published root v1.0.0
-remains available under its original import path. The three optional adapters
-remain at their published root-v1 baselines in this root-first delivery.
-Their successor majors will resume after root v2 is publicly available,
-because their public signatures expose root types.
+Root v2.0.0 is published on Go 1.27.0. Published root v1.0.0 remains available
+under its original import path. This source prepares the three optional
+adapter successor majors against the public root v2 dependency because their
+public signatures expose root types. Their releases remain pending.
 See [migration](docs/migration.md) before adopting root v2 or its pending
 adapter successors. Source on main alone does not establish publication.
 
 ## Install
 
-Select the tagged root-v2 release once it is available through the public Go
-proxy. The three adapter successors remain separate pending releases:
+Select the published root-v2 release through the public Go proxy. The three
+adapter successors remain separate pending releases:
 
 ```sh
 go get github.com/faustbrian/go-rule-engine/v2@v2.0.0
@@ -74,8 +73,8 @@ See the executable [package example](example_test.go), the
 The currently published adapter paths are `adapters/math`,
 `adapters/measurement/v2`, and `adapters/temporal` beneath
 `github.com/faustbrian/go-rule-engine`. They expose root-v1 types and cannot be
-composed directly with root v2. The pending successor paths above are not the
-current nested modules.
+composed directly with root v2. The current nested modules use the successor
+paths above; source on main does not make their pending tags available.
 
 The compiler and compiled plans are caller-owned values. The root module
 performs no hidden I/O, starts no background work, and owns no runtime resource

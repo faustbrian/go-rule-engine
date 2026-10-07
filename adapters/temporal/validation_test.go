@@ -7,8 +7,8 @@ import (
 	"testing"
 	"time"
 
-	ruleengine "github.com/faustbrian/go-rule-engine"
-	ruleenginetemporal "github.com/faustbrian/go-rule-engine/adapters/temporal"
+	ruleenginetemporal "github.com/faustbrian/go-rule-engine/adapters/temporal/v2"
+	ruleengine "github.com/faustbrian/go-rule-engine/v2"
 	temporal "github.com/faustbrian/go-temporal"
 )
 

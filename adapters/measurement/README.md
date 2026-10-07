@@ -5,22 +5,23 @@
 custom operators. It compares compatible dimensions with
 `measurement.ExactConversion()` and never supplies a unit or rounding policy.
 
-This independently versioned module requires Go 1.27.0 or newer. Its v2
-release uses the `adapters/measurement/v2.0.0` tag; the parent rule-engine
-module remains on v1.
+This independently versioned module requires Go 1.27.0 or newer. This source
+prepares v3.0.0 for the published rule-engine v2 root. Its release tag is
+`adapters/measurement/v3.0.0`; publication remains pending. Measurement values
+still come from `go-measurement/v2`.
 
 ## Install
 
-After `adapters/measurement/v2.0.0` is published:
+After `adapters/measurement/v3.0.0` is published:
 
 ```console
-go get github.com/faustbrian/go-rule-engine/adapters/measurement/v2@v2.0.0
+go get github.com/faustbrian/go-rule-engine/adapters/measurement/v3@v3.0.0
 ```
 
 Import the canonical module path directly:
 
 ```go
-import ruleenginemeasurement "github.com/faustbrian/go-rule-engine/adapters/measurement/v2"
+import ruleenginemeasurement "github.com/faustbrian/go-rule-engine/adapters/measurement/v3"
 ```
 
 ## Quick start
@@ -44,7 +45,7 @@ goroutine or I/O.
 
 | Package | Use |
 | --- | --- |
-| `github.com/faustbrian/go-rule-engine/adapters/measurement/v2` | Encode exact quantities and register five compatible-dimension comparison operators. |
+| `github.com/faustbrian/go-rule-engine/adapters/measurement/v3` | Encode exact quantities and register five compatible-dimension comparison operators. |
 
 This module has no public subpackages. `Quantity` returns an immutable rule
 value, and `Operators` returns fresh caller-owned operator and signature
@@ -96,7 +97,7 @@ and security guidance applies to persisted or otherwise hostile values.
 - [Troubleshooting and performance](docs/performance.md)
 - [Executable example](example_test.go)
 - [Performance benchmark](benchmark_test.go)
-- [Go API reference](https://pkg.go.dev/github.com/faustbrian/go-rule-engine/adapters/measurement/v2)
+- [Go API reference](https://pkg.go.dev/github.com/faustbrian/go-rule-engine/adapters/measurement/v3)
 - [Support](../../SUPPORT.md)
 - [Contributing](../../CONTRIBUTING.md)
 - [Security reporting](../../SECURITY.md)

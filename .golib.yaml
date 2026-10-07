@@ -37,13 +37,13 @@ api:
       path: api/v2.txt
     - module: adapters/math
       mode: apidiff
-      path: adapters/math/api/baseline.txt
+      path: adapters/math/api/v2.txt
     - module: adapters/measurement
       mode: apidiff
-      path: adapters/measurement/api/baseline.txt
+      path: adapters/measurement/api/v3.txt
     - module: adapters/temporal
       mode: apidiff
-      path: adapters/temporal/api/baseline.txt
+      path: adapters/temporal/api/v2.txt
 
 operations:
   - module: .

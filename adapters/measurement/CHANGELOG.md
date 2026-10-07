@@ -4,6 +4,12 @@ All notable changes to this module are documented here.
 
 ## Unreleased
 
+### Changed
+
+- Prepare adapter v3 with the `/adapters/measurement/v3` import path and
+  published root v2 types. Update both imports together. The quantity:v1
+  encoding, exact comparisons and Measurement v2.0.1 dependency are unchanged.
+
 ## 2.0.1 - 2026-10-01
 
 ### Changed

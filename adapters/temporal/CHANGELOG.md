@@ -4,6 +4,12 @@ All notable changes to this module are documented here.
 
 ## Unreleased
 
+### Changed
+
+- Prepare adapter v2 with the `/adapters/temporal/v2` import path and published
+  root v2 types. Update both imports together. Persisted instants and periods,
+  relation operators and the Temporal v1.1.0 dependency remain unchanged.
+
 ## 1.0.1 - 2026-10-05
 
 ### Changed

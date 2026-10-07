@@ -4,8 +4,8 @@ Version 1 (2026-10-03)
 
 ## Scope and assets
 
-This model describes the current root v1 implementation, not unpublished v2
-work. Assets are decision integrity, availability, fact confidentiality and
+This historical model describes the released root v1 implementation, not v2.
+Assets are decision integrity, availability, fact confidentiality and
 canonical rule identity. Independently released adapters keep their own module
 versions; the measurement adapter already has a v2 release.
 
@@ -61,10 +61,10 @@ dependencies or security-sensitive consumers change. Scanner results, runtime
 regressions and release/consumer evidence remain separate requirements.
 Report suspected vulnerabilities through [SECURITY.md](../SECURITY.md).
 
-## Version 2 controls (2026-10-03, unpublished source)
+## Version 2 controls (2026-10-07, root v2.0.0 published)
 
 The Version 1 analysis above remains the historical released-source model.
-Planned root v2 checks complete `Limits` equality when admitting cached plans,
+Published root v2 checks complete `Limits` equality when admitting cached plans,
 uses compiler-aware canonicalization, and passes one bounded operation context
 through canonicalization/cache compilation and resolver/evaluation. Earlier
 caller deadlines and values are preserved. Checkpoints stop subsequent owned
@@ -81,7 +81,7 @@ and task-local adapter composition are not public release/consumer evidence.
 
 New adapter majors are math v2, measurement v3 and temporal v2 because public
 signatures expose root v2 types. Published adapter algorithms and domain
-dependency versions are retained. Root-first source delivery leaves those
-adapters on their published root-v1 baselines; nominal migrations resume after
-root v2 public availability. Review this model after changes to callback
+dependency versions are retained. Root-first delivery has published root v2;
+the current adapter source now consumes it, while successor adapter publication
+remains pending. Review this model after changes to callback
 registries, cache sharing, limits or adapter dependencies.
