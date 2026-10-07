@@ -14,7 +14,8 @@ Keep a Changelog and semantic versioning.
   their background-context API.
 - Prepare math adapter v2, measurement adapter v3, and temporal adapter v2
   for root v2 nominal types; algorithms and published domain dependencies
-  remain unchanged. These four module versions are not yet published.
+  remain unchanged. None of these four module versions had been published
+  when this preparation was recorded; actual availability follows public tags.
 - Order delivery root first: retain published adapter and competitor sources
   on root v1 until root v2 is public, then resume the retained successor-major
   migrations. No pending adapter release is declared completed by this batch.

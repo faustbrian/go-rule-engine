@@ -20,23 +20,24 @@ validator, workflow engine, database query layer, or action runner. Those
 products may adapt its decisions while retaining their own fail-closed and
 domain semantics.
 
-This source prepares unpublished root v2 on Go 1.27.0. Published root v1.0.0
+This source is the root-v2 release line on Go 1.27.0. Published root v1.0.0
 remains available under its original import path. The three optional adapters
 remain at their published root-v1 baselines in this root-first delivery.
 Their successor majors will resume after root v2 is publicly available,
 because their public signatures expose root types.
-See [migration](docs/migration.md) before adopting the pending releases.
+See [migration](docs/migration.md) before adopting root v2 or its pending
+adapter successors. Source on main alone does not establish publication.
 
 ## Install
 
-Root v2 is not yet published. After `v2.0.0` is publicly available, install it
-with the following command; it is not a current installation instruction:
+Select the tagged root-v2 release once it is available through the public Go
+proxy. The three adapter successors remain separate pending releases:
 
 ```sh
 go get github.com/faustbrian/go-rule-engine/v2@v2.0.0
 ```
 
-After publication, import the canonical root-v2 module path directly:
+Import the canonical root-v2 module path directly:
 
 ```go
 import ruleengine "github.com/faustbrian/go-rule-engine/v2"
