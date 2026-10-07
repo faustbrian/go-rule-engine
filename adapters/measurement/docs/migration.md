@@ -1,12 +1,13 @@
 # Migration
 
-## Module v2
+## Module v3
 
 Update the adapter import to
-`github.com/faustbrian/go-rule-engine/adapters/measurement/v2` and construct
-quantities with `github.com/faustbrian/go-measurement/v2`. The parent
-`github.com/faustbrian/go-rule-engine` stays on v1. Existing quantity:v1
+`github.com/faustbrian/go-rule-engine/adapters/measurement/v3` and the root
+import to `github.com/faustbrian/go-rule-engine/v2` together. Quantities still
+come from `github.com/faustbrian/go-measurement/v2`. Existing quantity:v1
 persisted values and operator names require no rewrite for this module upgrade.
+Wait for the adapter v3 tag before using this source migration in applications.
 
 ## Historical unversioned encoding
 

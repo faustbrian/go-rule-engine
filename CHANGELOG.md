@@ -12,6 +12,10 @@ Keep a Changelog and semantic versioning.
 
 ### Changed
 
+- Resume the adapter successor-major and competitor migrations against the
+  published root v2.0.0 dependency. Adapter tags remain pending; historical
+  root-v1-compatible adapter releases and persisted encodings are unchanged.
+
 - Prepare root v2: cache reuse requires complete compiler-limit equality,
   canonicalization uses the compiler registry, and one bounded operation
   context covers cache compilation and resolver evaluation. Caller deadlines

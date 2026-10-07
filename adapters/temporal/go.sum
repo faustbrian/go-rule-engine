@@ -1,7 +1,7 @@
 github.com/faustbrian/go-calendar v1.0.0 h1:NXJClH6GIYbxHVu1ivVYkfRdJx5NvGcQyVehJQDFfgk=
 github.com/faustbrian/go-calendar v1.0.0/go.mod h1:BgDZIrkEx6CZDebZLlrApN8s47aFdQMc0aRB+ZKXx/s=
-github.com/faustbrian/go-rule-engine v1.0.0 h1:iQwT7/+Zt27p9Hbp0vybi7+u6mQoEtwGkU8/6+krB0g=
-github.com/faustbrian/go-rule-engine v1.0.0/go.mod h1:EDUFzH7mZdOZ4sMxiOC8BKKu/bTBjmPNlgzLw/hIU88=
+github.com/faustbrian/go-rule-engine/v2 v2.0.0 h1:2nevzCE6VmTea0u6AJGghZbOaufzzDijMLD3B9R1ipQ=
+github.com/faustbrian/go-rule-engine/v2 v2.0.0/go.mod h1:9vFNtiPW46tl9qSO11KM6Tipv/YLYsZBBOxIzv7Rl5E=
 github.com/faustbrian/go-temporal v1.1.0 h1:toqB2DuOVI1nbJob3uJf7zqmT7+f69dTRtBPQSD/F6I=
 github.com/faustbrian/go-temporal v1.1.0/go.mod h1:TfsoJQIryKFKu6qmxpw8AfhelOco+d1as65rt0IZQVE=
 github.com/faustbrian/go-validation v1.1.0 h1:nGpU161/dzIkp5L/tAGJSHpCOa81hqcPM6lxt8aCJ9k=

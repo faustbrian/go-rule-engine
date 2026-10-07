@@ -4,6 +4,12 @@ All notable changes to this module are documented here.
 
 ## Unreleased
 
+### Changed
+
+- Prepare adapter v2 with the `/adapters/math/v2` import path and published
+  root v2 types. Update both imports together. Exact decimal encodings,
+  operators, limits and the Math v1.1.2 dependency remain unchanged.
+
 ## 1.0.1 - 2026-10-01
 
 ### Changed
