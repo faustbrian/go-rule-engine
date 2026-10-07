@@ -2,7 +2,7 @@
 
 [![CI](https://github.com/faustbrian/go-rule-engine/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/faustbrian/go-rule-engine/actions/workflows/ci.yml)
 [![CodeQL](https://img.shields.io/badge/CodeQL-required-blue)](https://github.com/faustbrian/go-rule-engine/actions/workflows/ci.yml)
-[![Coverage](https://img.shields.io/badge/coverage-100%25_required-blue)](CONTRIBUTING.md#verification)
+[![Coverage](https://img.shields.io/badge/coverage-root_evidence-blue)](CONTRIBUTING.md#verification)
 [![Mutation](https://img.shields.io/badge/mutation-100%25_required-blue)](CONTRIBUTING.md#verification)
 [![Documentation](https://img.shields.io/badge/docs-checked_in_CI-blue)](docs/)
 [![Go Reference](https://pkg.go.dev/badge/github.com/faustbrian/go-rule-engine.svg)](https://pkg.go.dev/github.com/faustbrian/go-rule-engine)
@@ -29,11 +29,14 @@ See [migration](docs/migration.md) before adopting the pending releases.
 
 ## Install
 
+Root v2 is not yet published. After `v2.0.0` is publicly available, install it
+with the following command; it is not a current installation instruction:
+
 ```sh
 go get github.com/faustbrian/go-rule-engine/v2@v2.0.0
 ```
 
-Import the canonical module path directly:
+After publication, import the canonical root-v2 module path directly:
 
 ```go
 import ruleengine "github.com/faustbrian/go-rule-engine/v2"
@@ -63,9 +66,15 @@ See the executable [package example](example_test.go), the
 | --- | --- |
 | `github.com/faustbrian/go-rule-engine/v2` | Construct typed facts and rules, compile immutable bounded plans, and evaluate them deterministically. |
 | `github.com/faustbrian/go-rule-engine/v2/jsonast` | Parse and marshal the versioned core JSON AST without adapter-specific operators. |
-| `github.com/faustbrian/go-rule-engine/adapters/math/v2` | Add explicitly registered exact-decimal comparison operators. |
-| `github.com/faustbrian/go-rule-engine/adapters/measurement/v3` | Add explicitly registered exact compatible-unit comparison operators. |
-| `github.com/faustbrian/go-rule-engine/adapters/temporal/v2` | Add explicitly registered exact instant and period relation operators. |
+| `github.com/faustbrian/go-rule-engine/adapters/math/v2` | Pending successor, not currently available: exact-decimal comparison operators for root v2. |
+| `github.com/faustbrian/go-rule-engine/adapters/measurement/v3` | Pending successor, not currently available: exact compatible-unit comparison operators for root v2. |
+| `github.com/faustbrian/go-rule-engine/adapters/temporal/v2` | Pending successor, not currently available: exact instant and period relation operators for root v2. |
+
+The currently published adapter paths are `adapters/math`,
+`adapters/measurement/v2`, and `adapters/temporal` beneath
+`github.com/faustbrian/go-rule-engine`. They expose root-v1 types and cannot be
+composed directly with root v2. The pending successor paths above are not the
+current nested modules.
 
 The compiler and compiled plans are caller-owned values. The root module
 performs no hidden I/O, starts no background work, and owns no runtime resource
@@ -111,9 +120,15 @@ that requires shutdown. Applications own any resolver I/O and its lifecycle.
 ## Verification
 
 `make check` runs formatting, module hygiene, vet, static analysis, lint,
-tests, meaningful 100% production coverage, race tests, fuzz smoke tests,
+tests, production coverage under the selected module policy, race tests,
+fuzz smoke tests,
 mutation tests, benchmarks, documentation checks, API compatibility,
 security policy checks, vulnerability scanning, and workflow validation.
+
+The root collects real coverage profiles in evidence mode; optional adapters
+retain exact coverage. Counts do not certify behavioral adequacy or release
+readiness. CI currently uses pinned development tooling source, not a published
+v2 binary; see the [tooling route](CONTRIBUTING.md#repository-tooling).
 
 The module requires Go 1.27.0 and has no runtime dependencies.
 Exact decimal, temporal-period, and measurement adapters live in isolated
