@@ -120,8 +120,12 @@ and use ordinary rule-engine compiler APIs without global setup.
 ## Development
 
 ```console
-make check MODULES=adapters/measurement
+GOWORK=off go test ./...
 ```
+
+Run this command from this module directory. From the repository root,
+`golib check --local --module adapters/measurement` selects its bounded
+verifier route; `make check-full` retains all modules' explicit full campaigns.
 
 ## License
 

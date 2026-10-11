@@ -3,7 +3,7 @@
 [![CI](https://github.com/faustbrian/go-rule-engine/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/faustbrian/go-rule-engine/actions/workflows/ci.yml)
 [![CodeQL](https://img.shields.io/badge/CodeQL-required-blue)](https://github.com/faustbrian/go-rule-engine/actions/workflows/ci.yml)
 [![Coverage](https://img.shields.io/badge/coverage-root_evidence-blue)](CONTRIBUTING.md#verification)
-[![Mutation](https://img.shields.io/badge/mutation-100%25_required-blue)](CONTRIBUTING.md#verification)
+[![Mutation](https://img.shields.io/badge/mutation-full_qualification-blue)](CONTRIBUTING.md#verification)
 [![Documentation](https://img.shields.io/badge/docs-checked_in_CI-blue)](docs/)
 [![Go Reference](https://pkg.go.dev/badge/github.com/faustbrian/go-rule-engine.svg)](https://pkg.go.dev/github.com/faustbrian/go-rule-engine)
 [![Release](https://img.shields.io/github/v/release/faustbrian/go-rule-engine?sort=semver)](https://github.com/faustbrian/go-rule-engine/releases)
@@ -121,16 +121,18 @@ that requires shutdown. Applications own any resolver I/O and its lifecycle.
 
 ## Verification
 
-`make check` runs formatting, module hygiene, vet, static analysis, lint,
-tests, production coverage under the selected module policy, race tests,
-fuzz smoke tests,
-mutation tests, benchmarks, documentation checks, API compatibility,
-security policy checks, vulnerability scanning, and workflow validation.
+`GOWORK=off go test ./...` runs standalone deterministic tests and fuzz seeds
+in the selected module. `make check` and `make ci` use the public Tools v2.1.1
+verifier's bounded local route, including the selected context/cache/operator
+race; changed-source CI adds causally selected fuzz smoke. `make check-full`
+retains the original full coverage, race, mutation, eight native fuzz targets,
+integration, API, security, docs and benchmark campaigns. See
+[contributor routes](CONTRIBUTING.md#verification) for focused active fuzzing
+and optional local mutation.
 
-The root collects real coverage profiles in evidence mode; optional adapters
+Full root coverage collects real profiles in evidence mode; optional adapters
 retain exact coverage. Counts do not certify behavioral adequacy or release
-readiness. CI currently uses pinned development tooling source, not a published
-v2 binary; see the [tooling route](CONTRIBUTING.md#repository-tooling).
+readiness. See the [tooling route](CONTRIBUTING.md#repository-tooling).
 
 The module requires Go 1.27.0 and has no runtime dependencies.
 Exact decimal, temporal-period, and measurement adapters live in isolated

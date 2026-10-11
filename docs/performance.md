@@ -10,7 +10,10 @@ collection propositions. On an Apple M4 Max with Go 1.26.5, the initial
 compilation, and 621 ns/op and 720 B/op for evaluation. These numbers are a
 development baseline, not a cross-machine guarantee.
 
-Run `make benchmark BENCH_TIME=1s` for stable local numbers. The separate
+Run `GOWORK=off go test -run '^$' -bench . -benchmem -benchtime=1s .`
+for focused local numbers. The explicit `make check-full` route retains all
+module benchmarks and the competitor campaign; run only the latter with
+`make -f verification/package.mk competitors BENCH_TIME=1s`. The separate
 competitor benchmark pins maintained engines and reports setup boundaries so
 unlike work is not presented as equivalent.
 
