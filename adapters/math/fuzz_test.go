@@ -12,6 +12,8 @@ import (
 	ruleengine "github.com/faustbrian/go-rule-engine/v2"
 )
 
+// FuzzDecimalTaggedValues checks canonical tagged acceptance under reduced
+// digit budgets against the public decimal parser, including self equality.
 func FuzzDecimalTaggedValues(f *testing.F) {
 	for _, seed := range []string{
 		"0", "-123.4500", "-0", "not-a-decimal", "١.٢", "１.２",
@@ -55,6 +57,8 @@ func FuzzDecimalTaggedValues(f *testing.F) {
 	})
 }
 
+// FuzzDecimalOperatorBoundaries varies kinds, tags, cancellation and caller
+// metadata mutation; exact decimal comparison is the independent value oracle.
 func FuzzDecimalOperatorBoundaries(f *testing.F) {
 	prefix := ruleenginemath.EncodingV1Prefix
 	f.Add(uint8(0), uint8(0), prefix+"-1.00", prefix+"0", false, uint8(1), uint8(0))

@@ -12,6 +12,8 @@ import (
 	"time"
 )
 
+// definitionVersion identifies this repository-owned grammar, documented in
+// docs/json-ast.md and protected by jsonast/testdata and serialization tests.
 const definitionVersion = "1"
 
 type jsonDefinition struct {
@@ -73,7 +75,8 @@ func MarshalCanonical(set RuleSet) ([]byte, error) {
 
 // MarshalCanonical serializes a definition with stable ordering and field
 // representation using compiler's registered custom operators. Custom
-// predicates cannot be serialized.
+// predicates cannot be serialized. This method compiles using Background, not
+// EvaluationTimeout. Canonical bytes identify a definition, not callback code.
 func (compiler Compiler) MarshalCanonical(set RuleSet) ([]byte, error) {
 	return compiler.marshalCanonical(context.Background(), set)
 }
@@ -139,7 +142,11 @@ func ParseJSON(data []byte, limits Limits) (RuleSet, []Diagnostic, error) {
 }
 
 // ParseJSON parses a versioned JSON AST with strict unknown-field handling and
-// validates custom operators against compiler's isolated registry.
+// validates custom operators against compiler's isolated registry. Grammar v1
+// is this repository's DSL. Input bytes are borrowed during the call only; a
+// successful result owns its decoded storage. Duplicate names and case folding
+// retain encoding/json behavior; unknown-field rejection is not full schema
+// presence validation. This API has no caller context or evaluation timeout.
 func (compiler Compiler) ParseJSON(data []byte) (RuleSet, []Diagnostic, error) {
 	if err := compiler.limits.validate(); err != nil {
 		return RuleSet{}, nil, err
@@ -147,6 +154,8 @@ func (compiler Compiler) ParseJSON(data []byte) (RuleSet, []Diagnostic, error) {
 	if len(data) == 0 || len(data) > compiler.limits.MaxDefinitionBytes {
 		return parseFailure(CodeLimitExceeded, "JSON definition size is invalid")
 	}
+	// The byte budget precedes decoding; node/value depth checks follow DTO
+	// allocation. DisallowUnknownFields does not reject duplicate JSON names.
 	decoder := json.NewDecoder(bytes.NewReader(data))
 	decoder.DisallowUnknownFields()
 	var definition jsonDefinition
@@ -448,6 +457,8 @@ func decodeValue(encoded jsonValue, limits Limits, depth int) (Value, error) {
 	return value, nil
 }
 
+// Pointer/slice presence distinguishes mutually exclusive variants. Omitted
+// scalar defaults still follow encoding/json; this is not a general schema.
 func validNodeShape(node jsonNode) bool {
 	noOperands := node.Left == nil && node.Right == nil
 	noTree := node.Child == nil && node.Children == nil

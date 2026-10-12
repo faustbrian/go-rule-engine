@@ -7,6 +7,11 @@ Keep a Changelog and semantic versioning.
 
 ### Documentation
 
+- Clarify source contracts for borrowed extensions, cooperative cancellation,
+  partial results, construction-only fact/path budgets, terminal diagnostics,
+  cache identity and JSON AST validation. Document existing UnixNano time
+  ordering limits without changing evaluation or persisted representations.
+
 - Document published root v2.0.0 and math v2.0.0, measurement v3.0.0 and
   temporal v2.0.0 adapters, with coordinated migration and installation guidance.
   Earlier preparation entries below record their state before publication.

@@ -19,6 +19,7 @@ const (
 	// KindString represents valid UTF-8 text.
 	KindString
 	// KindTime represents an instant with no monotonic clock reading.
+	// Core ordering uses UnixNano and is limited to its representable range.
 	KindTime
 	// KindDuration represents a time duration.
 	KindDuration
@@ -26,7 +27,9 @@ const (
 	KindList
 )
 
-// Value is a typed fact or operand value.
+// Value is a typed fact or operand value; its zero value is Missing. Constructors
+// do not validate service budgets. Context construction and compilation validate
+// supplied values; list input and output storage is copied recursively.
 type Value struct {
 	kind Kind
 	data any

@@ -8,7 +8,8 @@ raw request facts.
 The engine has no eval, JavaScript runtime, dynamic Go loading, reflection-based
 model discovery, arbitrary method calls, database access, action execution,
 global registry, or background goroutines. Regexes use Go RE2 and literal
-patterns. All ordinary evaluation is process-local and side-effect free.
+patterns. Built-in evaluation is process-local and side-effect free; custom
+callbacks can perform I/O or side effects and are not sandboxed or panic-recovered.
 
 Custom operators, predicates, resolvers, and caches are explicit trust
 boundaries. Review them for deterministic output, bounded work, cancellation,

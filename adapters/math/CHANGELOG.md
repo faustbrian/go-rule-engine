@@ -4,6 +4,11 @@ All notable changes to this module are documented here.
 
 ## Unreleased
 
+### Documentation
+
+- Clarify source-level tagged-value registration, concurrency and cooperative
+  cancellation boundaries without changing domain comparisons or encodings.
+
 ### Changed
 
 - Prepare adapter v2 with the `/adapters/math/v2` import path and published

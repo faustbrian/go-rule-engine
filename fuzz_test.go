@@ -6,6 +6,8 @@ import (
 	ruleengine "github.com/faustbrian/go-rule-engine/v2"
 )
 
+// FuzzParseJSON admits bounded grammar-v1 bytes and checks canonical reparse
+// and hash stability for accepted definitions, not external DSL conformance.
 func FuzzParseJSON(f *testing.F) {
 	f.Add([]byte(`{"version":"1","id":"empty","strategy":"first_match","rules":[]}`))
 	f.Add([]byte(`{"version":"999","id":"invalid","strategy":"first_match","rules":[]}`))
@@ -33,6 +35,8 @@ func FuzzParseJSON(f *testing.F) {
 	})
 }
 
+// FuzzPath checks that accepted hostile segment pairs preserve exact segment
+// identity rather than being split or normalized into another fact key.
 func FuzzPath(f *testing.F) {
 	f.Add("shipment", "country")
 	f.Add("..", "value")

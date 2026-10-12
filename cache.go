@@ -10,13 +10,22 @@ import (
 // Callers must scope each cache to compatible compiler/operator registries;
 // hash and Limits equality do not identify custom callback implementations.
 type PlanCache interface {
+	// Get reports absence with found false; errors abort CompileCached.
+	// Implementations must honor cancellation and synchronize shared state.
 	Get(context.Context, string) (Plan, bool, error)
+	// Put stores a plan under its hash. Failure aborts CompileCached but does
+	// not promise rollback of cache side effects. Calls may overlap.
 	Put(context.Context, string, Plan) error
 }
 
 // CompileCached returns a matching cached plan or compiles and stores a new
 // plan. Cache entries with a different embedded hash or compiler limits are
-// ignored.
+// ignored. One cooperative deadline covers canonicalization, Get, Compile and
+// Put; ctx must be non-nil. A hit still canonicalizes and validates the set.
+// Concurrent misses may compile/write independently; there is no single-flight
+// guarantee. Cache errors are redacted rather than wrapped. Cancellation after
+// Put does not roll back its completed side effect. Opaque custom predicates
+// cannot be serialized and hence cannot enter this path.
 func (compiler Compiler) CompileCached(ctx context.Context, set RuleSet, cache PlanCache) (Plan, []Diagnostic, error) {
 	if cache == nil {
 		return Plan{}, nil, newError(CodeCache, "plan cache is nil")
@@ -59,8 +68,12 @@ type cacheEntry struct {
 	plan Plan
 }
 
-// MemoryPlanCache is a bounded concurrency-safe LRU plan cache.
+// MemoryPlanCache is a concurrency-safe LRU bounded by entry count, not bytes.
+// Construct it with NewMemoryPlanCache; its zero value is not initialized.
+// Plans retain borrowed callback state. No background work or Close is needed.
 type MemoryPlanCache struct {
+	// mu protects entries and recent together: promoting, replacing and
+	// evicting must keep the map/list identity coherent. No callbacks run here.
 	mu       sync.Mutex
 	capacity int
 	entries  map[string]*list.Element
@@ -79,7 +92,8 @@ func NewMemoryPlanCache(capacity int) (*MemoryPlanCache, error) {
 	}, nil
 }
 
-// Get returns and promotes a cached plan.
+// Get returns and promotes a cached plan; an empty key is rejected. Cancellation
+// is checked before locking only and cannot interrupt a wait for the mutex.
 func (cache *MemoryPlanCache) Get(ctx context.Context, key string) (Plan, bool, error) {
 	if err := ctx.Err(); err != nil {
 		return Plan{}, false, err
@@ -98,6 +112,8 @@ func (cache *MemoryPlanCache) Get(ctx context.Context, key string) (Plan, bool, 
 }
 
 // Put inserts or replaces a plan and evicts the least recently used entry.
+// It rejects empty keys but does not validate plan/hash correspondence.
+// Cancellation is checked before locking only; waiting is not interruptible.
 func (cache *MemoryPlanCache) Put(ctx context.Context, key string, plan Plan) error {
 	if err := ctx.Err(); err != nil {
 		return err

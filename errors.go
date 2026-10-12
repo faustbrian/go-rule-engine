@@ -6,7 +6,7 @@ import "errors"
 type Code string
 
 const (
-	// CodeInvalidLimit begins the stable machine-readable error code set.
+	// CodeInvalidLimit reports a non-positive required limit or cache capacity.
 	CodeInvalidLimit Code = "invalid_limit"
 	// CodeInvalidPath reports a malformed fact path.
 	CodeInvalidPath Code = "invalid_path"

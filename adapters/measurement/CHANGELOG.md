@@ -4,6 +4,11 @@ All notable changes to this module are documented here.
 
 ## Unreleased
 
+### Documentation
+
+- Clarify source-level tagged-value registration, concurrency and cooperative
+  cancellation boundaries without changing domain comparisons or encodings.
+
 ### Changed
 
 - Prepare adapter v3 with the `/adapters/measurement/v3` import path and

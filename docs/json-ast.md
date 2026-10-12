@@ -12,7 +12,10 @@ use signed nanoseconds.
 
 Unknown fields, fields belonging to another variant, trailing JSON values,
 unknown operators, invalid kinds, invalid paths, and every limit violation are
-rejected. Source values are not copied into diagnostics.
+rejected. Unknown-field handling retains encoding/json duplicate-name and
+case-folding behavior; it is not complete required-member schema validation.
+The byte budget precedes decoding; variant/depth checks run on decoded DTOs.
+Source values are not copied into diagnostics.
 
 Canonical output fixes field order, sorts rules by evaluation order, sorts and
 deduplicates tags, sorts derived facts by path, normalizes times to UTC, and

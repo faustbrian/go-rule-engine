@@ -6,13 +6,16 @@ import (
 	"unicode/utf8"
 )
 
-// Path identifies a fact without reflection or model discovery.
+// Path identifies an exact fact key without reflection or model discovery.
+// The zero Path is invalid; a dotted key does not traverse objects.
 type Path struct {
 	segments []string
 	key      string
 }
 
-// NewPath validates and copies explicit path segments.
+// NewPath validates positive limits and copies nonempty UTF-8 segments. Dots,
+// separators, NUL and control characters are rejected; byte count includes
+// the dotted separators. A failure returns the invalid zero Path.
 func NewPath(limits Limits, segments ...string) (Path, error) {
 	if err := limits.validate(); err != nil {
 		return Path{}, err

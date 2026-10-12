@@ -1,5 +1,10 @@
 // Package ruleenginetemporal adapts temporal periods without adding a
-// temporal dependency to the core rule-engine module.
+// temporal dependency to the core rule-engine module. Encode with Period or
+// Instant and register Operators on a core Compiler. These tagged-string
+// operators use temporal interval/set relations, not core string ordering.
+// Returned stateless operators are concurrent-reusable; cancellation is checked
+// at call entry, not throughout parsing. Persisted offsets normalize to UTC;
+// subnanosecond precision is rejected. No clock, I/O or background work is owned.
 package ruleenginetemporal
 
 import (
@@ -166,6 +171,9 @@ func parseInstant(value ruleengine.Value) (time.Time, error) {
 	return parsed, nil
 }
 
+// parseTimestamp rejects precision that time.Parse would silently truncate,
+// then uses explicit UTC rather than ambient Local. validation_test.go and
+// compatibility_test.go protect this persisted-input boundary.
 func parseTimestamp(text string) (time.Time, error) {
 	if !validTimestampShape(text) {
 		return time.Time{}, fmt.Errorf("invalid RFC3339 nanosecond timestamp")

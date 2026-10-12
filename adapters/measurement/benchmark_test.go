@@ -10,6 +10,8 @@ import (
 	ruleengine "github.com/faustbrian/go-rule-engine/v2"
 )
 
+// BenchmarkQuantityComparison measures a gram/kilogram relation, separating
+// tagged parsing, direct parsing/conversion and preconstructed conversion.
 func BenchmarkQuantityComparison(b *testing.B) {
 	operator := measurementOperatorByName(
 		b,

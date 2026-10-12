@@ -10,6 +10,8 @@ import (
 	ruleengine "github.com/faustbrian/go-rule-engine/v2"
 )
 
+// BenchmarkDecimalComparison separates tagged parse/evaluate from direct parsing
+// and pre-parsed comparison. These rows intentionally do not measure equal work.
 func BenchmarkDecimalComparison(b *testing.B) {
 	const leftText = "100.0000000001"
 	const rightText = "100"

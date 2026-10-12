@@ -13,6 +13,8 @@ import (
 	"github.com/faustbrian/go-temporal/instant"
 )
 
+// FuzzPeriodTaggedValues checks hostile persisted periods, wrong kinds and
+// canceled-entry identity; accepted equal periods must be set-equal.
 func FuzzPeriodTaggedValues(f *testing.F) {
 	f.Add("period:2026-01-01T00:00:00Z|2026-01-02T00:00:00Z|[)", uint8(0), false, false)
 	f.Add("period:2026-01-01T00:00:00.123456789+02:00|2026-01-02T00:00:00Z|[]", uint8(3), false, false)
@@ -54,6 +56,8 @@ func FuzzPeriodTaggedValues(f *testing.F) {
 	})
 }
 
+// FuzzInstantTaggedValues compares accepted tagged instants against membership
+// in a fixed reference period; rejected parser inputs do not imply conformance.
 func FuzzInstantTaggedValues(f *testing.F) {
 	f.Add("instant:2026-01-01T12:00:00Z", false, false)
 	f.Add("instant:2026-01-01T12:00:00.123456789+02:30", false, false)

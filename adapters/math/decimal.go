@@ -1,5 +1,10 @@
 // Package ruleenginemath adapts exact math decimals without adding a
-// math dependency to the core rule-engine module.
+// math dependency to the core rule-engine module. Encode with Decimal and
+// register Operators or OperatorsWithLimits on a core Compiler. Values use the
+// versioned string tag, so ordinary core string equality is not decimal equality.
+// Returned stateless operators can be shared concurrently; each call parses its
+// values and checks cancellation between bounded stages, not during parsing.
+// This optional module owns no background work, I/O or persistence lifecycle.
 package ruleenginemath
 
 import (
@@ -101,6 +106,8 @@ func (operator decimalOperator) Evaluate(ctx context.Context, left, right ruleen
 	return operator.match(leftValue.Cmp(rightValue)), nil
 }
 
+// parseDecimal checks both the version tag and canonical payload. Accepting
+// equivalent but differently spelled values would weaken persisted identity.
 func parseDecimal(value ruleengine.Value, limits gomath.Limits) (decimal.Decimal, error) {
 	text, ok := value.StringValue()
 	if !ok || !strings.HasPrefix(text, EncodingV1Prefix) {

@@ -233,6 +233,9 @@ func TestOperatorEdgeMatrix(t *testing.T) {
 	}
 }
 
+// stepContext is a synchronous Err-checkpoint stub, not a real cancellation
+// context: Done stays nil. It tests direct compiler checks without modeling
+// context.WithTimeout propagation or claiming prompt callback interruption.
 type stepContext struct{ calls int }
 
 func (*stepContext) Deadline() (time.Time, bool) { return time.Time{}, false }

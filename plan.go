@@ -19,21 +19,37 @@ const (
 
 // Explanation records one bounded rule evaluation without fact values.
 type Explanation struct {
-	RuleID  RuleID
+	// RuleID identifies an attempted evaluation and may recur across passes.
+	RuleID RuleID
+	// Matched is the predicate boolean, even when that predicate also returns an error.
 	Matched bool
 }
 
-// Result is the complete inspectable evaluation result.
+// Result contains a decision and possibly partial evaluation evidence. Returned
+// slices belong to the caller; mutating them does not change the plan. They are
+// not synchronized for concurrent mutation by callers.
 type Result struct {
-	Decision     Decision
+	// Decision is authoritative; partial matches do not override Indeterminate.
+	Decision Decision
+	// MatchedRules contains unique IDs in first-observed evaluation order.
 	MatchedRules []string
-	Explanation  []Explanation
-	Errors       []error
-	Duration     time.Duration
+	// Explanation records attempts up to MaxExplanation; truncation is silent.
+	Explanation []Explanation
+	// Errors contains redacted engine errors. Predicate failures are capped by
+	// MaxDiagnostics; a terminal error can add one more. Underlying callback errors
+	// are not wrapped in these entries.
+	Errors []error
+	// Duration measures Evaluate only, excluding prior resolver work.
+	Duration time.Duration
+	// DerivedFacts contains only newly inserted derivations, not input/resolved facts;
+	// partial derivations remain inspectable on failure.
 	DerivedFacts Context
 }
 
-// Plan is an immutable, concurrency-safe execution plan.
+// Plan stores immutable built-in state and can be evaluated concurrently if
+// borrowed predicates/operators are concurrent-safe. Successful compilation
+// is required; the zero Plan has no useful rule-set contract. No goroutines,
+// shutdown or callback isolation are provided.
 type Plan struct {
 	setID         string
 	namespace     string
@@ -52,11 +68,20 @@ func (plan Plan) Hash() string { return plan.hash }
 // FactResolver supplies explicitly requested missing facts. Implementations
 // must be deterministic; EvaluateResolved invokes paths in lexical order.
 type FactResolver interface {
+	// Resolve returns a supplied value and provenance when found is true. False
+	// means absence; a non-nil error stops resolution. It must honor cancellation
+	// and not panic. Implementations own any I/O and synchronization.
 	Resolve(context.Context, Path) (Value, Owner, bool, error)
 }
 
 // EvaluateResolved resolves only required paths absent from the base context,
-// validates every returned value, then evaluates the completed snapshot.
+// validates every found value, then evaluates the completed snapshot. Paths
+// hidden inside custom predicates cannot be discovered. The base is unchanged;
+// resolution is sequential but concurrent calls can share the resolver.
+// One cooperative deadline covers resolution and evaluation. Resolution errors
+// return Indeterminate without partial resolved facts or a measured Duration.
+// Aggregate resolved facts are not checked against MaxFacts. A nil resolver
+// returns Indeterminate; ctx must be non-nil.
 func (plan Plan) EvaluateResolved(ctx context.Context, base Context, resolver FactResolver) Result {
 	if resolver == nil {
 		return Result{Decision: Indeterminate, Errors: []error{newError(CodeEvaluation, "fact resolver is nil")}}
@@ -90,7 +115,15 @@ func (plan Plan) EvaluateResolved(ctx context.Context, base Context, resolver Fa
 	return plan.Evaluate(evaluationContext, working)
 }
 
-// Evaluate applies the compiled plan to an immutable fact snapshot.
+// Evaluate applies the compiled order, adding absent literal derivations until
+// stable or bounded by MaxIterations. Predicate errors are sticky Indeterminate
+// but other rules may still match and derive facts. Conflict or cancellation
+// returns the accumulated evidence; it does not roll back external side effects.
+// The supplied snapshot is not revalidated against plan limits.
+// ctx must be non-nil. Callbacks run synchronously without panic recovery or
+// forced preemption; cancellation is checked before owned steps, not after
+// every callback. A final callback can therefore return a match after canceling
+// its context. A result is not an authorization or action-execution decision.
 func (plan Plan) Evaluate(ctx context.Context, facts Context) (result Result) {
 	started := time.Now()
 	derived, _ := NewContext()
@@ -101,6 +134,7 @@ func (plan Plan) Evaluate(ctx context.Context, facts Context) (result Result) {
 	defer cancel()
 	working := facts
 	matchedRules := make(map[RuleID]bool)
+	// A later match cannot erase an earlier predicate failure.
 	hadError := false
 	for iteration := 0; iteration < plan.limits.MaxIterations; iteration++ {
 		changed := false

@@ -1,3 +1,6 @@
+// Package competitors_test holds an isolated execution-cost harness for three
+// precompiled engines. It is not a production API or a peer-conformance oracle;
+// dependency setup and lifecycle costs outside timing are documented per row.
 package competitors_test
 
 import (
@@ -28,6 +31,9 @@ then
 }
 `
 
+// BenchmarkEquivalentDecision compares one country/weight decision, not whole
+// engine capabilities. Parsing and compilation are excluded; Grule resets its
+// retracted state inside timing so each iteration makes the same decision.
 func BenchmarkEquivalentDecision(b *testing.B) {
 	b.Run("rule-engine", benchmarkRuleEngine)
 	b.Run("expr", benchmarkExpr)

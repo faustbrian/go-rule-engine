@@ -22,12 +22,16 @@ const (
 
 // Fact associates a typed value with an explicit path and owner.
 type Fact struct {
-	Path  Path
+	// Path is an explicitly constructed fact key, not object traversal.
+	Path Path
+	// Value cannot be Missing; supplied null remains distinct from absence.
 	Value Value
+	// Owner is provenance metadata only; its zero value is unspecified.
 	Owner Owner
 }
 
-// Context is an immutable snapshot of supplied facts.
+// Context is an immutable, concurrent-readable snapshot. Its zero value is an
+// empty snapshot. Construction and Lookup defensively copy nested lists.
 type Context struct {
 	facts map[string]Fact
 }
@@ -37,7 +41,10 @@ func NewContext(facts ...Fact) (Context, error) {
 	return NewContextWithLimits(DefaultLimits(), facts...)
 }
 
-// NewContextWithLimits validates and copies all facts.
+// NewContextWithLimits validates limits, unique paths, owners and recursively
+// bounded values, then copies facts. It returns an empty Context on error.
+// Paths must be valid but are not rechecked against these path-size limits;
+// construct them with NewPath using the desired limits.
 func NewContextWithLimits(limits Limits, facts ...Fact) (Context, error) {
 	if err := limits.validate(); err != nil {
 		return Context{}, err
@@ -78,6 +85,8 @@ func (c Context) Owner(path Path) (Owner, bool) {
 	return fact.Owner, ok
 }
 
+// withFact copies the map before insertion. Existing entries are shared only
+// because stored Path and Value internals are immutable and never exposed.
 func (c Context) withFact(fact Fact) Context {
 	cloned := Context{facts: make(map[string]Fact, len(c.facts))}
 	for key, existing := range c.facts {

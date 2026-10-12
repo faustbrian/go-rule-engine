@@ -1,5 +1,10 @@
 // Package ruleenginemeasurement adapts exact measurement quantities
-// without adding dependencies to the core rule-engine module.
+// without adding dependencies to the core rule-engine module. Encode with
+// Quantity and register Operators on a core Compiler. Tagged values remain
+// strings to the core; these operators perform exact compatible-unit conversion
+// and report dimension/conversion failures rather than choosing a rounding policy.
+// Returned stateless operators can be reused concurrently and check cancellation
+// between bounded stages. No background work or measurement registry is owned.
 package ruleenginemeasurement
 
 import (
@@ -91,6 +96,8 @@ func (operator quantityOperator) Evaluate(ctx context.Context, left, right rulee
 	return operator.match(comparison), nil
 }
 
+// parseQuantity bounds the envelope before parsing and requires canonical
+// amount text. Unit validity is delegated to the published measurement model.
 func parseQuantity(value ruleengine.Value) (measurement.Quantity, error) {
 	text, ok := value.StringValue()
 	if !ok {

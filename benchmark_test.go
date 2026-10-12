@@ -7,6 +7,8 @@ import (
 	ruleengine "github.com/faustbrian/go-rule-engine/v2"
 )
 
+// BenchmarkCompile includes validation, copying and ordering of a three-rule
+// fixture; compiler and input construction are outside timing.
 func BenchmarkCompile(b *testing.B) {
 	set, _ := benchmarkFixture()
 	compiler := ruleengine.NewCompiler(ruleengine.DefaultLimits())
@@ -20,6 +22,8 @@ func BenchmarkCompile(b *testing.B) {
 	}
 }
 
+// BenchmarkEvaluate measures a precompiled three-rule decision over a prepared
+// fact snapshot; compilation and fact construction are outside timing.
 func BenchmarkEvaluate(b *testing.B) {
 	set, facts := benchmarkFixture()
 	plan, _, err := ruleengine.NewCompiler(ruleengine.DefaultLimits()).Compile(context.Background(), set)

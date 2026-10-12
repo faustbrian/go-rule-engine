@@ -12,6 +12,8 @@ import (
 	"github.com/faustbrian/go-temporal/instant"
 )
 
+// BenchmarkPeriodContainsInstant separates tagged parsing, direct construction
+// and preconstructed membership for the same closed-open one-hour interval.
 func BenchmarkPeriodContainsInstant(b *testing.B) {
 	operator := temporalOperatorByName(
 		b,

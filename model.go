@@ -19,28 +19,44 @@ const (
 
 // Rule is a proposition with stable metadata and optional derived facts.
 type Rule struct {
-	ID        RuleID
+	// ID is nonempty and unique within the set; Compile validates its byte limit.
+	ID RuleID
+	// Namespace is optional metadata, not a path or authorization scope.
 	Namespace string
-	Priority  int
-	Tags      []string
-	When      Predicate
-	Derive    []Fact
+	// Priority orders rules descending, with ascending ID breaking ties.
+	Priority int
+	// Tags are unique bounded metadata strings; Compile copies the slice.
+	Tags []string
+	// When must be non-nil. Custom predicates remain borrowed by the plan.
+	When Predicate
+	// Derive supplies literal facts on a match; duplicate derived paths are rejected.
+	Derive []Fact
 }
 
 // RuleSet is an independently compiled collection of rules.
 type RuleSet struct {
-	ID        string
+	// ID is the nonempty rule-set identifier.
+	ID string
+	// Namespace is optional rule-set metadata and does not filter evaluation.
 	Namespace string
-	Strategy  ConflictStrategy
-	Rules     []Rule
+	// Strategy selects matches; its zero value is FirstMatch.
+	Strategy ConflictStrategy
+	// Rules are validated and ordered by Compile; custom predicate state is not copied.
+	Rules []Rule
 }
 
-// Predicate evaluates supplied facts without side effects.
+// Predicate evaluates a snapshot. Implementations must supply bounded,
+// deterministic, side-effect-free behavior and honor cancellation. A plan
+// retains the implementation; concurrent evaluations require concurrent-safe
+// implementations. The engine neither recovers panics nor interrupts callbacks.
 type Predicate interface {
+	// Evaluate returns the match and failure; a non-nil error invalidates the match.
 	Evaluate(context.Context, Context) (bool, error)
 }
 
-// PredicateFunc adapts a function as an explicit extension predicate.
+// PredicateFunc adapts a trusted callback without copying captured state.
+// A nil function panics when invoked and is not rejected by compilation.
+// Its dependencies are opaque and it cannot be canonically serialized.
 type PredicateFunc func(context.Context, Context) (bool, error)
 
 // Evaluate invokes the adapted predicate function.
@@ -75,7 +91,9 @@ func (predicate allPredicate) Evaluate(ctx context.Context, facts Context) (bool
 	return true, nil
 }
 
-// All evaluates children left-to-right and stops at the first false result.
+// All copies the child slice and evaluates left-to-right, stopping at false or
+// an error. Compile rejects an empty list or nil child; direct evaluation of
+// an empty All returns true. Child implementations are borrowed, not cloned.
 func All(children ...Predicate) Predicate {
 	return allPredicate{children: append([]Predicate(nil), children...)}
 }
@@ -92,7 +110,9 @@ func (predicate anyPredicate) Evaluate(ctx context.Context, facts Context) (bool
 	return false, nil
 }
 
-// Any evaluates children left-to-right and stops at the first true result.
+// Any copies the child slice and evaluates left-to-right, stopping at true or
+// an error. Compile rejects an empty list or nil child; direct evaluation of
+// an empty Any returns false. Child implementations are borrowed, not cloned.
 func Any(children ...Predicate) Predicate {
 	return anyPredicate{children: append([]Predicate(nil), children...)}
 }
@@ -104,7 +124,8 @@ func (predicate notPredicate) Evaluate(ctx context.Context, facts Context) (bool
 	return !matched, err
 }
 
-// Not negates a predicate.
+// Not negates the child match while preserving its error. Compile rejects a
+// nil child; direct evaluation with nil panics.
 func Not(child Predicate) Predicate { return notPredicate{child: child} }
 
 type existsPredicate struct{ path Path }
@@ -119,7 +140,8 @@ func (predicate existsPredicate) Evaluate(ctx context.Context, facts Context) (b
 // Exists reports whether a path was supplied, including an explicit null.
 func Exists(path Path) Predicate { return existsPredicate{path: path} }
 
-// Operand resolves a typed value from a literal or fact variable.
+// Operand resolves a typed value from Literal or Variable. Its private methods
+// prevent implementations outside this package; nil operands are not valid.
 type Operand interface {
 	resolve(Context) Value
 	staticKind() (Kind, bool)
@@ -147,7 +169,12 @@ type comparisonPredicate struct {
 	right    Operand
 }
 
-// Compare creates a typed binary comparison.
+// Compare creates a typed binary comparison without validation. Compile checks
+// operators and known literal kinds; variable kinds are checked at evaluation.
+// Custom operators require a compiled plan; direct Evaluate uses only built-ins.
+// Missing values produce false, including for negated comparison operators.
+// Time ordering uses UnixNano; unlike equality, its valid range is restricted.
+// left and right must be non-nil; nil can panic during Compile or evaluation.
 func Compare(operator OperatorName, left, right Operand) Predicate {
 	return comparisonPredicate{operator: operator, left: left, right: right}
 }

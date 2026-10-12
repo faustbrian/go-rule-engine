@@ -1,6 +1,10 @@
-// Package jsonast exposes the bounded versioned JSON rule-definition DSL.
+// Package jsonast exposes the repository-owned JSON rule-definition DSL,
+// grammar version 1.
 // The grammar is the canonical representation implemented by ruleengine;
-// unknown or variant-incompatible fields are rejected.
+// unknown or variant-incompatible fields are rejected. Parse validates with
+// built-in operators; Marshal uses default compiler limits. Custom registries
+// need the core Compiler methods. Byte storage is not retained. This facade
+// introduces no dependencies beyond the core and owns no evaluation lifecycle.
 package jsonast
 
 import ruleengine "github.com/faustbrian/go-rule-engine/v2"

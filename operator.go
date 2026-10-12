@@ -12,15 +12,23 @@ type OperatorName string
 
 // Signature declares one exact pair of operand kinds accepted by an Operator.
 type Signature struct {
-	Left  Kind
+	// Left is the required exact kind of the left operand.
+	Left Kind
+	// Right is the required exact kind of the right operand.
 	Right Kind
 }
 
 // Operator is an explicitly registered, typed, concurrency-safe extension.
 // Implementations must be deterministic and must honor context cancellation.
 type Operator interface {
+	// Name returns a stable nonempty name that does not replace a built-in.
 	Name() OperatorName
+	// Signatures returns nonempty accepted pairs, excluding Missing and unknown kinds.
+	// Registration copies this slice; metadata must remain stable.
 	Signatures() []Signature
+	// Evaluate receives validated matching kinds from a plan. Missing skips this
+	// callback. Errors become redacted evaluation failures in Result; direct
+	// operator calls retain the implementation error. Calls may overlap.
 	Evaluate(context.Context, Value, Value) (bool, error)
 }
 
@@ -30,11 +38,12 @@ type registeredOperator struct {
 }
 
 const (
-	// OpEqual begins the stable built-in operator name set.
+	// OpEqual tests same-kind equality; times use Equal and lists compare recursively.
 	OpEqual OperatorName = "equal"
 	// OpNotEqual tests exact inequality.
 	OpNotEqual OperatorName = "not_equal"
-	// OpLessThan tests strict lower ordering.
+	// OpLessThan tests strict lower ordering; times compare UnixNano values,
+	// so callers must restrict time ordering to that representation's range.
 	OpLessThan OperatorName = "less_than"
 	// OpLessOrEqual tests inclusive lower ordering.
 	OpLessOrEqual OperatorName = "less_or_equal"
@@ -261,6 +270,8 @@ func compareOrdered(left, right Value) int {
 		rightValue, _ := right.StringValue()
 		return strings.Compare(leftValue, rightValue)
 	case KindTime:
+		// Ordering retains UnixNano representation, unlike equality above.
+		// Outside its representable range this does not establish time ordering.
 		leftValue, _ := left.TimeValue()
 		rightValue, _ := right.TimeValue()
 		return compare(leftValue.UnixNano(), rightValue.UnixNano())

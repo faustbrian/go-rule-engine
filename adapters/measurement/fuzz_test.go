@@ -10,6 +10,8 @@ import (
 	ruleengine "github.com/faustbrian/go-rule-engine/v2"
 )
 
+// FuzzQuantityTaggedValues checks bounded hostile tags/kinds, self equality and
+// canceled-entry identity. Oversized exploration inputs are deliberately skipped.
 func FuzzQuantityTaggedValues(f *testing.F) {
 	f.Add("quantity:v1|1|kg", uint8(0))
 	f.Add("quantity:v1|-0.25|m", uint8(0))
@@ -53,6 +55,8 @@ func FuzzQuantityTaggedValues(f *testing.F) {
 	})
 }
 
+// FuzzQuantityOperatorPairs checks relation consistency and exact recognized
+// error classes for bounded pairs; it is not an independent conversion oracle.
 func FuzzQuantityOperatorPairs(f *testing.F) {
 	f.Add("quantity:v1|1|kg", "quantity:v1|1000|g", uint8(0))
 	f.Add("quantity:v1|-1|m", "quantity:v1|0|cm", uint8(0))

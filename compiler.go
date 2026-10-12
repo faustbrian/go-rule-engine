@@ -19,25 +19,34 @@ const (
 
 // Diagnostic describes a safe compile finding without operand values.
 type Diagnostic struct {
-	RuleID   RuleID
-	Code     Code
+	// RuleID identifies the failed rule; set-level failures can have no diagnostic.
+	RuleID RuleID
+	// Code is the stable failure classification.
+	Code Code
+	// Severity distinguishes blocking errors from warnings.
 	Severity Severity
-	Message  string
+	// Message is engine-owned text without operand or fact values.
+	Message string
 }
 
-// Compiler validates rule sets and produces immutable plans.
+// Compiler validates rule sets and produces reusable plans. The zero compiler
+// has invalid limits. Concurrent calls are safe for built-ins; registered
+// operator metadata and implementations must themselves be safe and stable.
 type Compiler struct {
 	limits    Limits
 	operators map[OperatorName]registeredOperator
 }
 
-// NewCompiler creates a compiler containing only built-in operators.
+// NewCompiler captures limits and includes only built-ins. Invalid limits are
+// reported by subsequent operations rather than by this constructor.
 func NewCompiler(limits Limits) Compiler {
 	return Compiler{limits: limits, operators: map[OperatorName]registeredOperator{}}
 }
 
 // NewCompilerWithOperators creates an isolated operator registry. Built-in
-// names and duplicate custom names cannot be replaced.
+// names and duplicate custom names cannot be replaced. Signatures are copied,
+// but implementations are borrowed; their Name and Signatures methods must
+// remain stable and must not panic during registration.
 func NewCompilerWithOperators(limits Limits, operators ...Operator) (Compiler, error) {
 	if err := limits.validate(); err != nil {
 		return Compiler{}, err
@@ -65,7 +74,12 @@ func NewCompilerWithOperators(limits Limits, operators ...Operator) (Compiler, e
 	return Compiler{limits: limits, operators: registered}, nil
 }
 
-// Compile validates, copies, and deterministically orders a rule set.
+// Compile validates built-in structure and metadata, copies rule/tag/derivation
+// slices and orders by descending priority then ascending ID. Arbitrary custom
+// predicates are borrowed and opaque to structural validation and dependency
+// analysis. Callers must not mutate the input during compilation.
+// On error the returned plan is unusable; diagnostics may be nil or contain a
+// blocking rule finding. ctx must be non-nil. Compile has no added timeout.
 func (compiler Compiler) Compile(ctx context.Context, set RuleSet) (Plan, []Diagnostic, error) {
 	if err := compiler.limits.validate(); err != nil {
 		return Plan{}, nil, err
@@ -222,12 +236,16 @@ func validatePredicate(predicate Predicate, limits Limits, operators map[Operato
 	return nil
 }
 
+// cloneRule copies mutable containers, not extension state. Fact values and
+// paths have private immutable storage; custom predicates remain caller-owned.
 func cloneRule(rule Rule) Rule {
 	rule.Tags = append([]string(nil), rule.Tags...)
 	rule.Derive = append([]Fact(nil), rule.Derive...)
 	return rule
 }
 
+// findDerivationCycle follows built-in fact dependencies only. Opaque custom
+// predicates can hide edges; MaxIterations remains the runtime backstop.
 func findDerivationCycle(rules []Rule) RuleID {
 	graph := make(map[string][]string)
 	owners := make(map[string]RuleID)
