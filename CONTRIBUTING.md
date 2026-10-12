@@ -89,9 +89,9 @@ result under this policy.
 
 ## Repository Tooling
 
-CI and local Make use the checksum-pinned public Tools v2.1.1 verifier without
+CI and local Make use the checksum-pinned public Tools v2.4.0 verifier without
 building that release from source. The immutable shared workflow and tooling
-source both select `eff8b2127c361ee2f422123824a1d337cc277ac4`; PR, main and
+source both select `0e8ff6fee42e88858069a6f6ae6f1080d95c5eae`; PR, main and
 scheduled shared CI use the bounded local route. Full qualification is selected
 explicitly by `make check-full` or the `release_dry_run: true` workflow input.
 Required fails unless the shared workflow succeeds.
@@ -133,3 +133,12 @@ Follow [repository structure policy](AGENTS.md#repository-structure). New module
 require an explicit purpose, ownership boundary, dependency review, package
 catalog entry, full quality gates, documentation, changelog, license, security
 policy, compatibility plan, and release dry-run.
+
+## Source Documentation
+
+Install the checksum-pinned public verifier declared in `.golib.yaml`.
+`make source-docs-check` validates objective Go comment, marker, link and
+generated-producer structure; `make check`, `make check-full` and `make ci`
+require it before their existing checks. Shared CI runs the same strict
+contract and includes its result in Required. This is structural enforcement,
+not a substitute for source-truth review or behavioral verification.
