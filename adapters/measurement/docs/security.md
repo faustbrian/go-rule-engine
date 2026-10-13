@@ -1,5 +1,7 @@
 # Security
 
+[Documentation index](../../../docs/README.md) · [Repository entry](../../../README.md)
+
 The adapter treats every tagged value as untrusted. It checks the encoded size,
 version, field count, strict decimal grammar, and canonical unit identity before
 conversion. Unknown unit text and supplied amounts are not copied into adapter
@@ -14,3 +16,6 @@ Callers remain responsible for rule-engine limits, deadlines, storage access,
 authorization, and deciding which facts may participate in a rule. A tagged
 string proves only that its syntax and unit identity are valid; it is not an
 authentication or integrity mechanism.
+
+Choose the next guide in the [documentation index](../../../docs/README.md)
+or return to the [repository entry](../../../README.md) for installation and ownership.

@@ -1,5 +1,7 @@
 # Adoption
 
+[Documentation index](../../../docs/README.md) · [Repository entry](../../../README.md)
+
 1. Construct quantities through `measurement.New` or `measurement.MustNew`.
 2. Convert them to rule values only through `ruleenginemeasurement.Quantity`.
 3. Register `Operators()` on each compiler that evaluates quantity rules.
@@ -11,3 +13,6 @@
 Adopt this adapter when rule facts already have explicit exact units. If an
 input omits a unit, reject it before rule evaluation or resolve it through a
 caller-owned domain policy; this adapter will not infer one.
+
+Choose the next guide in the [documentation index](../../../docs/README.md)
+or return to the [repository entry](../../../README.md) for installation and ownership.

@@ -1,5 +1,7 @@
 # Types and coercion
 
+[Documentation index](README.md) · [Repository entry](../README.md)
+
 The engine never converts strings to numbers, integers to floats, timestamps
 to strings, empty values to false, or null to missing. Integrations must
 normalize data before constructing facts.
@@ -12,3 +14,6 @@ byte ordering over valid UTF-8. Lists use ordered structural equality.
 Use explicit domain adapters for decimals and measurements rather than floats.
 An adapter should encode the domain value canonically and register an operator
 with exact signatures; it must not add implicit core coercion.
+
+Choose the next guide in the [documentation index](README.md)
+or return to the [repository entry](../README.md) for installation and ownership.

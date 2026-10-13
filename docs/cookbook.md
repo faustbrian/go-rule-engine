@@ -1,5 +1,7 @@
 # Cookbook
 
+[Documentation index](README.md) · [Repository entry](../README.md)
+
 ## Distinguish missing and null
 
 Use `Exists(path)` to test presence. Compare `Variable(path)` with
@@ -25,3 +27,6 @@ plan requests only missing paths used by its propositions, in lexical order.
 
 Create `NewMemoryPlanCache(capacity)` and call `CompileCached`. The canonical
 definition hash is available through `Plan.Hash`.
+
+Choose the next guide in the [documentation index](README.md)
+or return to the [repository entry](../README.md) for installation and ownership.

@@ -1,5 +1,7 @@
 # Conversion and dimensions
 
+[Documentation index](../../../docs/README.md) · [Repository entry](../../../README.md)
+
 Each operator parses both tagged quantities, asks the measurement package to
 compare them with `measurement.ExactConversion()`, and applies its relation to
 the resulting ordering. The left quantity's unit is the comparison target;
@@ -17,3 +19,6 @@ If it would require a non-terminating decimal or exceed arithmetic limits, the
 operator returns `ErrInvalidQuantity` while preserving the measurement or math
 cause. Different dimensions return `ErrIncompatibleQuantity` and preserve
 `measurement.ErrDimensionMismatch`.
+
+Choose the next guide in the [documentation index](../../../docs/README.md)
+or return to the [repository entry](../../../README.md) for installation and ownership.

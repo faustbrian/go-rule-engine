@@ -1,5 +1,7 @@
 # Performance and troubleshooting
 
+[Documentation index](../../../docs/README.md) · [Repository entry](../../../README.md)
+
 ## Benchmarking
 
 `BenchmarkQuantityComparison` measures tagged-value parsing, exact compatible-
@@ -38,3 +40,6 @@ tag version. The rejected contents are intentionally absent from errors.
 Tagged quantities are persisted as strings, but their byte order is not a
 measurement order. Register this adapter on the compiler and use its versioned
 quantity operators.
+
+Choose the next guide in the [documentation index](../../../docs/README.md)
+or return to the [repository entry](../../../README.md) for installation and ownership.

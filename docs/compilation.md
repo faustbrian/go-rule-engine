@@ -1,5 +1,7 @@
 # Compilation
 
+[Documentation index](README.md) · [Repository entry](../README.md)
+
 `Compiler.Compile` checks cancellation, limits, metadata, duplicate IDs,
 predicate shape, operator existence, literal types, regex syntax, derived fact
 validity, duplicate derived paths, and forward-chaining cycles. It then copies
@@ -15,3 +17,6 @@ responsive to context cancellation.
 Diagnostics contain identifiers, stable codes, severity, and redacted
 messages. They never include literal or fact values. A compile error means no
 plan is usable.
+
+Choose the next guide in the [documentation index](README.md)
+or return to the [repository entry](../README.md) for installation and ownership.

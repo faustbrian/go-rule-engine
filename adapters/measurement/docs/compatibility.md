@@ -1,5 +1,7 @@
 # Compatibility
 
+[Documentation index](../../../docs/README.md) · [Repository entry](../../../README.md)
+
 The pending v3 adapter is
 `github.com/faustbrian/go-rule-engine/adapters/measurement/v3` and exposes
 `github.com/faustbrian/go-rule-engine/v2` types. Update both imports together.
@@ -20,3 +22,6 @@ API, and mutation gates continue to pass.
 
 Changing a unit symbol, dimension identity, relation name, operand signature,
 tag grammar, rounding policy, or stable error classification is breaking.
+
+Choose the next guide in the [documentation index](../../../docs/README.md)
+or return to the [repository entry](../../../README.md) for installation and ownership.

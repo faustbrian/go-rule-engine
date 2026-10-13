@@ -1,5 +1,7 @@
 # Performance
 
+[Documentation index](README.md) · [Repository entry](../README.md)
+
 Compile once and reuse plans. Construct one immutable context per fact
 snapshot. Avoid resolver calls on hot paths by supplying known facts directly.
 Use canonical hashes and a bounded plan cache for stored definitions.
@@ -24,3 +26,6 @@ the timed loop. Grule's timed loop resets its retracted rule state, which is
 required for repeated equivalent evaluation; the other engines reuse their
 immutable compiled program directly. This benchmark compares execution cost,
 not the projects' broader feature sets or security models.
+
+Choose the next guide in the [documentation index](README.md)
+or return to the [repository entry](../README.md) for installation and ownership.

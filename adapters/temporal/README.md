@@ -115,3 +115,6 @@ The adapter belongs to the
 ## License
 
 MIT. See [LICENSE](LICENSE).
+
+Choose the next guide in the [documentation index](../../docs/README.md)
+or return to the [repository entry](../../README.md) for installation and ownership.

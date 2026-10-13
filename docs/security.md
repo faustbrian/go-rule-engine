@@ -1,5 +1,7 @@
 # Security
 
+[Documentation index](README.md) · [Repository entry](../README.md)
+
 Treat rule definitions and facts as untrusted input. Parse with service-specific
 limits, compile before storage or activation, retain the canonical hash, and
 evaluate only immutable plans. Never interpolate diagnostics into logs with
@@ -21,3 +23,6 @@ The versioned [threat model](threat-model.md) distinguishes current controls,
 caller-owned risks and unresolved cache/context assurance boundaries.
 
 Report vulnerabilities according to [SECURITY.md](../SECURITY.md).
+
+Choose the next guide in the [documentation index](README.md)
+or return to the [repository entry](../README.md) for installation and ownership.

@@ -1,5 +1,7 @@
 # rule-engine/adapters/temporal technical guide
 
+[Documentation index](../../../docs/README.md) · [Repository entry](../../../README.md)
+
 This guide contains the complete behavioral and operational reference. Start
 with the [package overview](../README.md).
 
@@ -208,3 +210,6 @@ MIT. See [LICENSE](../LICENSE).
 ## Documentation
 
 See the [root package documentation](../../../README.md) for rule semantics, adapter boundaries, and related packages.
+
+Choose the next guide in the [documentation index](../../../docs/README.md)
+or return to the [repository entry](../../../README.md) for installation and ownership.

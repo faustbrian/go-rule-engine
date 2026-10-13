@@ -1,5 +1,7 @@
 # Rule sets
 
+[Documentation index](README.md) · [Repository entry](../README.md)
+
 Rules are ordered by priority descending, then ID ascending. Input slice order
 has no effect. Tags and namespaces are inspectable metadata and do not alter
 evaluation.
@@ -12,3 +14,6 @@ Derived paths have one producer per rule set. This removes write races and
 ambiguous conflict resolution. If multiple business sources may propose a
 value, model those proposals as separate paths and add an explicit resolving
 rule.
+
+Choose the next guide in the [documentation index](README.md)
+or return to the [repository entry](../README.md) for installation and ownership.

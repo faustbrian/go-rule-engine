@@ -1,5 +1,7 @@
 # Threat model
 
+[Documentation index](README.md) · [Repository entry](../README.md)
+
 Version 1 (2026-10-03)
 
 ## Scope and assets
@@ -84,3 +86,6 @@ signatures expose root v2 types. Published adapter algorithms and domain
 dependency versions are retained. Root v2.0.0 and math v2.0.0, measurement
 v3.0.0 and temporal v2.0.0 adapters are published. Review this model after
 changes to callback registries, cache sharing, limits or adapter dependencies.
+
+Choose the next guide in the [documentation index](README.md)
+or return to the [repository entry](../README.md) for installation and ownership.

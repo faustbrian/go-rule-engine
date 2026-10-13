@@ -1,5 +1,7 @@
 # JSON AST
 
+[Documentation index](README.md) · [Repository entry](../README.md)
+
 The `jsonast` package implements grammar version `1`. The root object contains
 `version`, `id`, optional `namespace`, `strategy`, and `rules`. Every rule has
 `id`, optional `namespace`, `priority`, `tags`, `when`, and `derive`.
@@ -26,3 +28,6 @@ The maintained grammar fixture is
 [location-routing.json](../jsonast/testdata/location-routing.json). JMESPath,
 SQL-like, and GraphQL-like DSLs are not implemented; accepting those strings
 would imply undocumented grammar and security behavior.
+
+Choose the next guide in the [documentation index](README.md)
+or return to the [repository entry](../README.md) for installation and ownership.

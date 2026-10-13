@@ -1,5 +1,7 @@
 # Model
 
+[Documentation index](README.md) · [Repository entry](../README.md)
+
 A `Path` is an ordered sequence of validated segments. Dots, slashes,
 backslashes, NUL, control characters, empty segments, and traversal segments
 are rejected so the dotted display form cannot collide.
@@ -16,3 +18,6 @@ Rules carry a stable ID, namespace, priority, tags, proposition, and optional
 literal derived facts. A rule set adds its own ID, namespace, and conflict
 strategy. None of these fields imply authorization, rollout, validation, or
 action semantics.
+
+Choose the next guide in the [documentation index](README.md)
+or return to the [repository entry](../README.md) for installation and ownership.

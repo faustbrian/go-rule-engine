@@ -1,5 +1,7 @@
 # Operators
 
+[Documentation index](README.md) · [Repository entry](../README.md)
+
 All operators require exact kinds. Missing operands return false. Null is only
 comparable with null through equality. There is no coercion.
 
@@ -20,3 +22,6 @@ are rejected.
 `All`, `Any`, and `Not` are logical combinators. Children execute left to
 right. `All` stops on false; `Any` stops on true. Operator truth tables are
 executable in [operator_truth_table_test.go](../operator_truth_table_test.go).
+
+Choose the next guide in the [documentation index](README.md)
+or return to the [repository entry](../README.md) for installation and ownership.

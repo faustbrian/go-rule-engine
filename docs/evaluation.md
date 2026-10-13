@@ -1,5 +1,7 @@
 # Evaluation
 
+[Documentation index](README.md) · [Repository entry](../README.md)
+
 Root v2 `EvaluateResolved` uses one `EvaluationTimeout` deadline for fact
 resolution and subsequent evaluation. Earlier caller deadlines and context
 values are preserved. Trusted resolvers and operators must honor cancellation;
@@ -27,3 +29,6 @@ derivations; explanation truncation is silent, and a terminal error can append
 one entry beyond the predicate-error budget. Cancellation is checked before
 owned steps, not after every callback; a final callback can return a match
 after canceling its context. Do not infer a hard execution-duration bound.
+
+Choose the next guide in the [documentation index](README.md)
+or return to the [repository entry](../README.md) for installation and ownership.

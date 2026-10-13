@@ -1,5 +1,7 @@
 # Limits and security
 
+[Documentation index](../../../docs/README.md) · [Repository entry](../../../README.md)
+
 Tagged inputs are rejected above `MaxTaggedValueBytes` (100,020 bytes). The
 bound accommodates measurement quantities valid under the owned decimal
 package's default 100,000-digit limit plus version and unit metadata. Decimal
@@ -18,3 +20,6 @@ the next check rather than interrupting that operation.
 
 Treat manually assembled tags as untrusted input. Prefer `Quantity` so amounts
 and unit identities originate from already validated immutable quantities.
+
+Choose the next guide in the [documentation index](../../../docs/README.md)
+or return to the [repository entry](../../../README.md) for installation and ownership.

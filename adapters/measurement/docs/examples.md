@@ -1,5 +1,7 @@
 # Examples
 
+[Documentation index](../../../docs/README.md) · [Repository entry](../../../README.md)
+
 ## Shipment threshold
 
 ```go
@@ -41,3 +43,6 @@ default:
 
 Runnable examples are also maintained in `example_test.go` and compiled by the
 Go test suite.
+
+Choose the next guide in the [documentation index](../../../docs/README.md)
+or return to the [repository entry](../../../README.md) for installation and ownership.

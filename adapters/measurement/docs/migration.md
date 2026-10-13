@@ -1,5 +1,7 @@
 # Migration
 
+[Documentation index](../../../docs/README.md) · [Repository entry](../../../README.md)
+
 ## Module v3
 
 Update the adapter import to
@@ -31,3 +33,6 @@ profile, validate the unit and amount, then encode the resulting quantity.
 Deploy readers that understand v1 before writing v1 values. The adapter does
 not accept both formats because permissive dual parsing would make persisted
 identity and retirement of the legacy grammar ambiguous.
+
+Choose the next guide in the [documentation index](../../../docs/README.md)
+or return to the [repository entry](../../../README.md) for installation and ownership.

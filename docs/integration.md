@@ -1,5 +1,7 @@
 # Integration
 
+[Documentation index](README.md) · [Repository entry](../README.md)
+
 Normalize transport or model data outside the engine, then construct typed
 facts. Keep the path vocabulary in the owning integration package. Do not pass
 models for reflection-based discovery.
@@ -19,3 +21,6 @@ integrations retain state, actions, retries, and side effects.
 
 In every integration, handle `Indeterminate` before `Matched` and map it to the
 domain's explicit safe failure behavior.
+
+Choose the next guide in the [documentation index](README.md)
+or return to the [repository entry](../README.md) for installation and ownership.

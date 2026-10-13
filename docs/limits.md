@@ -1,5 +1,7 @@
 # Limits
 
+[Documentation index](README.md) · [Repository entry](../README.md)
+
 `Limits` independently bounds rule count, fact count, AST depth, operands,
 collection size, string bytes, JSON definition bytes, regex bytes, identifier
 bytes, tags, tag bytes, path bytes, path segments, chaining iterations,
@@ -19,3 +21,6 @@ by the compiler or context constructor. Timeouts require callback cooperation.
 In root v2, `EvaluationTimeout` also bounds the total `CompileCached`
 operation and the combined resolver/evaluation operation. The caller's earlier
 deadline takes precedence; callbacks remain trusted and must cooperate.
+
+Choose the next guide in the [documentation index](README.md)
+or return to the [repository entry](../README.md) for installation and ownership.

@@ -1,5 +1,7 @@
 # API
 
+[Documentation index](../../../docs/README.md) · [Repository entry](../../../README.md)
+
 `Quantity(measurement.Quantity) ruleengine.Value` creates the canonical v1
 tagged string. Supply a quantity constructed by the measurement package; a
 zero-value `measurement.Quantity` has no unit and is rejected if evaluated.
@@ -24,3 +26,6 @@ Underlying measurement, decimal, math, and context causes remain detectable
 with `errors.Is`; diagnostics do not reproduce the supplied amount or unit.
 
 `MaxTaggedValueBytes` is the adapter's hard encoded-input bound.
+
+Choose the next guide in the [documentation index](../../../docs/README.md)
+or return to the [repository entry](../../../README.md) for installation and ownership.

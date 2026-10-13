@@ -1,5 +1,7 @@
 # Extensions
 
+[Documentation index](README.md) · [Repository entry](../README.md)
+
 `Operator` exposes a name, exact kind signatures, and a context-aware evaluate
 method. Registries belong to a compiler instance. Built-in names and duplicate
 custom names cannot be replaced, and no process-global registry exists.
@@ -43,3 +45,6 @@ Exact optional domain adapters are isolated nested modules:
 
 Each module uses tagged canonical string values plus namespaced typed
 operators. Their dependencies are not present in the core module graph.
+
+Choose the next guide in the [documentation index](README.md)
+or return to the [repository entry](../README.md) for installation and ownership.

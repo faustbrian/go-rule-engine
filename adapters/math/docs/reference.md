@@ -1,11 +1,13 @@
 # Exact decimal operators for rule-engine technical guide
 
+[Documentation index](../../../docs/README.md) · [Repository entry](../../../README.md)
+
 This guide contains the complete behavioral and operational reference. Start
 with the [package overview](../README.md).
 
 The `rule-engine/adapters/math` module is the optional bridge between
 [`math/decimal`](https://pkg.go.dev/github.com/faustbrian/go-math/decimal) and
-[`rule-engine`](../../..). It encodes
+[`rule-engine`](../../../README.md). It encodes
 finite decimals as tagged string values and supplies deterministic equality and
 ordering operators. The core rule engine does not depend on the math module.
 
@@ -186,3 +188,6 @@ non-exponent representation.
 ## Documentation
 
 See the [root package documentation](../../../README.md) for rule semantics, adapter boundaries, and related packages.
+
+Choose the next guide in the [documentation index](../../../docs/README.md)
+or return to the [repository entry](../../../README.md) for installation and ownership.

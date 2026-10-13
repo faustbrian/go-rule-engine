@@ -1,5 +1,7 @@
 # FAQ
 
+[Documentation index](../../../docs/README.md) · [Repository entry](../../../README.md)
+
 ## Why are quantities encoded as strings?
 
 The core rule engine has a closed value-kind model. A versioned tag preserves
@@ -29,3 +31,6 @@ before constructing the quantity.
 
 No. Operators are pure, process-local values with no I/O, goroutines, cache,
 or global registration.
+
+Choose the next guide in the [documentation index](../../../docs/README.md)
+or return to the [repository entry](../../../README.md) for installation and ownership.

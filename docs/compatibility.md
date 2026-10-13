@@ -1,5 +1,7 @@
 # Compatibility
 
+[Documentation index](README.md) · [Repository entry](../README.md)
+
 Root v2.0.0 and adapter majors math v2.0.0, measurement v3.0.0 and temporal
 v2.0.0 are published. Historical `api/baseline.txt`
 files retain the published baselines; separate versioned snapshots describe
@@ -21,3 +23,6 @@ strategy, error code, ordering rule, or default limit is a breaking change.
 
 Pre-1.0 releases may still change Go APIs, but changes must be recorded in
 [CHANGELOG.md](../CHANGELOG.md) and the API fingerprint updated deliberately.
+
+Choose the next guide in the [documentation index](README.md)
+or return to the [repository entry](../README.md) for installation and ownership.

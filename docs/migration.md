@@ -1,5 +1,7 @@
 # Migration from Shipit and Cline Ruler
 
+[Documentation index](README.md) · [Repository entry](../README.md)
+
 ## Root v2 and published adapter majors
 
 Root v2.0.0 uses `github.com/faustbrian/go-rule-engine/v2`. Math adapter
@@ -48,3 +50,6 @@ Record deliberate differences before activation.
 Migrate in shadow mode by canonical hash. Observe mismatches without logging
 sensitive facts. Cut over only after every production rule has differential
 evidence and `Indeterminate` is wired to the owning service's safe state.
+
+Choose the next guide in the [documentation index](README.md)
+or return to the [repository entry](../README.md) for installation and ownership.

@@ -1,5 +1,7 @@
 # FAQ
 
+[Documentation index](README.md) · [Repository entry](../README.md)
+
 ## Is this an authorization engine?
 
 No. It has no permit, deny, role, permission, principal, or combining defaults.
@@ -46,3 +48,6 @@ before its deadline. Do not substitute null unless null is the domain value.
 Benchmark results depend on CPU, operating system, Go version, corpus, and
 sample duration. Compare equivalent work with the same environment and use
 `benchstat`; see the [performance guide](performance.md).
+
+Choose the next guide in the [documentation index](README.md)
+or return to the [repository entry](../README.md) for installation and ownership.

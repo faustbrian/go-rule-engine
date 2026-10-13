@@ -1,5 +1,7 @@
 # Encoding
 
+[Documentation index](../../../docs/README.md) · [Repository entry](../../../README.md)
+
 `Quantity` produces a rule-engine string with this v1 grammar:
 
 ```text
@@ -20,3 +22,6 @@ units. There is no default unit.
 Persist the complete rule-engine string unchanged. Reconstructing a tag from
 localized display text is unsupported because display profiles may contain
 aliases that are not canonical unit identities.
+
+Choose the next guide in the [documentation index](../../../docs/README.md)
+or return to the [repository entry](../../../README.md) for installation and ownership.
