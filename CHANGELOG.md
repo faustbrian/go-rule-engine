@@ -80,6 +80,16 @@ Keep a Changelog and semantic versioning.
 - Replace archived monorepo links and completed execution artifacts with a
   standalone, human-oriented documentation structure.
 
+## 2.0.2 - 2026-10-22
+
+### Changed
+
+- Publish the current source and documentation with a fresh immutable tag.
+- Publish independently versioned modules from the same source snapshot:
+  - `adapters/math/v2.1.0`.
+  - `adapters/measurement/v3.1.0`.
+  - `adapters/temporal/v2.1.0`.
+
 ## 2.0.1 - 2026-10-07
 
 ### Documentation
