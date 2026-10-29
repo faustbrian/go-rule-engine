@@ -11,7 +11,7 @@ Start with `DefaultLimits` and reduce budgets for the owning service. Every
 field must be positive, except `MaxDecimalBytes` and `MaxDecimalExponent`,
 which may be zero. Zero `MaxDecimalBytes` rejects every decimal, so `Limits`
 values written before decimals existed remain valid; zero
-`MaxDecimalExponent` admits only zero and magnitudes from 1 up to 10. `MaxDecimalExponent` bounds the power of ten of a decimal's
+`MaxDecimalExponent` admits only zero and magnitudes from 1 up to but excluding 10. `MaxDecimalExponent` bounds the power of ten of a decimal's
 leading digit (default 6144) and `MaxDecimalBytes` its text (default 258).
 `Decimal` itself refuses exponents with more than 18 significant digits before
 any budget applies. Limits are captured in a compiler and copied into its
