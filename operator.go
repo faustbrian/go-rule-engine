@@ -190,7 +190,7 @@ func evaluateBuiltin(name OperatorName, left, right Value) (bool, error) {
 		}
 		return ordering >= 0, nil
 	case OpIn, OpNotIn:
-		values, _ := right.ListValue()
+		values, _ := right.listItems()
 		contains := listContains(values, left)
 		return contains == (name == OpIn), nil
 	case OpContains:
@@ -199,7 +199,7 @@ func evaluateBuiltin(name OperatorName, left, right Value) (bool, error) {
 			rightText, _ := right.StringValue()
 			return strings.Contains(leftText, rightText), nil
 		}
-		values, _ := left.ListValue()
+		values, _ := left.listItems()
 		return listContains(values, right), nil
 	case OpStartsWith, OpEndsWith:
 		leftText, _ := left.StringValue()
@@ -226,8 +226,8 @@ func valuesEqual(left, right Value) bool {
 		return false
 	}
 	if left.kind == KindList {
-		leftValues, _ := left.ListValue()
-		rightValues, _ := right.ListValue()
+		leftValues, _ := left.listItems()
+		rightValues, _ := right.listItems()
 		if len(leftValues) != len(rightValues) {
 			return false
 		}

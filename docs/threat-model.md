@@ -26,7 +26,7 @@ implicit network, database or process operations and starts no background work.
 | --- | --- | --- |
 | JSON to definition | Byte admission before decoding, unknown-field rejection, version checks and subsequent typed compilation | [Serialization](../serialization.go) |
 | Definition to plan | Positive limits, rule and operand counts, depth, identifier/tag checks, duplicate and cycle rejection | [Compiler](../compiler.go), [limits](../limits.go) |
-| Facts to snapshot | Fact count, value type, string/list bounds and owned copies | [Context](../context.go) |
+| Facts to snapshot | Fact count, value type, string/list bounds and immutable values whose list storage is copied once from caller slices | [Context](../context.go) |
 | Plan to decision | Evaluation timeout, cancellation checkpoints, iteration and explanation limits | [Plan](../plan.go) |
 | Regular expressions | Literal patterns, pattern-byte checks and Go's standard regexp implementation | [Operators](../operator.go) |
 | Diagnostics | Engine-produced error messages omit fact values; explanations contain rule identifiers and results | [Errors](../errors.go), [plan](../plan.go) |
@@ -40,7 +40,7 @@ preemptible or that all ecosystem security acceptance criteria are complete.
 | Risk and rationale | Owner and mitigation | Review condition |
 | --- | --- | --- |
 | Arbitrary callbacks can block, panic, mutate external state or disclose data; an in-process call cannot be forcibly canceled safely. | Application/adapter owner: use trusted bounded implementations, enforced I/O deadlines and an appropriate panic/isolation boundary. | Any new callback or I/O-backed adapter. |
-| A regexp match and immutable-value copying are synchronous work between cancellation checkpoints. | Core maintainers and integrators: keep input and collection limits appropriate to the service, and bound concurrent evaluations. | Changes to limits, Go regexp behavior or workload size. |
+| A regexp match and list traversal are synchronous work between cancellation checkpoints. | Core maintainers and integrators: keep input and collection limits appropriate to the service, and bound concurrent evaluations. | Changes to limits, Go regexp behavior or workload size. |
 | A product can interpret `Indeterminate` as success or log raw facts and caller-controlled identifiers. | Product owner: fail closed at security-sensitive consumers and sanitize observability at its own boundary. | Each new decision consumer or logging integration. |
 
 ## Unresolved assurance boundaries

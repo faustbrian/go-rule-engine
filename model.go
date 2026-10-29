@@ -191,11 +191,12 @@ type Operand interface {
 
 type literalOperand struct{ value Value }
 
-func (operand literalOperand) resolve(Context) Value    { return operand.value.clone() }
+func (operand literalOperand) resolve(Context) Value    { return operand.value }
 func (operand literalOperand) staticKind() (Kind, bool) { return operand.value.kind, true }
 
-// Literal returns an immutable literal operand.
-func Literal(value Value) Operand { return literalOperand{value: value.clone()} }
+// Literal returns an immutable literal operand. Values are immutable, so the
+// literal shares value's storage rather than copying it.
+func Literal(value Value) Operand { return literalOperand{value: value} }
 
 type variableOperand struct{ path Path }
 

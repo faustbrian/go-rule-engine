@@ -12,6 +12,16 @@ collection propositions. On an Apple M4 Max with Go 1.26.5, the initial
 compilation, and 621 ns/op and 720 B/op for evaluation. These numbers are a
 development baseline, not a cross-machine guarantee.
 
+List membership benchmarks use a 256-entry list. List storage is copied once
+when `List` is built and shared afterwards, so directly evaluated `in`,
+`not_in` and `contains` predicates over a literal or a context fact allocate
+nothing, and `Literal` allocates only its operand. Plan evaluation keeps only
+its fixed per-call allocations. A custom operator that scans the list with
+`ListLen` and `ListAt` adds nothing to that fixed cost, while one that calls
+`ListValue` copies the list on every evaluation.
+`TestListMembershipDoesNotAllocate` and
+`TestCustomOperatorListAccessDoesNotAllocate` keep these properties executable.
+
 Run `GOWORK=off go test -run '^$' -bench . -benchmem -benchtime=1s .`
 for focused local numbers. The explicit `make check-full` route retains all
 module benchmarks and the competitor campaign; run only the latter with

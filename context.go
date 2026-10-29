@@ -31,7 +31,8 @@ type Fact struct {
 }
 
 // Context is an immutable, concurrent-readable snapshot. Its zero value is an
-// empty snapshot. Construction and Lookup defensively copy nested lists.
+// empty snapshot. Values are immutable, so construction and Lookup share their
+// storage; only the fact map and path segments are copied.
 type Context struct {
 	facts map[string]Fact
 }
@@ -64,7 +65,6 @@ func NewContextWithLimits(limits Limits, facts ...Fact) (Context, error) {
 			return Context{}, err
 		}
 		fact.Path.segments = append([]string(nil), fact.Path.segments...)
-		fact.Value = fact.Value.clone()
 		result.facts[fact.Path.key] = fact
 	}
 	return result, nil
@@ -76,7 +76,7 @@ func (c Context) Lookup(path Path) Value {
 	if !ok {
 		return Missing()
 	}
-	return fact.Value.clone()
+	return fact.Value
 }
 
 // Owner returns the supplied owner and whether the fact exists.
@@ -93,7 +93,6 @@ func (c Context) withFact(fact Fact) Context {
 		cloned.facts[key] = existing
 	}
 	fact.Path.segments = append([]string(nil), fact.Path.segments...)
-	fact.Value = fact.Value.clone()
 	cloned.facts[fact.Path.key] = fact
 	return cloned
 }
@@ -125,7 +124,7 @@ func validateValue(value Value, limits Limits, depth int) error {
 	if number, ok := value.FloatValue(); ok && (math.IsNaN(number) || math.IsInf(number, 0)) {
 		return newError(CodeInvalidFact, "float must be finite")
 	}
-	if values, ok := value.ListValue(); ok {
+	if values, ok := value.listItems(); ok {
 		if len(values) > limits.MaxCollection {
 			return newError(CodeInvalidFact, "collection is too large")
 		}
