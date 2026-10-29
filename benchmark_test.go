@@ -60,23 +60,28 @@ func benchmarkFixture() (ruleengine.RuleSet, ruleengine.Context) {
 
 // benchmarkList returns a 256-entry string list, the size of Rate's largest
 // membership sets, and a fact snapshot holding it and an absent probe value.
-func benchmarkList() (ruleengine.Value, ruleengine.Context) {
+func benchmarkList(tb testing.TB) (ruleengine.Value, ruleengine.Context) {
+	tb.Helper()
 	items := make([]ruleengine.Value, 256)
 	for index := range items {
 		items[index] = ruleengine.String("code-" + strconv.Itoa(index))
 	}
 	list := ruleengine.List(items...)
-	facts, _ := ruleengine.NewContext(
+	facts, err := ruleengine.NewContext(
 		ruleengine.Fact{Path: ruleengine.MustPath("codes"), Value: list},
 		ruleengine.Fact{Path: ruleengine.MustPath("code"), Value: ruleengine.String("absent")},
+		ruleengine.Fact{Path: ruleengine.MustPath("last"), Value: ruleengine.String("code-255")},
 	)
+	if err != nil {
+		tb.Fatal(err)
+	}
 	return list, facts
 }
 
 // BenchmarkInLiteralList256 scans a 256-entry literal list for an absent fact
 // value, so the operator visits every element and resolves the literal.
 func BenchmarkInLiteralList256(b *testing.B) {
-	list, facts := benchmarkList()
+	list, facts := benchmarkList(b)
 	predicate := ruleengine.Compare(ruleengine.OpIn, ruleengine.Variable(ruleengine.MustPath("code")), ruleengine.Literal(list))
 	ctx := context.Background()
 	b.ReportAllocs()
@@ -91,7 +96,7 @@ func BenchmarkInLiteralList256(b *testing.B) {
 // BenchmarkContainsFactList256 scans a 256-entry list fact, which is looked up
 // from the context on every evaluation.
 func BenchmarkContainsFactList256(b *testing.B) {
-	_, facts := benchmarkList()
+	_, facts := benchmarkList(b)
 	predicate := ruleengine.Compare(ruleengine.OpContains, ruleengine.Variable(ruleengine.MustPath("codes")), ruleengine.Literal(ruleengine.String("absent")))
 	ctx := context.Background()
 	b.ReportAllocs()
@@ -106,7 +111,7 @@ func BenchmarkContainsFactList256(b *testing.B) {
 // BenchmarkLiteralListResolve256 resolves a 256-entry literal through an
 // equality against itself, isolating literal resolution and list equality.
 func BenchmarkLiteralListResolve256(b *testing.B) {
-	list, facts := benchmarkList()
+	list, facts := benchmarkList(b)
 	predicate := ruleengine.Compare(ruleengine.OpEqual, ruleengine.Literal(list), ruleengine.Literal(list))
 	ctx := context.Background()
 	b.ReportAllocs()
@@ -125,7 +130,7 @@ var literalSink ruleengine.Operand
 // BenchmarkLiteralList256 measures constructing a literal operand from an
 // existing 256-entry list value.
 func BenchmarkLiteralList256(b *testing.B) {
-	list, _ := benchmarkList()
+	list, _ := benchmarkList(b)
 	b.ReportAllocs()
 	b.ResetTimer()
 	for range b.N {
@@ -136,7 +141,7 @@ func BenchmarkLiteralList256(b *testing.B) {
 // BenchmarkPlanInList256 evaluates a compiled one-rule plan whose proposition
 // tests membership in a 256-entry literal list.
 func BenchmarkPlanInList256(b *testing.B) {
-	list, facts := benchmarkList()
+	list, facts := benchmarkList(b)
 	set := ruleengine.RuleSet{ID: "membership", Rules: []ruleengine.Rule{{ID: "in", When: ruleengine.Compare(ruleengine.OpIn, ruleengine.Variable(ruleengine.MustPath("code")), ruleengine.Literal(list))}}}
 	plan, _, err := ruleengine.NewCompiler(ruleengine.DefaultLimits()).Compile(context.Background(), set)
 	if err != nil {

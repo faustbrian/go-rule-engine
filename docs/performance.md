@@ -12,9 +12,10 @@ collection propositions. On an Apple M4 Max with Go 1.26.5, the initial
 compilation, and 621 ns/op and 720 B/op for evaluation. These numbers are a
 development baseline, not a cross-machine guarantee.
 
-List membership benchmarks use a 256-entry list. `in`, `not_in` and
-`contains` over a literal or a context fact allocate nothing per evaluation,
-and `Literal` allocates only its operand, because list storage is copied once
+List membership benchmarks use a 256-entry list. Directly evaluated `in`,
+`not_in` and `contains` predicates over a literal or a context fact allocate
+nothing, plan evaluation keeps only its fixed per-call allocations, and
+`Literal` allocates only its operand, because list storage is copied once
 when `List` is built and shared afterwards. `TestListMembershipDoesNotAllocate`
 keeps the zero-allocation property executable.
 

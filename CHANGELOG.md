@@ -7,15 +7,19 @@ Keep a Changelog and semantic versioning.
 
 ### Added
 
-- Add `Value.Equal`, which compares two values with the semantics of the
-  `equal` operator without evaluating a predicate or allocating.
+- Add `Value.Equal`, which compares two values without evaluating a
+  predicate or allocating. It matches the `equal` operator for two values of
+  the same non-missing kind; values of different kinds are unequal rather than
+  a type mismatch, and missing equals missing.
 
 ### Changed
 
 - Copy list storage once, when `List` receives the caller's slice, and share
   it everywhere else. Contexts, `Context.Lookup`, `Literal`, literal
-  resolution and the `in`, `not_in`, `contains` and list `equal` operators no
-  longer copy lists, so membership tests no longer allocate. `ListValue` and
+  resolution, JSON decoding and the `in`, `not_in`, `contains` and list
+  `equal` operators no longer copy lists, so directly evaluated membership
+  predicates do not allocate and plan evaluation cost no longer grows with
+  list size. `ListValue` and
   `Interface` still return a fresh slice, so callers cannot change engine
   state; nested lists are immutable values and are not recopied.
 

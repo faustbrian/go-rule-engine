@@ -495,7 +495,9 @@ func decodeValue(encoded jsonValue, limits Limits, depth int) (Value, error) {
 			}
 			items[index] = parsed
 		}
-		value = List(items...)
+		// items is private to this call, so it becomes the list storage
+		// directly instead of being copied again by List.
+		value = Value{kind: KindList, data: items}
 	}
 	if err := validateValue(value, limits, depth); err != nil {
 		return Value{}, err

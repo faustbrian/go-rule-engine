@@ -140,11 +140,13 @@ func (v Value) ListValue() ([]Value, bool) {
 	return append(make([]Value, 0, len(values)), values...), true
 }
 
-// Equal reports whether v and other have the same kind and value, using the
-// semantics of OpEqual: times compare as instants, decimals by exact numeric
-// value regardless of spelling, and lists element by element. Values of
-// different kinds are never equal, two Missing or two Null values are equal,
-// and a NaN float, which contexts reject, equals nothing. It does not allocate.
+// Equal reports whether v and other have the same kind and value. For two
+// operands of the same non-Missing kind it matches OpEqual: times compare as
+// instants, decimals by exact numeric value regardless of spelling, and lists
+// element by element. Unlike OpEqual, values of different kinds are simply
+// unequal rather than a type mismatch, and Missing equals Missing where
+// OpEqual reports false. A NaN float, which contexts reject, equals nothing.
+// Equal does not allocate.
 func (v Value) Equal(other Value) bool { return valuesEqual(v, other) }
 
 // listItems returns the shared immutable list storage without copying. Callers

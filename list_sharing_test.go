@@ -52,26 +52,42 @@ func TestSharedListStorageStaysImmutable(t *testing.T) {
 }
 
 func TestListMembershipDoesNotAllocate(t *testing.T) {
-	list, facts := benchmarkList()
+	list, facts := benchmarkList(t)
 	ctx := context.Background()
-	predicates := map[string]ruleengine.Predicate{
-		"in literal":    ruleengine.Compare(ruleengine.OpIn, ruleengine.Variable(ruleengine.MustPath("code")), ruleengine.Literal(list)),
-		"not_in":        ruleengine.Compare(ruleengine.OpNotIn, ruleengine.Variable(ruleengine.MustPath("code")), ruleengine.Literal(list)),
-		"contains fact": ruleengine.Compare(ruleengine.OpContains, ruleengine.Variable(ruleengine.MustPath("codes")), ruleengine.Literal(ruleengine.String("absent"))),
-		"list equality": ruleengine.Compare(ruleengine.OpEqual, ruleengine.Variable(ruleengine.MustPath("codes")), ruleengine.Literal(list)),
+	code := ruleengine.Variable(ruleengine.MustPath("code"))
+	last := ruleengine.Variable(ruleengine.MustPath("last"))
+	codes := ruleengine.Variable(ruleengine.MustPath("codes"))
+	// Each case scans the whole 256-entry list; positive controls prove the
+	// facts resolved, since a Missing operand would also report no match.
+	tests := []struct {
+		name      string
+		predicate ruleengine.Predicate
+		want      bool
+	}{
+		{"in literal absent", ruleengine.Compare(ruleengine.OpIn, code, ruleengine.Literal(list)), false},
+		{"in literal last", ruleengine.Compare(ruleengine.OpIn, last, ruleengine.Literal(list)), true},
+		{"not_in literal", ruleengine.Compare(ruleengine.OpNotIn, code, ruleengine.Literal(list)), true},
+		{"contains fact absent", ruleengine.Compare(ruleengine.OpContains, codes, ruleengine.Literal(ruleengine.String("absent"))), false},
+		{"contains fact last", ruleengine.Compare(ruleengine.OpContains, codes, last), true},
+		{"list equality", ruleengine.Compare(ruleengine.OpEqual, codes, ruleengine.Literal(list)), true},
 	}
-	for name, predicate := range predicates {
+	for _, test := range tests {
 		allocations := testing.AllocsPerRun(100, func() {
-			if _, err := predicate.Evaluate(ctx, facts); err != nil {
-				t.Fatal(err)
+			matched, err := test.predicate.Evaluate(ctx, facts)
+			if err != nil || matched != test.want {
+				t.Fatalf("%s = %v, %v; want %v", test.name, matched, err, test.want)
 			}
 		})
 		if allocations != 0 {
-			t.Errorf("%s allocations = %v, want 0", name, allocations)
+			t.Errorf("%s allocations = %v, want 0", test.name, allocations)
 		}
 	}
 	copied := ruleengine.List(mustListValue(t, list)...)
-	if allocations := testing.AllocsPerRun(100, func() { _ = list.Equal(copied) }); allocations != 0 {
+	if allocations := testing.AllocsPerRun(100, func() {
+		if !list.Equal(copied) {
+			t.Fatal("Equal(copied list) = false")
+		}
+	}); allocations != 0 {
 		t.Errorf("Equal allocations = %v, want 0", allocations)
 	}
 }
