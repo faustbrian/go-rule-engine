@@ -3,6 +3,7 @@ package ruleengine_test
 import (
 	"context"
 	"math"
+	"runtime"
 	"testing"
 	"time"
 
@@ -248,22 +249,33 @@ func TestCustomOperatorListAccessDoesNotAllocate(t *testing.T) {
 		t.Errorf("ListLen/ListAt allocations = %v, want 0", allocations)
 	}
 	// Through a compiled plan, list size adds nothing beyond the fixed cost of
-	// evaluating a one-rule plan.
+	// evaluating a one-rule plan. Allocation counts cannot show a list copy,
+	// which is one allocation at any length, so compare bytes: copying 256
+	// Values adds about 256*24 bytes per evaluation over a one-entry list.
+	// TotalAlloc is process-wide; this test is not parallel, so parallel
+	// tests are paused while it measures.
+	const copyBytes = 256 * 24
 	for _, test := range []struct {
 		probe   string
 		outcome ruleengine.Decision
 	}{{"last", ruleengine.Matched}, {"code", ruleengine.Unmatched}} {
-		plan := listMemberPlan(t, list, test.probe)
-		small := listMemberPlan(t, ruleengine.List(ruleengine.String("code-255")), test.probe)
-		measure := func(plan ruleengine.Plan) float64 {
-			return testing.AllocsPerRun(100, func() {
+		measure := func(plan ruleengine.Plan) int64 {
+			const runs = 200
+			var before, after runtime.MemStats
+			runtime.GC()
+			runtime.ReadMemStats(&before)
+			for range runs {
 				if result := plan.Evaluate(ctx, facts); result.Decision != test.outcome {
 					t.Fatalf("Evaluate(%s) = %#v", test.probe, result)
 				}
-			})
+			}
+			runtime.ReadMemStats(&after)
+			return int64(after.TotalAlloc-before.TotalAlloc) / runs
 		}
-		if large, oneEntry := measure(plan), measure(small); large != oneEntry {
-			t.Errorf("%s: 256-entry plan allocations = %v, one-entry = %v", test.probe, large, oneEntry)
+		large := measure(listMemberPlan(t, list, test.probe))
+		oneEntry := measure(listMemberPlan(t, ruleengine.List(ruleengine.String("code-255")), test.probe))
+		if large-oneEntry >= copyBytes/2 {
+			t.Errorf("%s: 256-entry plan allocates %d B/op, one-entry %d B/op; list size must add nothing", test.probe, large, oneEntry)
 		}
 	}
 }
