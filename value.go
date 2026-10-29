@@ -25,7 +25,14 @@ const (
 	KindDuration
 	// KindList represents an ordered immutable list of values.
 	KindList
+	// KindDecimal represents an exact base-10 number that retains its original
+	// RFC 8259 lexical text. It is appended after KindList so earlier kind
+	// numbers are unchanged.
+	KindDecimal
 )
+
+// maxKind is the largest kind accepted by contexts, compilation and signatures.
+const maxKind = KindDecimal
 
 // Value is a typed fact or operand value; its zero value is Missing. Constructors
 // do not validate service budgets. Context construction and compilation validate
@@ -67,11 +74,15 @@ func List(values ...Value) Value {
 // Kind returns the exact value kind.
 func (v Value) Kind() Kind { return v.kind }
 
-// Interface returns the scalar value or a copied []Value for a list.
+// Interface returns the scalar value or a copied []Value for a list. A
+// decimal returns its original lexical text as a string.
 func (v Value) Interface() any {
 	if v.kind == KindList {
 		values, _ := v.ListValue()
 		return values
+	}
+	if text, ok := v.DecimalText(); ok {
+		return text
 	}
 	return v.data
 }

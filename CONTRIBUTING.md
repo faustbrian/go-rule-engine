@@ -66,7 +66,7 @@ golib mutation --module . --package .
 
 `make check-full` preserves the original full integration, coverage, race,
 mutation, API, security, documentation and benchmark campaigns, including the
-isolated competitor harness and all eight native two-second fuzz targets in the
+isolated competitor harness and all nine native two-second fuzz targets in the
 root and three adapters. Run the relevant full campaigns for behavior changes
 at those boundaries. Select full qualification explicitly with `make check-full`
 or a workflow dispatch with `release_dry_run: true`; scheduled shared CI uses
@@ -107,10 +107,11 @@ or change any adapter dependency.
 
 The owner-level [selected-assurance caller](.github/workflows/assurance.yml) is
 configured for main only, on day 19 of each month at 06:13 UTC. It selects one
-of the 2 current declared root-module fuzz targets using the shared UTC-week
+of the 3 current declared root-module fuzz targets using the shared UTC-week
 rotation, with 30 seconds of active exploration. The selected risks are:
 bounded JSON definition parsing with stable canonical round-trip hashes,
-and validated path segment identity.
+validated path segment identity, and decimal grammar acceptance and exact
+ordering against `encoding/json` and `math/big` oracles.
 Only the root module is selected. The six declared fuzz targets in the math,
 measurement and temporal adapter modules retain their original full/manual
 budgets, as do competitor and integration consumers. Selected root fuzzing

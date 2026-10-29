@@ -7,7 +7,9 @@ backslashes, NUL, control characters, empty segments, and traversal segments
 are rejected so the dotted display form cannot collide.
 
 A `Value` has exactly one `Kind`: missing, null, bool, int64, finite float64,
-string, time, duration, or list. Lists recursively copy their input and output.
+string, time, duration, list, or decimal. `Decimal(text)` accepts the RFC 8259
+JSON number grammar and keeps the original text, available through
+`DecimalText`. Lists recursively copy their input and output.
 A `Fact` binds a path to a value and records whether the subject, resource, or
 environment supplied it. Ownership is provenance only.
 
@@ -15,8 +17,8 @@ environment supplied it. Ownership is provenance only.
 the snapshot returns `Missing`; a supplied `Null` remains null.
 
 Rules carry a stable ID, namespace, priority, tags, proposition, and optional
-literal derived facts. A rule set adds its own ID, namespace, and conflict
-strategy. None of these fields imply authorization, rollout, validation, or
+literal derived facts. A rule set adds its own ID, namespace, conflict
+strategy, evaluation order and missing-operand mode. None of these fields imply authorization, rollout, validation, or
 action semantics.
 
 Choose the next guide in the [documentation index](README.md)

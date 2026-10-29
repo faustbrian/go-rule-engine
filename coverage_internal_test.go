@@ -532,13 +532,13 @@ func TestPlanResolverConflictAndCustomOperatorBranches(t *testing.T) {
 	if _, err := failingPlan.evaluatePredicate(canceled, True(), base); !errors.Is(err, context.Canceled) {
 		t.Fatalf("evaluatePredicate(canceled) error = %v", err)
 	}
-	if matched, err := failingPlan.evaluatePredicate(context.Background(), All(True(), True()), base); err != nil || !matched {
+	if matched, err := failingPlan.evaluatePredicate(context.Background(), All(True(), True()), base); err != nil || matched != truthTrue {
 		t.Fatalf("compiled all = %v, %v", matched, err)
 	}
-	if matched, err := failingPlan.evaluatePredicate(context.Background(), Any(False(), False()), base); err != nil || matched {
+	if matched, err := failingPlan.evaluatePredicate(context.Background(), Any(False(), False()), base); err != nil || matched != truthFalse {
 		t.Fatalf("compiled any = %v, %v", matched, err)
 	}
-	if matched, err := failingPlan.evaluatePredicate(context.Background(), Not(False()), base); err != nil || !matched {
+	if matched, err := failingPlan.evaluatePredicate(context.Background(), Not(False()), base); err != nil || matched != truthTrue {
 		t.Fatalf("compiled not = %v, %v", matched, err)
 	}
 }
@@ -765,7 +765,7 @@ func TestJSONRootAndRuleFailureBranches(t *testing.T) {
 		nil,
 		[]byte("{"),
 		[]byte(`{"version":"1","id":"x","strategy":"first_match","rules":[]} {}`),
-		[]byte(`{"version":"2","id":"x","strategy":"first_match","rules":[]}`),
+		[]byte(`{"version":"3","id":"x","strategy":"first_match","rules":[]}`),
 		[]byte(`{"version":"1","id":"x","strategy":"invalid","rules":[]}`),
 	} {
 		if _, _, err := ParseJSON(input, limits); err == nil {

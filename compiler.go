@@ -64,7 +64,7 @@ func NewCompilerWithOperators(limits Limits, operators ...Operator) (Compiler, e
 			return Compiler{}, newError(CodeInvalidRule, "custom operator has no signatures")
 		}
 		for _, signature := range signatures {
-			if signature.Left > KindList || signature.Right > KindList ||
+			if signature.Left > maxKind || signature.Right > maxKind ||
 				signature.Left == KindMissing || signature.Right == KindMissing {
 				return Compiler{}, newError(CodeInvalidRule, "custom operator signature is invalid")
 			}
@@ -75,7 +75,8 @@ func NewCompilerWithOperators(limits Limits, operators ...Operator) (Compiler, e
 }
 
 // Compile validates built-in structure and metadata, copies rule/tag/derivation
-// slices and orders by descending priority then ascending ID. Arbitrary custom
+// slices and orders by descending priority then ascending ID, or keeps input
+// order under OrderDeclared. Arbitrary custom
 // predicates are borrowed and opaque to structural validation and dependency
 // analysis. Callers must not mutate the input during compilation.
 // On error the returned plan is unusable; diagnostics may be nil or contain a
@@ -89,7 +90,7 @@ func (compiler Compiler) Compile(ctx context.Context, set RuleSet) (Plan, []Diag
 	}
 	if !validIdentifier(set.ID, compiler.limits.MaxIdentifierBytes) ||
 		!validOptionalIdentifier(set.Namespace, compiler.limits.MaxIdentifierBytes) ||
-		set.Strategy > ErrorOnMultiple {
+		set.Strategy > ErrorOnMultiple || set.Order > OrderDeclared || set.Missing > MissingUnknown {
 		return Plan{}, nil, newError(CodeInvalidRule, "invalid rule set")
 	}
 	if len(set.Rules) > compiler.limits.MaxRules {
@@ -140,14 +141,16 @@ func (compiler Compiler) Compile(ctx context.Context, set RuleSet) (Plan, []Diag
 	if cycleRule := findDerivationCycle(rules); cycleRule != "" {
 		return compileFailure(cycleRule, CodeCycle, "derived fact dependency cycle")
 	}
-	slices.SortFunc(rules, func(left, right Rule) int {
-		if priority := cmp.Compare(right.Priority, left.Priority); priority != 0 {
-			return priority
-		}
-		return cmp.Compare(left.ID, right.ID)
-	})
+	if set.Order == OrderPriority {
+		slices.SortFunc(rules, func(left, right Rule) int {
+			if priority := cmp.Compare(right.Priority, left.Priority); priority != 0 {
+				return priority
+			}
+			return cmp.Compare(left.ID, right.ID)
+		})
+	}
 	return Plan{
-		setID: set.ID, namespace: set.Namespace, strategy: set.Strategy,
+		setID: set.ID, namespace: set.Namespace, strategy: set.Strategy, missing: set.Missing,
 		rules: rules, limits: compiler.limits,
 		operators: cloneOperators(compiler.operators), requiredPaths: requiredPaths(rules),
 	}, nil, nil

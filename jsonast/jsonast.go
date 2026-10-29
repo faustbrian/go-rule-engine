@@ -1,5 +1,5 @@
 // Package jsonast exposes the repository-owned JSON rule-definition DSL,
-// grammar version 1.
+// grammar versions 1 and 2.
 // The grammar is the canonical representation implemented by ruleengine;
 // unknown or variant-incompatible fields are rejected. Parse validates with
 // built-in operators; Marshal uses default compiler limits. Custom registries

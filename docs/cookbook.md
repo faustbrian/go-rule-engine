@@ -5,7 +5,20 @@
 ## Distinguish missing and null
 
 Use `Exists(path)` to test presence. Compare `Variable(path)` with
-`Literal(Null())` to test explicit null. A missing comparison returns false.
+`Literal(Null())` to test explicit null. A missing comparison returns false
+by default; set `RuleSet.Missing` to `MissingNull` to compare absent paths as
+null or to `MissingUnknown` for Kleene three-valued logic.
+
+## Evaluate rules in authored order
+
+Set `RuleSet.Order = OrderDeclared` when a first-match table must follow its
+authored order rather than priorities.
+
+## Compare money exactly
+
+Construct facts and literals with `Decimal("12.50")` and use the ordinary
+equality and ordering operators. Check the error: invalid number text is
+rejected rather than rounded.
 
 ## Match a typed list
 

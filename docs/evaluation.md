@@ -12,9 +12,14 @@ contains `Decision`, ordered matched rule IDs, a bounded explanation, bounded
 redacted errors, duration, and derived facts.
 
 `Matched` means at least one selected rule matched and no evaluation error
-occurred. `Unmatched` means no selected rule matched. `Indeterminate` means
+occurred. `Unmatched` means no selected rule matched; under `MissingUnknown` a
+rule whose proposition is unknown does not match and is recorded with
+`Explanation.Unknown`. `Indeterminate` means
 cancellation, timeout, operator failure, conflict, or a resource bound stopped
 a reliable decision. Integrations must not treat `Indeterminate` as matched.
+A rule evaluation error keeps code `evaluation_error` and the message
+`rule evaluation failed`; `Error.Cause` reports the underlying engine code,
+such as `type_mismatch`, when one exists.
 
 Forward chaining is literal and monotonic: a match may add an absent derived
 fact. Re-deriving the same value is stable; changing an existing value is a

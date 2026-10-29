@@ -75,6 +75,11 @@ operations:
         fuzz: '^FuzzPath$'
         budget: 2s
         timeout: 2m
+      - type: go-test
+        packages: [.]
+        fuzz: '^FuzzDecimal$'
+        budget: 2s
+        timeout: 2m
   - module: adapters/math
     gate: fuzz
     steps:

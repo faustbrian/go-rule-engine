@@ -12,10 +12,12 @@ See [migration](migration.md).
 The module requires Go 1.27.0. The core module has no runtime dependencies.
 The public API fingerprint and canonical JSON grammar are checked in CI.
 
-Within JSON version `1`, canonical field meanings, operator names, value type
+Within each JSON version, canonical field meanings, operator names, value type
 names, ordering, missing/null behavior, and hash bytes are compatibility
 contracts. New optional fields require a new grammar version because unknown
-fields are deliberately rejected.
+fields are deliberately rejected; version `2` adds rule order, missing mode
+and decimal values, and canonical output still writes version `1` for every
+definition that uses none of them.
 
 Adding an operator is backward compatible for Go construction but changes the
 accepted JSON language. Removing or changing an operator, kind, conflict

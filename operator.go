@@ -38,7 +38,8 @@ type registeredOperator struct {
 }
 
 const (
-	// OpEqual tests same-kind equality; times use Equal and lists compare recursively.
+	// OpEqual tests same-kind equality; times use Equal, decimals compare exact
+	// numeric values regardless of spelling and lists compare recursively.
 	OpEqual OperatorName = "equal"
 	// OpNotEqual tests exact inequality.
 	OpNotEqual OperatorName = "not_equal"
@@ -161,7 +162,7 @@ func validateOperatorKinds(name OperatorName, left, right Kind) error {
 
 func orderedKind(kind Kind) bool {
 	return kind == KindInt || kind == KindFloat || kind == KindString ||
-		kind == KindTime || kind == KindDuration
+		kind == KindTime || kind == KindDuration || kind == KindDecimal
 }
 
 func evaluateBuiltin(name OperatorName, left, right Value) (bool, error) {
@@ -236,6 +237,11 @@ func valuesEqual(left, right Value) bool {
 		}
 		return true
 	}
+	if left.kind == KindDecimal {
+		leftDecimal, _ := left.data.(decimalValue)
+		rightDecimal, _ := right.data.(decimalValue)
+		return decimalsEqual(leftDecimal, rightDecimal)
+	}
 	if left.kind == KindTime {
 		leftTime, _ := left.TimeValue()
 		rightTime, _ := right.TimeValue()
@@ -279,6 +285,10 @@ func compareOrdered(left, right Value) int {
 		leftValue, _ := left.DurationValue()
 		rightValue, _ := right.DurationValue()
 		return compare(leftValue, rightValue)
+	case KindDecimal:
+		leftValue, _ := left.data.(decimalValue)
+		rightValue, _ := right.data.(decimalValue)
+		return compareDecimals(leftValue, rightValue)
 	default:
 		return 0
 	}
