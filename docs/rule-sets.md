@@ -8,8 +8,8 @@ evaluates rules in input slice order instead; priority is then metadata that
 is still validated and serialized. Tags and namespaces are inspectable
 metadata and do not alter evaluation.
 
-`RuleSet.Missing` selects how comparisons treat an operand whose path is
-absent. `MissingFalse` (the default) makes the comparison false without calling
+`RuleSet.Missing` selects how comparisons treat an operand that resolves to
+missing, whether its path is absent or it is a literal `Missing()` value. `MissingFalse` (the default) makes the comparison false without calling
 the operator. `MissingNull` substitutes `Null()` before built-in or custom
 operator dispatch, so the ordinary kind rules apply exactly as for a supplied
 null. `MissingUnknown` uses Kleene three-valued logic: the comparison is

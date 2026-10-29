@@ -210,6 +210,15 @@ func TestDecimalLimitsZeroDisable(t *testing.T) {
 	if _, err := ruleengine.NewContextWithLimits(limits, ruleengine.Fact{Path: ruleengine.MustPath("amount"), Value: mustDecimal(t, "1")}); !ruleengine.IsCode(err, ruleengine.CodeInvalidFact) {
 		t.Fatalf("zero MaxDecimalBytes accepted a decimal: %v", err)
 	}
+	// A zero exponent budget alone restricts magnitude rather than disabling decimals.
+	exponentOnly := ruleengine.DefaultLimits()
+	exponentOnly.MaxDecimalExponent = 0
+	for text, wantOK := range map[string]bool{"0": true, "-0.000": true, "1": true, "9.99": true, "-5": true, "10": false, "0.5": false} {
+		_, err := ruleengine.NewContextWithLimits(exponentOnly, ruleengine.Fact{Path: ruleengine.MustPath("amount"), Value: mustDecimal(t, text)})
+		if (err == nil) != wantOK {
+			t.Errorf("zero MaxDecimalExponent with %q error = %v, want ok=%v", text, err, wantOK)
+		}
+	}
 }
 
 func TestDecimalHostileExponentGuard(t *testing.T) {

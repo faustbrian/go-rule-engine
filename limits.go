@@ -3,8 +3,9 @@ package ruleengine
 import "time"
 
 // Limits bounds compilation and evaluation work. Zero values are invalid
-// except for the decimal budgets, where zero rejects every decimal value so
-// limits written before KindDecimal existed remain valid. Callers should start
+// except for the decimal budgets: zero MaxDecimalBytes rejects every decimal,
+// so limits written before KindDecimal existed remain valid, and zero
+// MaxDecimalExponent admits only zero and magnitudes in [1, 10). Callers should start
 // with DefaultLimits and reduce values as needed.
 type Limits struct {
 	// MaxRules caps the number of rules in one compiled set.
@@ -24,7 +25,8 @@ type Limits struct {
 	MaxDecimalBytes int
 	// MaxDecimalExponent caps the absolute power of ten of a nonzero decimal's
 	// most significant digit, so 1e6144 and 1e-6144 both need 6144. It guards
-	// against hostile exponents; negative values are invalid.
+	// against hostile exponents; zero admits only zero and magnitudes in
+	// [1, 10), and negative values are invalid.
 	MaxDecimalExponent int
 	// MaxDefinitionBytes caps the raw ParseJSON input before decoding.
 	MaxDefinitionBytes int

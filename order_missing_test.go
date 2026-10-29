@@ -594,3 +594,34 @@ func TestGrammarVersionGatesNewFeatures(t *testing.T) {
 		t.Fatalf("featureless canonical = %s", canonical)
 	}
 }
+
+func TestVersion1RejectsNewMembersInAnySpelling(t *testing.T) {
+	t.Parallel()
+
+	// v2.0.2 rejected these keys as unknown fields; presence alone, including
+	// null or empty values, must keep a version 1 document invalid.
+	rules := `"rules":[{"id":"r","priority":0,"tags":[],"when":{"kind":"compare","operator":"equal","left":{"kind":"variable","path":["x"]},"right":{"kind":"literal","value":%s}},"derive":[]}]}`
+	intValue := `{"type":"int","int":1}`
+	documents := []string{
+		`"order":"",` + strings.Replace(rules, "%s", intValue, 1),
+		`"order":null,` + strings.Replace(rules, "%s", intValue, 1),
+		`"missing":"",` + strings.Replace(rules, "%s", intValue, 1),
+		`"missing":null,` + strings.Replace(rules, "%s", intValue, 1),
+		strings.Replace(rules, "%s", `{"type":"int","int":1,"decimal":null}`, 1),
+		strings.Replace(rules, "%s", `{"type":"int","int":1,"decimal":""}`, 1),
+	}
+	for _, body := range documents {
+		for _, version := range []string{"1", "2"} {
+			document := `{"version":"` + version + `","id":"g","strategy":"first_match",` + body
+			if _, _, err := ruleengine.ParseJSON([]byte(document), ruleengine.DefaultLimits()); !ruleengine.IsCode(err, ruleengine.CodeInvalidJSON) {
+				t.Errorf("ParseJSON(v%s %s) error = %v, want invalid_json", version, body, err)
+			}
+		}
+	}
+	for _, value := range []string{`{"type":"decimal","decimal":null}`, `{"type":"decimal","decimal":1.5}`, `{"type":"decimal","decimal":""}`} {
+		document := `{"version":"2","id":"g","strategy":"first_match",` + strings.Replace(rules, "%s", value, 1)
+		if _, _, err := ruleengine.ParseJSON([]byte(document), ruleengine.DefaultLimits()); !ruleengine.IsCode(err, ruleengine.CodeInvalidJSON) {
+			t.Errorf("ParseJSON(v2 %s) error = %v, want invalid_json", value, err)
+		}
+	}
+}

@@ -29,10 +29,12 @@ type jsonDefinition struct {
 	Namespace string `json:"namespace,omitempty"`
 	Strategy  string `json:"strategy"`
 	// Order and Missing are omitted at their defaults so canonical bytes and
-	// hashes of definitions written before these options are unchanged.
-	Order   string     `json:"order,omitempty"`
-	Missing string     `json:"missing,omitempty"`
-	Rules   []jsonRule `json:"rules"`
+	// hashes of definitions written before these options are unchanged. Raw
+	// messages record key presence, so "order":null or "" in a version 1
+	// document is still a version 2 member rather than an absent one.
+	Order   json.RawMessage `json:"order,omitempty"`
+	Missing json.RawMessage `json:"missing,omitempty"`
+	Rules   []jsonRule      `json:"rules"`
 }
 
 type jsonRule struct {
@@ -67,15 +69,15 @@ type jsonFact struct {
 }
 
 type jsonValue struct {
-	Type     string      `json:"type"`
-	Bool     *bool       `json:"bool,omitempty"`
-	Int      *int64      `json:"int,omitempty"`
-	Float    *float64    `json:"float,omitempty"`
-	String   *string     `json:"string,omitempty"`
-	Time     *string     `json:"time,omitempty"`
-	Duration *int64      `json:"duration,omitempty"`
-	Decimal  *string     `json:"decimal,omitempty"`
-	List     []jsonValue `json:"list,omitempty"`
+	Type     string          `json:"type"`
+	Bool     *bool           `json:"bool,omitempty"`
+	Int      *int64          `json:"int,omitempty"`
+	Float    *float64        `json:"float,omitempty"`
+	String   *string         `json:"string,omitempty"`
+	Time     *string         `json:"time,omitempty"`
+	Duration *int64          `json:"duration,omitempty"`
+	Decimal  json.RawMessage `json:"decimal,omitempty"`
+	List     []jsonValue     `json:"list,omitempty"`
 }
 
 // MarshalCanonical serializes a definition containing only built-in operators
@@ -102,7 +104,7 @@ func (compiler Compiler) marshalCanonical(ctx context.Context, set RuleSet) ([]b
 		Version: definitionVersion,
 		ID:      set.ID, Namespace: set.Namespace,
 		Strategy: strategyName(set.Strategy),
-		Order:    orderName(set.Order), Missing: missingName(set.Missing),
+		Order:    rawName(orderName(set.Order)), Missing: rawName(missingName(set.Missing)),
 		Rules: make([]jsonRule, len(plan.rules)),
 	}
 	for index, rule := range plan.rules {
@@ -336,7 +338,7 @@ func encodeValue(value Value) jsonValue {
 		encoded.Duration = &nanos
 	case KindDecimal:
 		text, _ := value.DecimalText()
-		encoded.Decimal = &text
+		encoded.Decimal = rawName(text)
 	case KindList:
 		items, _ := value.ListValue()
 		encoded.List = make([]jsonValue, len(items))
@@ -475,7 +477,11 @@ func decodeValue(encoded jsonValue, limits Limits, depth int) (Value, error) {
 	case "duration":
 		value = Duration(time.Duration(*encoded.Duration))
 	case "decimal":
-		parsed, err := Decimal(*encoded.Decimal)
+		text, err := rawString(encoded.Decimal)
+		if err != nil {
+			return Value{}, err
+		}
+		parsed, err := Decimal(text)
 		if err != nil {
 			return Value{}, newError(CodeInvalidJSON, "decimal value is invalid")
 		}
@@ -501,7 +507,7 @@ func decodeValue(encoded jsonValue, limits Limits, depth int) (Value, error) {
 // DTO. Explicit default spellings such as "priority" count as features so a
 // version 1 document never carries a field version 1 readers reject.
 func definitionUsesVersion2(definition jsonDefinition) bool {
-	if definition.Order != "" || definition.Missing != "" {
+	if len(definition.Order) > 0 || len(definition.Missing) > 0 {
 		return true
 	}
 	for _, rule := range definition.Rules {
@@ -535,7 +541,7 @@ func nodeUsesDecimal(node jsonNode) bool {
 }
 
 func valueUsesDecimal(value jsonValue) bool {
-	if value.Type == "decimal" || value.Decimal != nil {
+	if value.Type == "decimal" || len(value.Decimal) > 0 {
 		return true
 	}
 	for _, item := range value.List {
@@ -586,7 +592,7 @@ func validValueShape(value jsonValue) bool {
 	for _, present := range []bool{
 		value.Bool != nil, value.Int != nil, value.Float != nil,
 		value.String != nil, value.Time != nil, value.Duration != nil,
-		value.Decimal != nil,
+		len(value.Decimal) > 0,
 	} {
 		if present {
 			scalarCount++
@@ -608,7 +614,7 @@ func validValueShape(value jsonValue) bool {
 	case "duration":
 		return value.Duration != nil && scalarCount == 1 && value.List == nil
 	case "decimal":
-		return value.Decimal != nil && scalarCount == 1 && value.List == nil
+		return len(value.Decimal) > 0 && scalarCount == 1 && value.List == nil
 	case "list":
 		return scalarCount == 0
 	default:
@@ -638,6 +644,26 @@ func parseStrategy(value string) (ConflictStrategy, error) {
 	}
 }
 
+// rawName encodes a JSON string for a RawMessage field, returning nil for ""
+// so omitempty drops defaults. Inputs are fixed option names or decimal text
+// validated by the RFC 8259 number grammar, neither of which needs escaping.
+func rawName(text string) json.RawMessage {
+	if text == "" {
+		return nil
+	}
+	return json.RawMessage(`"` + text + `"`)
+}
+
+// rawString decodes a present RawMessage member that must be a JSON string;
+// null and other JSON types are rejected rather than treated as absent.
+func rawString(raw json.RawMessage) (string, error) {
+	var text string
+	if bytes.Equal(raw, []byte("null")) || json.Unmarshal(raw, &text) != nil {
+		return "", newError(CodeInvalidJSON, "member must be a string")
+	}
+	return text, nil
+}
+
 // orderName and missingName return "" for defaults so omitempty drops them.
 func orderName(order RuleOrder) string {
 	if order == OrderDeclared {
@@ -646,10 +672,18 @@ func orderName(order RuleOrder) string {
 	return ""
 }
 
-// parseOrder accepts an explicit default spelling, which canonical output omits.
-func parseOrder(value string) (RuleOrder, error) {
+// parseOrder accepts absence or the explicit default spelling, which canonical
+// output omits. A present member must be a documented string.
+func parseOrder(raw json.RawMessage) (RuleOrder, error) {
+	if len(raw) == 0 {
+		return OrderPriority, nil
+	}
+	value, err := rawString(raw)
+	if err != nil {
+		return 0, err
+	}
 	switch value {
-	case "", "priority":
+	case "priority":
 		return OrderPriority, nil
 	case "declared":
 		return OrderDeclared, nil
@@ -671,9 +705,16 @@ func missingName(mode MissingMode) string {
 	}
 }
 
-func parseMissing(value string) (MissingMode, error) {
+func parseMissing(raw json.RawMessage) (MissingMode, error) {
+	if len(raw) == 0 {
+		return MissingFalse, nil
+	}
+	value, err := rawString(raw)
+	if err != nil {
+		return 0, err
+	}
 	switch value {
-	case "", "false":
+	case "false":
 		return MissingFalse, nil
 	case "null":
 		return MissingNull, nil

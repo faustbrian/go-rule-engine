@@ -639,6 +639,7 @@ func TestValueAccessorsRequireMatchingKindAndStorage(t *testing.T) {
 		{name: "time", wrongKind: Value{kind: KindInt, data: now}, wrongData: Value{kind: KindTime, data: int64(1)}, read: func(value Value) bool { _, ok := value.TimeValue(); return ok }},
 		{name: "duration", wrongKind: Value{kind: KindInt, data: time.Second}, wrongData: Value{kind: KindDuration, data: int64(1)}, read: func(value Value) bool { _, ok := value.DurationValue(); return ok }},
 		{name: "list", wrongKind: Value{kind: KindInt, data: []Value{}}, wrongData: Value{kind: KindList, data: int64(1)}, read: func(value Value) bool { _, ok := value.ListValue(); return ok }},
+		{name: "decimal", wrongKind: Value{kind: KindString, data: decimalValue{text: "1", digits: "1"}}, wrongData: Value{kind: KindDecimal, data: "1"}, read: func(value Value) bool { _, ok := value.DecimalText(); return ok }},
 	}
 	for _, test := range tests {
 		t.Run(test.name, func(t *testing.T) {

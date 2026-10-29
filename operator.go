@@ -27,7 +27,8 @@ type Operator interface {
 	// Registration copies this slice; metadata must remain stable.
 	Signatures() []Signature
 	// Evaluate receives validated matching kinds from a plan. Missing skips this
-	// callback. Errors become redacted evaluation failures in Result; direct
+	// callback unless the rule set uses MissingNull, which passes Null instead and
+	// therefore needs a matching Null signature to avoid a type mismatch. Errors become redacted evaluation failures in Result; direct
 	// operator calls retain the implementation error. Calls may overlap.
 	Evaluate(context.Context, Value, Value) (bool, error)
 }

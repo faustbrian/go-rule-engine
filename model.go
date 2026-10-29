@@ -30,8 +30,8 @@ const (
 	OrderDeclared
 )
 
-// MissingMode selects how comparisons treat an operand whose fact path is
-// absent. It applies to compiled plans; direct Predicate.Evaluate calls always
+// MissingMode selects how comparisons treat an operand that resolves to
+// Missing: an absent fact path or a literal Missing value. It applies to compiled plans; direct Predicate.Evaluate calls always
 // use MissingFalse. Exists reports presence in every mode.
 type MissingMode uint8
 
