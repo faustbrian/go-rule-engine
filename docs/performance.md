@@ -12,6 +12,12 @@ collection propositions. On an Apple M4 Max with Go 1.26.5, the initial
 compilation, and 621 ns/op and 720 B/op for evaluation. These numbers are a
 development baseline, not a cross-machine guarantee.
 
+List membership benchmarks use a 256-entry list. `in`, `not_in` and
+`contains` over a literal or a context fact allocate nothing per evaluation,
+and `Literal` allocates only its operand, because list storage is copied once
+when `List` is built and shared afterwards. `TestListMembershipDoesNotAllocate`
+keeps the zero-allocation property executable.
+
 Run `GOWORK=off go test -run '^$' -bench . -benchmem -benchtime=1s .`
 for focused local numbers. The explicit `make check-full` route retains all
 module benchmarks and the competitor campaign; run only the latter with

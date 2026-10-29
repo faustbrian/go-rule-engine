@@ -36,7 +36,9 @@ const maxKind = KindDecimal
 
 // Value is a typed fact or operand value; its zero value is Missing. Constructors
 // do not validate service budgets. Context construction and compilation validate
-// supplied values; list input and output storage is copied recursively.
+// supplied values. A Value is immutable: List copies the caller's slice and
+// ListValue and Interface return copies, so list storage, including nested
+// lists, is never reachable by callers and is shared rather than recopied.
 type Value struct {
 	kind Kind
 	data any
@@ -66,9 +68,13 @@ func Time(value time.Time) Value { return Value{kind: KindTime, data: value.Roun
 // Duration returns a duration value.
 func Duration(value time.Duration) Value { return Value{kind: KindDuration, data: value} }
 
-// List copies its input and returns a collection value.
+// List copies its input slice and returns a collection value. Elements are
+// immutable Values, so nested lists share their storage instead of being
+// copied again.
 func List(values ...Value) Value {
-	return Value{kind: KindList, data: cloneValues(values)}
+	items := make([]Value, len(values))
+	copy(items, values)
+	return Value{kind: KindList, data: items}
 }
 
 // Kind returns the exact value kind.
@@ -123,27 +129,27 @@ func (v Value) DurationValue() (time.Duration, bool) {
 	return value, ok && v.kind == KindDuration
 }
 
-// ListValue returns a defensive copy and whether the kind matches.
+// ListValue returns a copy of the elements and whether the kind matches.
+// Mutating the returned slice does not change v; nested list elements are
+// immutable Values and need no copy.
 func (v Value) ListValue() ([]Value, bool) {
-	values, ok := v.data.([]Value)
-	if !ok || v.kind != KindList {
+	values, ok := v.listItems()
+	if !ok {
 		return nil, false
 	}
-	return cloneValues(values), true
+	return append(make([]Value, 0, len(values)), values...), true
 }
 
-func (v Value) clone() Value {
-	if v.kind != KindList {
-		return v
-	}
-	values, _ := v.data.([]Value)
-	return List(values...)
-}
+// Equal reports whether v and other have the same kind and value, using the
+// semantics of OpEqual: times compare as instants, decimals by exact numeric
+// value regardless of spelling, and lists element by element. Values of
+// different kinds are never equal, two Missing or two Null values are equal,
+// and a NaN float, which contexts reject, equals nothing. It does not allocate.
+func (v Value) Equal(other Value) bool { return valuesEqual(v, other) }
 
-func cloneValues(values []Value) []Value {
-	cloned := make([]Value, len(values))
-	for index := range values {
-		cloned[index] = values[index].clone()
-	}
-	return cloned
+// listItems returns the shared immutable list storage without copying. Callers
+// inside the package must not modify or expose the returned slice.
+func (v Value) listItems() ([]Value, bool) {
+	values, ok := v.data.([]Value)
+	return values, ok && v.kind == KindList
 }

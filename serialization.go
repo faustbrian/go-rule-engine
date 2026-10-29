@@ -340,7 +340,7 @@ func encodeValue(value Value) jsonValue {
 		text, _ := value.DecimalText()
 		encoded.Decimal = rawName(text)
 	case KindList:
-		items, _ := value.ListValue()
+		items, _ := value.listItems()
 		encoded.List = make([]jsonValue, len(items))
 		for index, item := range items {
 			encoded.List[index] = encodeValue(item)

@@ -1,0 +1,139 @@
+package ruleengine_test
+
+import (
+	"context"
+	"math"
+	"testing"
+	"time"
+
+	ruleengine "github.com/faustbrian/go-rule-engine/v2"
+)
+
+func TestSharedListStorageStaysImmutable(t *testing.T) {
+	t.Parallel()
+
+	input := []ruleengine.Value{ruleengine.String("a"), ruleengine.List(ruleengine.String("inner"))}
+	outer := ruleengine.List(input...)
+	literal := ruleengine.Literal(outer)
+	path := ruleengine.MustPath("list")
+	facts, err := ruleengine.NewContext(ruleengine.Fact{Path: path, Value: outer})
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	// Every route by which a caller can reach list elements returns a copy.
+	input[0] = ruleengine.String("mutated input")
+	if items, _ := outer.ListValue(); len(items) == 2 {
+		items[0] = ruleengine.String("mutated ListValue")
+		nested, _ := items[1].ListValue()
+		nested[0] = ruleengine.String("mutated nested")
+	}
+	if items, ok := outer.Interface().([]ruleengine.Value); ok {
+		items[0] = ruleengine.String("mutated Interface")
+	}
+	if items, _ := facts.Lookup(path).ListValue(); len(items) == 2 {
+		items[0] = ruleengine.String("mutated Lookup")
+	}
+
+	want := ruleengine.List(ruleengine.String("a"), ruleengine.List(ruleengine.String("inner")))
+	for name, got := range map[string]ruleengine.Value{"value": outer, "lookup": facts.Lookup(path)} {
+		if !got.Equal(want) {
+			t.Fatalf("%s list changed: %#v", name, got.Interface())
+		}
+	}
+	matched, err := ruleengine.Compare(ruleengine.OpEqual, literal, ruleengine.Literal(want)).Evaluate(context.Background(), facts)
+	if err != nil || !matched {
+		t.Fatalf("literal list changed: %v, %v", matched, err)
+	}
+	inner, _ := want.ListValue()
+	if contains, err := ruleengine.Compare(ruleengine.OpContains, literal, ruleengine.Literal(inner[1])).Evaluate(context.Background(), facts); err != nil || !contains {
+		t.Fatalf("nested list membership = %v, %v", contains, err)
+	}
+}
+
+func TestListMembershipDoesNotAllocate(t *testing.T) {
+	list, facts := benchmarkList()
+	ctx := context.Background()
+	predicates := map[string]ruleengine.Predicate{
+		"in literal":    ruleengine.Compare(ruleengine.OpIn, ruleengine.Variable(ruleengine.MustPath("code")), ruleengine.Literal(list)),
+		"not_in":        ruleengine.Compare(ruleengine.OpNotIn, ruleengine.Variable(ruleengine.MustPath("code")), ruleengine.Literal(list)),
+		"contains fact": ruleengine.Compare(ruleengine.OpContains, ruleengine.Variable(ruleengine.MustPath("codes")), ruleengine.Literal(ruleengine.String("absent"))),
+		"list equality": ruleengine.Compare(ruleengine.OpEqual, ruleengine.Variable(ruleengine.MustPath("codes")), ruleengine.Literal(list)),
+	}
+	for name, predicate := range predicates {
+		allocations := testing.AllocsPerRun(100, func() {
+			if _, err := predicate.Evaluate(ctx, facts); err != nil {
+				t.Fatal(err)
+			}
+		})
+		if allocations != 0 {
+			t.Errorf("%s allocations = %v, want 0", name, allocations)
+		}
+	}
+	copied := ruleengine.List(mustListValue(t, list)...)
+	if allocations := testing.AllocsPerRun(100, func() { _ = list.Equal(copied) }); allocations != 0 {
+		t.Errorf("Equal allocations = %v, want 0", allocations)
+	}
+}
+
+func TestValueEqual(t *testing.T) {
+	t.Parallel()
+
+	decimal := func(text string) ruleengine.Value {
+		value, err := ruleengine.Decimal(text)
+		if err != nil {
+			t.Fatal(err)
+		}
+		return value
+	}
+	instant := time.Date(2026, 1, 2, 3, 4, 5, 6, time.UTC)
+	tests := []struct {
+		name        string
+		left, right ruleengine.Value
+		want        bool
+	}{
+		{"missing", ruleengine.Missing(), ruleengine.Missing(), true},
+		{"null", ruleengine.Null(), ruleengine.Null(), true},
+		{"missing is not null", ruleengine.Missing(), ruleengine.Null(), false},
+		{"bool", ruleengine.Bool(true), ruleengine.Bool(true), true},
+		{"bool differs", ruleengine.Bool(true), ruleengine.Bool(false), false},
+		{"int", ruleengine.Int(3), ruleengine.Int(3), true},
+		{"int is not float", ruleengine.Int(1), ruleengine.Float(1), false},
+		{"float", ruleengine.Float(1.5), ruleengine.Float(1.5), true},
+		{"NaN", ruleengine.Float(math.NaN()), ruleengine.Float(math.NaN()), false},
+		{"string", ruleengine.String("x"), ruleengine.String("x"), true},
+		{"string is not decimal", ruleengine.String("1"), decimal("1"), false},
+		{"time instant across zones", ruleengine.Time(instant), ruleengine.Time(instant.In(time.FixedZone("x", 7200))), true},
+		{"duration", ruleengine.Duration(time.Second), ruleengine.Duration(time.Second), true},
+		{"decimal value not spelling", decimal("1.50"), decimal("1.5e0"), true},
+		{"decimal differs", decimal("1.5"), decimal("1.51"), false},
+		{"list", ruleengine.List(ruleengine.Int(1), ruleengine.List(decimal("2"))), ruleengine.List(ruleengine.Int(1), ruleengine.List(decimal("2.0"))), true},
+		{"list order", ruleengine.List(ruleengine.Int(1), ruleengine.Int(2)), ruleengine.List(ruleengine.Int(2), ruleengine.Int(1)), false},
+		{"list length", ruleengine.List(ruleengine.Int(1)), ruleengine.List(ruleengine.Int(1), ruleengine.Int(1)), false},
+		{"empty lists", ruleengine.List(), ruleengine.List(), true},
+	}
+	for _, test := range tests {
+		if got := test.left.Equal(test.right); got != test.want {
+			t.Errorf("%s: Equal = %v, want %v", test.name, got, test.want)
+		}
+		if got := test.right.Equal(test.left); got != test.want {
+			t.Errorf("%s: reversed Equal = %v, want %v", test.name, got, test.want)
+		}
+		// Equal agrees with OpEqual wherever the operator accepts the operands.
+		if test.left.Kind() == test.right.Kind() && test.left.Kind() != ruleengine.KindMissing {
+			matched, err := ruleengine.Compare(ruleengine.OpEqual, ruleengine.Literal(test.left), ruleengine.Literal(test.right)).Evaluate(context.Background(), ruleengine.Context{})
+			if err != nil || matched != test.want {
+				t.Errorf("%s: OpEqual = %v, %v; want %v", test.name, matched, err, test.want)
+			}
+		}
+	}
+}
+
+func mustListValue(t *testing.T, value ruleengine.Value) []ruleengine.Value {
+	t.Helper()
+	items, ok := value.ListValue()
+	if !ok {
+		t.Fatal("ListValue() did not return a list")
+	}
+	return items
+}
