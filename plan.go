@@ -23,6 +23,9 @@ type Explanation struct {
 	RuleID RuleID
 	// Matched is the predicate boolean, even when that predicate also returns an error.
 	Matched bool
+	// Unknown reports a MissingUnknown proposition that was neither true nor
+	// false; Matched is then false. It is always false in other missing modes.
+	Unknown bool
 }
 
 // Result contains a decision and possibly partial evaluation evidence. Returned
@@ -37,7 +40,8 @@ type Result struct {
 	Explanation []Explanation
 	// Errors contains redacted engine errors. Predicate failures are capped by
 	// MaxDiagnostics; a terminal error can add one more. Underlying callback errors
-	// are not wrapped in these entries.
+	// are not wrapped in these entries; a predicate failure keeps code
+	// evaluation_error and exposes an underlying engine code through Error.Cause.
 	Errors []error
 	// Duration measures Evaluate only, excluding prior resolver work.
 	Duration time.Duration
@@ -54,6 +58,7 @@ type Plan struct {
 	setID         string
 	namespace     string
 	strategy      ConflictStrategy
+	missing       MissingMode
 	rules         []Rule
 	limits        Limits
 	operators     map[OperatorName]registeredOperator
@@ -145,15 +150,18 @@ func (plan Plan) Evaluate(ctx context.Context, facts Context) (result Result) {
 				result.Errors = append(result.Errors, newError(CodeEvaluation, "evaluation canceled or timed out"))
 				return result
 			}
-			matched, err := plan.evaluatePredicate(evaluationContext, rule.When, working)
+			value, err := plan.evaluatePredicate(evaluationContext, rule.When, working)
+			matched := value == truthTrue
 			if len(result.Explanation) < plan.limits.MaxExplanation {
-				result.Explanation = append(result.Explanation, Explanation{RuleID: rule.ID, Matched: matched})
+				result.Explanation = append(result.Explanation, Explanation{RuleID: rule.ID, Matched: matched, Unknown: value == truthUnknown})
 			}
 			if err != nil {
 				hadError = true
 				result.Decision = Indeterminate
 				if len(result.Errors) < plan.limits.MaxDiagnostics {
-					result.Errors = append(result.Errors, newError(CodeEvaluation, "rule evaluation failed"))
+					failure := newError(CodeEvaluation, "rule evaluation failed")
+					failure.cause = causeCode(err)
+					result.Errors = append(result.Errors, failure)
 				}
 				continue
 			}
@@ -200,44 +208,103 @@ func (plan Plan) Evaluate(ctx context.Context, facts Context) (result Result) {
 	return result
 }
 
-func (plan Plan) evaluatePredicate(ctx context.Context, predicate Predicate, facts Context) (bool, error) {
+// truth is a Kleene three-valued proposition result. Only MissingUnknown
+// comparisons originate truthUnknown; other plans see true and false only.
+type truth uint8
+
+const (
+	truthFalse truth = iota
+	truthTrue
+	truthUnknown
+)
+
+func knownTruth(matched bool) truth {
+	if matched {
+		return truthTrue
+	}
+	return truthFalse
+}
+
+func (value truth) negate() truth {
+	switch value {
+	case truthTrue:
+		return truthFalse
+	case truthFalse:
+		return truthTrue
+	case truthUnknown:
+		return truthUnknown
+	default:
+		return value
+	}
+}
+
+// evaluatePredicate returns the child result alongside an error, matching the
+// historical boolean contract where Explanation.Matched records that value.
+func (plan Plan) evaluatePredicate(ctx context.Context, predicate Predicate, facts Context) (truth, error) {
 	if err := ctx.Err(); err != nil {
-		return false, err
+		return truthFalse, err
 	}
 	switch typed := predicate.(type) {
 	case comparisonPredicate:
 		left := typed.left.resolve(facts)
 		right := typed.right.resolve(facts)
+		if left.kind == KindMissing || right.kind == KindMissing {
+			switch plan.missing {
+			case MissingNull:
+				left, right = missingAsNull(left), missingAsNull(right)
+			case MissingUnknown:
+				return truthUnknown, nil
+			case MissingFalse:
+				return truthFalse, nil
+			default:
+				return truthFalse, nil
+			}
+		}
 		if custom, exists := plan.operators[typed.operator]; exists {
-			if left.kind == KindMissing || right.kind == KindMissing {
-				return false, nil
-			}
 			if !supportsSignature(custom.signatures, left.kind, right.kind) {
-				return false, newError(CodeTypeMismatch, "custom operator operands are incompatible")
+				return truthFalse, newError(CodeTypeMismatch, "custom operator operands are incompatible")
 			}
-			return custom.implementation.Evaluate(ctx, left, right)
+			matched, err := custom.implementation.Evaluate(ctx, left, right)
+			return knownTruth(matched), err
 		}
-		return evaluateBuiltin(typed.operator, left, right)
+		matched, err := evaluateBuiltin(typed.operator, left, right)
+		return knownTruth(matched), err
 	case allPredicate:
+		result := truthTrue
 		for _, child := range typed.children {
-			matched, err := plan.evaluatePredicate(ctx, child, facts)
-			if err != nil || !matched {
-				return matched, err
+			value, err := plan.evaluatePredicate(ctx, child, facts)
+			if err != nil || value == truthFalse {
+				return value, err
+			}
+			if value == truthUnknown {
+				result = truthUnknown
 			}
 		}
-		return true, nil
+		return result, nil
 	case anyPredicate:
+		result := truthFalse
 		for _, child := range typed.children {
-			matched, err := plan.evaluatePredicate(ctx, child, facts)
-			if err != nil || matched {
-				return matched, err
+			value, err := plan.evaluatePredicate(ctx, child, facts)
+			if err != nil || value == truthTrue {
+				return value, err
+			}
+			if value == truthUnknown {
+				result = truthUnknown
 			}
 		}
-		return false, nil
+		return result, nil
 	case notPredicate:
-		matched, err := plan.evaluatePredicate(ctx, typed.child, facts)
-		return !matched, err
+		value, err := plan.evaluatePredicate(ctx, typed.child, facts)
+		return value.negate(), err
 	default:
-		return predicate.Evaluate(ctx, facts)
+		matched, err := predicate.Evaluate(ctx, facts)
+		return knownTruth(matched), err
 	}
+}
+
+func missingAsNull(value Value) Value {
+	if value.kind == KindMissing {
+		return Null()
+	}
+	return value
 }

@@ -6,11 +6,12 @@ import (
 	ruleengine "github.com/faustbrian/go-rule-engine/v2"
 )
 
-// FuzzParseJSON admits bounded grammar-v1 bytes and checks canonical reparse
+// FuzzParseJSON admits bounded grammar-v1/v2 bytes and checks canonical reparse
 // and hash stability for accepted definitions, not external DSL conformance.
 func FuzzParseJSON(f *testing.F) {
 	f.Add([]byte(`{"version":"1","id":"empty","strategy":"first_match","rules":[]}`))
 	f.Add([]byte(`{"version":"999","id":"invalid","strategy":"first_match","rules":[]}`))
+	f.Add([]byte(`{"version":"2","id":"v2","strategy":"collect_all","order":"declared","missing":"unknown","rules":[{"id":"r","priority":0,"tags":[],"when":{"kind":"compare","operator":"less_than","left":{"kind":"variable","path":["x"]},"right":{"kind":"literal","value":{"type":"decimal","decimal":"1.50"}}},"derive":[]}]}`))
 	f.Add([]byte("not-json"))
 	f.Fuzz(func(t *testing.T, input []byte) {
 		limits := ruleengine.DefaultLimits()

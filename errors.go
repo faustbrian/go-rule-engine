@@ -42,6 +42,7 @@ const (
 type Error struct {
 	code    Code
 	message string
+	cause   Code
 }
 
 func newError(code Code, message string) *Error {
@@ -54,10 +55,20 @@ func (e *Error) Error() string { return string(e.code) + ": " + e.message }
 // Code returns the stable machine-readable classification.
 func (e *Error) Code() Code { return e.code }
 
+// Cause returns the engine code of the failure underlying a redacted rule
+// evaluation error in Result.Errors, such as type_mismatch, and whether one is
+// known. Callback errors that are not engine errors report false. IsCode
+// matches only Code, so existing evaluation_error checks are unchanged.
+func (e *Error) Cause() (Code, bool) { return e.cause, e.cause != "" }
+
 // IsCode reports whether err or a wrapped error has code.
 func IsCode(err error, code Code) bool {
 	var target *Error
 	return errors.As(err, &target) && target.code == code
+}
+
+func causeCode(err error) Code {
+	return errorCode(err, "")
 }
 
 func errorCode(err error, fallback Code) Code {

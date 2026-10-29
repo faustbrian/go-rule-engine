@@ -85,8 +85,11 @@ that requires shutdown. Applications own any resolver I/O and its lifecycle.
 ## Guarantees
 
 - Missing and null are distinct typed values; there is no truthiness or
-  implicit coercion.
-- Priorities sort descending and equal priorities sort by rule ID ascending.
+  implicit coercion. A rule set may opt into treating absent operands as
+  null or as Kleene unknown.
+- Priorities sort descending and equal priorities sort by rule ID ascending,
+  unless a rule set opts into declared order.
+- Decimal values compare exactly by numeric value, never through floats.
 - Logical operands evaluate left to right and short-circuit deterministically.
 - Compilation rejects duplicate IDs, unknown operators, incompatible literal
   types, dependency cycles, non-finite floats, unsafe regexes, and every
@@ -125,7 +128,7 @@ that requires shutdown. Applications own any resolver I/O and its lifecycle.
 in the selected module. `make check` and `make ci` use the public Tools v2.1.1
 verifier's bounded local route, including the selected context/cache/operator
 race; changed-source CI adds causally selected fuzz smoke. `make check-full`
-retains the original full coverage, race, mutation, eight native fuzz targets,
+retains the original full coverage, race, mutation, nine native fuzz targets,
 integration, API, security, docs and benchmark campaigns. See
 [contributor routes](CONTRIBUTING.md#verification) for focused active fuzzing
 and optional local mutation.

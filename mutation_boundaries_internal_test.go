@@ -36,7 +36,7 @@ func (boundaryOperator) Evaluate(context.Context, Value, Value) (bool, error) {
 func TestCompilerOperatorRegistryBoundaries(t *testing.T) {
 	t.Parallel()
 
-	valid := []Signature{{Left: KindList, Right: KindList}}
+	valid := []Signature{{Left: KindList, Right: KindDecimal}}
 	tests := []struct {
 		name     string
 		operator Operator
@@ -45,8 +45,8 @@ func TestCompilerOperatorRegistryBoundaries(t *testing.T) {
 		{name: "nil operator", operator: nil, wantCode: CodeInvalidRule},
 		{name: "empty name", operator: boundaryOperator{signatures: valid}, wantCode: CodeInvalidRule},
 		{name: "built-in name", operator: boundaryOperator{name: OpEqual, signatures: valid}, wantCode: CodeInvalidRule},
-		{name: "left kind above list", operator: boundaryOperator{name: "left_above", signatures: []Signature{{Left: KindList + 1, Right: KindList}}}, wantCode: CodeInvalidRule},
-		{name: "right kind above list", operator: boundaryOperator{name: "right_above", signatures: []Signature{{Left: KindList, Right: KindList + 1}}}, wantCode: CodeInvalidRule},
+		{name: "left kind above decimal", operator: boundaryOperator{name: "left_above", signatures: []Signature{{Left: KindDecimal + 1, Right: KindList}}}, wantCode: CodeInvalidRule},
+		{name: "right kind above decimal", operator: boundaryOperator{name: "right_above", signatures: []Signature{{Left: KindList, Right: KindDecimal + 1}}}, wantCode: CodeInvalidRule},
 		{name: "missing left kind", operator: boundaryOperator{name: "missing_left", signatures: []Signature{{Left: KindMissing, Right: KindList}}}, wantCode: CodeInvalidRule},
 		{name: "missing right kind", operator: boundaryOperator{name: "missing_right", signatures: []Signature{{Left: KindList, Right: KindMissing}}}, wantCode: CodeInvalidRule},
 	}
@@ -183,9 +183,15 @@ func TestContextAcceptsExactBoundsAndRejectsNextValues(t *testing.T) {
 func TestEveryLimitRejectsZero(t *testing.T) {
 	t.Parallel()
 
+	// Decimal budgets accept zero as "decimals disabled" so Limits literals
+	// written before KindDecimal stay valid; TestDecimalLimitsZeroDisable covers them.
+	zeroAllowed := map[string]bool{"MaxDecimalBytes": true, "MaxDecimalExponent": true}
 	typeOfLimits := reflect.TypeOf(Limits{})
 	for index := range typeOfLimits.NumField() {
 		field := typeOfLimits.Field(index)
+		if zeroAllowed[field.Name] {
+			continue
+		}
 		t.Run(field.Name, func(t *testing.T) {
 			t.Parallel()
 			limits := DefaultLimits()
@@ -426,7 +432,7 @@ func TestCompoundPredicatesReturnAtFalseTrueAndErrorBoundaries(t *testing.T) {
 		t.Run(test.name, func(t *testing.T) {
 			t.Parallel()
 			matched, err := plan.evaluatePredicate(context.Background(), test.predicate, Context{})
-			if matched != test.matched || (err != nil) != test.wantError {
+			if (matched == truthTrue) != test.matched || (err != nil) != test.wantError {
 				t.Fatalf("evaluatePredicate() = %v, %v", matched, err)
 			}
 		})
@@ -608,11 +614,11 @@ func TestJSONOperandAndValueShapesRejectAmbiguity(t *testing.T) {
 func TestKindNameRejectsFirstUnknownKind(t *testing.T) {
 	t.Parallel()
 
-	if kindName(KindList) != "list" {
-		t.Fatalf("kindName(KindList) = %q", kindName(KindList))
+	if kindName(KindDecimal) != "decimal" {
+		t.Fatalf("kindName(KindDecimal) = %q", kindName(KindDecimal))
 	}
-	if kindName(KindList+1) != "invalid" {
-		t.Fatalf("kindName(first unknown) = %q", kindName(KindList+1))
+	if kindName(KindDecimal+1) != "invalid" {
+		t.Fatalf("kindName(first unknown) = %q", kindName(KindDecimal+1))
 	}
 }
 
@@ -633,6 +639,7 @@ func TestValueAccessorsRequireMatchingKindAndStorage(t *testing.T) {
 		{name: "time", wrongKind: Value{kind: KindInt, data: now}, wrongData: Value{kind: KindTime, data: int64(1)}, read: func(value Value) bool { _, ok := value.TimeValue(); return ok }},
 		{name: "duration", wrongKind: Value{kind: KindInt, data: time.Second}, wrongData: Value{kind: KindDuration, data: int64(1)}, read: func(value Value) bool { _, ok := value.DurationValue(); return ok }},
 		{name: "list", wrongKind: Value{kind: KindInt, data: []Value{}}, wrongData: Value{kind: KindList, data: int64(1)}, read: func(value Value) bool { _, ok := value.ListValue(); return ok }},
+		{name: "decimal", wrongKind: Value{kind: KindString, data: decimalValue{text: "1", digits: "1"}}, wrongData: Value{kind: KindDecimal, data: "1"}, read: func(value Value) bool { _, ok := value.DecimalText(); return ok }},
 	}
 	for _, test := range tests {
 		t.Run(test.name, func(t *testing.T) {

@@ -14,14 +14,27 @@ import (
 
 // definitionVersion identifies this repository-owned grammar, documented in
 // docs/json-ast.md and protected by jsonast/testdata and serialization tests.
-const definitionVersion = "1"
+// Version 1 definitions are unchanged. docs/compatibility.md requires a new
+// version for new optional fields, so a definition using rule order, missing
+// mode or decimal values is version 2; older readers then refuse the version
+// instead of reporting an unknown field.
+const (
+	definitionVersion         = "1"
+	extendedDefinitionVersion = "2"
+)
 
 type jsonDefinition struct {
-	Version   string     `json:"version"`
-	ID        string     `json:"id"`
-	Namespace string     `json:"namespace,omitempty"`
-	Strategy  string     `json:"strategy"`
-	Rules     []jsonRule `json:"rules"`
+	Version   string `json:"version"`
+	ID        string `json:"id"`
+	Namespace string `json:"namespace,omitempty"`
+	Strategy  string `json:"strategy"`
+	// Order and Missing are omitted at their defaults so canonical bytes and
+	// hashes of definitions written before these options are unchanged. Raw
+	// messages record key presence, so "order":null or "" in a version 1
+	// document is still a version 2 member rather than an absent one.
+	Order   json.RawMessage `json:"order,omitempty"`
+	Missing json.RawMessage `json:"missing,omitempty"`
+	Rules   []jsonRule      `json:"rules"`
 }
 
 type jsonRule struct {
@@ -56,14 +69,15 @@ type jsonFact struct {
 }
 
 type jsonValue struct {
-	Type     string      `json:"type"`
-	Bool     *bool       `json:"bool,omitempty"`
-	Int      *int64      `json:"int,omitempty"`
-	Float    *float64    `json:"float,omitempty"`
-	String   *string     `json:"string,omitempty"`
-	Time     *string     `json:"time,omitempty"`
-	Duration *int64      `json:"duration,omitempty"`
-	List     []jsonValue `json:"list,omitempty"`
+	Type     string          `json:"type"`
+	Bool     *bool           `json:"bool,omitempty"`
+	Int      *int64          `json:"int,omitempty"`
+	Float    *float64        `json:"float,omitempty"`
+	String   *string         `json:"string,omitempty"`
+	Time     *string         `json:"time,omitempty"`
+	Duration *int64          `json:"duration,omitempty"`
+	Decimal  json.RawMessage `json:"decimal,omitempty"`
+	List     []jsonValue     `json:"list,omitempty"`
 }
 
 // MarshalCanonical serializes a definition containing only built-in operators
@@ -90,7 +104,8 @@ func (compiler Compiler) marshalCanonical(ctx context.Context, set RuleSet) ([]b
 		Version: definitionVersion,
 		ID:      set.ID, Namespace: set.Namespace,
 		Strategy: strategyName(set.Strategy),
-		Rules:    make([]jsonRule, len(plan.rules)),
+		Order:    rawName(orderName(set.Order)), Missing: rawName(missingName(set.Missing)),
+		Rules: make([]jsonRule, len(plan.rules)),
 	}
 	for index, rule := range plan.rules {
 		if contextErr := ctx.Err(); contextErr != nil {
@@ -101,6 +116,9 @@ func (compiler Compiler) marshalCanonical(ctx context.Context, set RuleSet) ([]b
 			return nil, encodeErr
 		}
 		definition.Rules[index] = encodedRule
+	}
+	if definitionUsesVersion2(definition) {
+		definition.Version = extendedDefinitionVersion
 	}
 	encoded, err := json.Marshal(definition)
 	if err != nil {
@@ -142,8 +160,9 @@ func ParseJSON(data []byte, limits Limits) (RuleSet, []Diagnostic, error) {
 }
 
 // ParseJSON parses a versioned JSON AST with strict unknown-field handling and
-// validates custom operators against compiler's isolated registry. Grammar v1
-// is this repository's DSL. Input bytes are borrowed during the call only; a
+// validates custom operators against compiler's isolated registry. Grammars v1
+// and v2 are this repository's DSL; v2 adds order, missing and decimal values,
+// which v1 documents reject. Input bytes are borrowed during the call only; a
 // successful result owns its decoded storage. Duplicate names and case folding
 // retain encoding/json behavior; unknown-field rejection is not full schema
 // presence validation. This API has no caller context or evaluation timeout.
@@ -165,14 +184,28 @@ func (compiler Compiler) ParseJSON(data []byte) (RuleSet, []Diagnostic, error) {
 	if err := ensureJSONEnd(decoder); err != nil {
 		return parseFailure(CodeInvalidJSON, "JSON definition has trailing data")
 	}
-	if definition.Version != definitionVersion {
+	if definition.Version != definitionVersion && definition.Version != extendedDefinitionVersion {
 		return parseFailure(CodeInvalidJSON, "JSON definition version is unsupported")
+	}
+	if definition.Version == definitionVersion && definitionUsesVersion2(definition) {
+		return parseFailure(CodeInvalidJSON, "JSON definition feature requires version 2")
 	}
 	strategy, err := parseStrategy(definition.Strategy)
 	if err != nil {
 		return parseFailure(CodeInvalidJSON, "conflict strategy is invalid")
 	}
-	set := RuleSet{ID: definition.ID, Namespace: definition.Namespace, Strategy: strategy, Rules: make([]Rule, len(definition.Rules))}
+	order, err := parseOrder(definition.Order)
+	if err != nil {
+		return parseFailure(CodeInvalidJSON, "rule order is invalid")
+	}
+	missing, err := parseMissing(definition.Missing)
+	if err != nil {
+		return parseFailure(CodeInvalidJSON, "missing mode is invalid")
+	}
+	set := RuleSet{
+		ID: definition.ID, Namespace: definition.Namespace, Strategy: strategy,
+		Order: order, Missing: missing, Rules: make([]Rule, len(definition.Rules)),
+	}
 	for index, encodedRule := range definition.Rules {
 		rule, parseErr := decodeRule(encodedRule, compiler.limits)
 		if parseErr != nil {
@@ -303,6 +336,9 @@ func encodeValue(value Value) jsonValue {
 		item, _ := value.DurationValue()
 		nanos := int64(item)
 		encoded.Duration = &nanos
+	case KindDecimal:
+		text, _ := value.DecimalText()
+		encoded.Decimal = rawName(text)
 	case KindList:
 		items, _ := value.ListValue()
 		encoded.List = make([]jsonValue, len(items))
@@ -440,6 +476,16 @@ func decodeValue(encoded jsonValue, limits Limits, depth int) (Value, error) {
 		value = Time(parsed)
 	case "duration":
 		value = Duration(time.Duration(*encoded.Duration))
+	case "decimal":
+		text, err := rawString(encoded.Decimal)
+		if err != nil {
+			return Value{}, err
+		}
+		parsed, err := Decimal(text)
+		if err != nil {
+			return Value{}, newError(CodeInvalidJSON, "decimal value is invalid")
+		}
+		value = parsed
 	case "list":
 		items := make([]Value, len(encoded.List))
 		for index, item := range encoded.List {
@@ -455,6 +501,55 @@ func decodeValue(encoded jsonValue, limits Limits, depth int) (Value, error) {
 		return Value{}, err
 	}
 	return value, nil
+}
+
+// definitionUsesVersion2 reports grammar-2 features in a decoded or encoded
+// DTO. Explicit default spellings such as "priority" count as features so a
+// version 1 document never carries a field version 1 readers reject.
+func definitionUsesVersion2(definition jsonDefinition) bool {
+	if len(definition.Order) > 0 || len(definition.Missing) > 0 {
+		return true
+	}
+	for _, rule := range definition.Rules {
+		if nodeUsesDecimal(rule.When) {
+			return true
+		}
+		for _, fact := range rule.Derive {
+			if valueUsesDecimal(fact.Value) {
+				return true
+			}
+		}
+	}
+	return false
+}
+
+func nodeUsesDecimal(node jsonNode) bool {
+	for _, operand := range []*jsonOperand{node.Left, node.Right} {
+		if operand != nil && operand.Value != nil && valueUsesDecimal(*operand.Value) {
+			return true
+		}
+	}
+	if node.Child != nil && nodeUsesDecimal(*node.Child) {
+		return true
+	}
+	for _, child := range node.Children {
+		if nodeUsesDecimal(child) {
+			return true
+		}
+	}
+	return false
+}
+
+func valueUsesDecimal(value jsonValue) bool {
+	if value.Type == "decimal" || len(value.Decimal) > 0 {
+		return true
+	}
+	for _, item := range value.List {
+		if valueUsesDecimal(item) {
+			return true
+		}
+	}
+	return false
 }
 
 // Pointer/slice presence distinguishes mutually exclusive variants. Omitted
@@ -497,6 +592,7 @@ func validValueShape(value jsonValue) bool {
 	for _, present := range []bool{
 		value.Bool != nil, value.Int != nil, value.Float != nil,
 		value.String != nil, value.Time != nil, value.Duration != nil,
+		len(value.Decimal) > 0,
 	} {
 		if present {
 			scalarCount++
@@ -517,6 +613,8 @@ func validValueShape(value jsonValue) bool {
 		return value.Time != nil && scalarCount == 1 && value.List == nil
 	case "duration":
 		return value.Duration != nil && scalarCount == 1 && value.List == nil
+	case "decimal":
+		return len(value.Decimal) > 0 && scalarCount == 1 && value.List == nil
 	case "list":
 		return scalarCount == 0
 	default:
@@ -545,6 +643,88 @@ func parseStrategy(value string) (ConflictStrategy, error) {
 		return 0, newError(CodeInvalidJSON, "invalid strategy")
 	}
 }
+
+// rawName encodes a JSON string for a RawMessage field, returning nil for ""
+// so omitempty drops defaults. Inputs are fixed option names or decimal text
+// validated by the RFC 8259 number grammar, neither of which needs escaping.
+func rawName(text string) json.RawMessage {
+	if text == "" {
+		return nil
+	}
+	return json.RawMessage(`"` + text + `"`)
+}
+
+// rawString decodes a present RawMessage member that must be a JSON string;
+// null and other JSON types are rejected rather than treated as absent.
+func rawString(raw json.RawMessage) (string, error) {
+	var text string
+	if bytes.Equal(raw, []byte("null")) || json.Unmarshal(raw, &text) != nil {
+		return "", newError(CodeInvalidJSON, "member must be a string")
+	}
+	return text, nil
+}
+
+// orderName and missingName return "" for defaults so omitempty drops them.
+func orderName(order RuleOrder) string {
+	if order == OrderDeclared {
+		return "declared"
+	}
+	return ""
+}
+
+// parseOrder accepts absence or the explicit default spelling, which canonical
+// output omits. A present member must be a documented string.
+func parseOrder(raw json.RawMessage) (RuleOrder, error) {
+	if len(raw) == 0 {
+		return OrderPriority, nil
+	}
+	value, err := rawString(raw)
+	if err != nil {
+		return 0, err
+	}
+	switch value {
+	case "priority":
+		return OrderPriority, nil
+	case "declared":
+		return OrderDeclared, nil
+	default:
+		return 0, newError(CodeInvalidJSON, "invalid order")
+	}
+}
+
+func missingName(mode MissingMode) string {
+	switch mode {
+	case MissingNull:
+		return "null"
+	case MissingUnknown:
+		return "unknown"
+	case MissingFalse:
+		return ""
+	default:
+		return ""
+	}
+}
+
+func parseMissing(raw json.RawMessage) (MissingMode, error) {
+	if len(raw) == 0 {
+		return MissingFalse, nil
+	}
+	value, err := rawString(raw)
+	if err != nil {
+		return 0, err
+	}
+	switch value {
+	case "false":
+		return MissingFalse, nil
+	case "null":
+		return MissingNull, nil
+	case "unknown":
+		return MissingUnknown, nil
+	default:
+		return 0, newError(CodeInvalidJSON, "invalid missing mode")
+	}
+}
+
 func ownerName(owner Owner) string {
 	switch owner {
 	case OwnerUnspecified:
@@ -574,7 +754,7 @@ func parseOwner(value string) (Owner, error) {
 	}
 }
 func kindName(kind Kind) string {
-	names := [...]string{"missing", "null", "bool", "int", "float", "string", "time", "duration", "list"}
+	names := [...]string{"missing", "null", "bool", "int", "float", "string", "time", "duration", "list", "decimal"}
 	if int(kind) >= len(names) {
 		return "invalid"
 	}

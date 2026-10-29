@@ -102,7 +102,7 @@ func validateValue(value Value, limits Limits, depth int) error {
 	if depth > limits.MaxASTDepth {
 		return newError(CodeInvalidFact, "value nesting is too deep")
 	}
-	if value.kind > KindList {
+	if value.kind > maxKind {
 		return newError(CodeInvalidFact, "unknown value type")
 	}
 	if text, ok := value.StringValue(); ok {
@@ -111,6 +111,15 @@ func validateValue(value Value, limits Limits, depth int) error {
 		}
 		if len(text) > limits.MaxStringBytes {
 			return newError(CodeInvalidFact, "string is too large")
+		}
+	}
+	if decimal, ok := value.data.(decimalValue); ok && value.kind == KindDecimal {
+		if len(decimal.text) > limits.MaxDecimalBytes {
+			return newError(CodeInvalidFact, "decimal is too large")
+		}
+		if exponent := decimal.adjustedExponent(); exponent > int64(limits.MaxDecimalExponent) ||
+			-exponent > int64(limits.MaxDecimalExponent) {
+			return newError(CodeInvalidFact, "decimal exponent is out of range")
 		}
 	}
 	if number, ok := value.FloatValue(); ok && (math.IsNaN(number) || math.IsInf(number, 0)) {

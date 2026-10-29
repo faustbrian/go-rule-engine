@@ -2,8 +2,11 @@ package ruleengine
 
 import "time"
 
-// Limits bounds compilation and evaluation work. Zero values are invalid;
-// callers should start with DefaultLimits and reduce values as needed.
+// Limits bounds compilation and evaluation work. Zero values are invalid
+// except for the decimal budgets: zero MaxDecimalBytes rejects every decimal,
+// so limits written before KindDecimal existed remain valid, and zero
+// MaxDecimalExponent admits only zero and magnitudes in [1, 10). Callers should start
+// with DefaultLimits and reduce values as needed.
 type Limits struct {
 	// MaxRules caps the number of rules in one compiled set.
 	MaxRules int
@@ -17,6 +20,14 @@ type Limits struct {
 	MaxCollection int
 	// MaxStringBytes caps each UTF-8 string value in bytes.
 	MaxStringBytes int
+	// MaxDecimalBytes caps each decimal's lexical text in bytes. Zero rejects
+	// decimals; negative values are invalid.
+	MaxDecimalBytes int
+	// MaxDecimalExponent caps the absolute power of ten of a nonzero decimal's
+	// most significant digit, so 1e6144 and 1e-6144 both need 6144. It guards
+	// against hostile exponents; zero admits only zero and magnitudes in
+	// [1, 10), and negative values are invalid.
+	MaxDecimalExponent int
 	// MaxDefinitionBytes caps the raw ParseJSON input before decoding.
 	MaxDefinitionBytes int
 	// MaxRegexBytes caps a literal matches pattern at compilation.
@@ -48,12 +59,16 @@ type Limits struct {
 // evaluation budgets. Applications must choose budgets suited to their workload.
 func DefaultLimits() Limits {
 	return Limits{
-		MaxRules:           1_000,
-		MaxFacts:           10_000,
-		MaxASTDepth:        64,
-		MaxOperands:        10_000,
-		MaxCollection:      10_000,
-		MaxStringBytes:     1 << 20,
+		MaxRules:       1_000,
+		MaxFacts:       10_000,
+		MaxASTDepth:    64,
+		MaxOperands:    10_000,
+		MaxCollection:  10_000,
+		MaxStringBytes: 1 << 20,
+		// 256 significant characters plus a sign and a decimal point.
+		MaxDecimalBytes: 258,
+		// The IEEE 754 decimal128 maximum exponent, well beyond monetary use.
+		MaxDecimalExponent: 6_144,
 		MaxDefinitionBytes: 4 << 20,
 		MaxRegexBytes:      4 << 10,
 		MaxIdentifierBytes: 256,
@@ -74,8 +89,9 @@ func (l Limits) validate() error {
 		l.MaxCollection <= 0 || l.MaxStringBytes <= 0 || l.MaxRegexBytes <= 0 || l.MaxPathBytes <= 0 ||
 		l.MaxDefinitionBytes <= 0 || l.MaxIdentifierBytes <= 0 || l.MaxTags <= 0 || l.MaxTagBytes <= 0 ||
 		l.MaxPathSegments <= 0 || l.MaxIterations <= 0 || l.MaxDerivedFacts <= 0 ||
-		l.MaxDiagnostics <= 0 || l.MaxExplanation <= 0 || l.EvaluationTimeout <= 0 {
-		return newError(CodeInvalidLimit, "all limits must be positive")
+		l.MaxDiagnostics <= 0 || l.MaxExplanation <= 0 || l.EvaluationTimeout <= 0 ||
+		l.MaxDecimalBytes < 0 || l.MaxDecimalExponent < 0 {
+		return newError(CodeInvalidLimit, "limits must be positive; decimal limits must be non-negative")
 	}
 	return nil
 }

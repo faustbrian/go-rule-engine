@@ -3,7 +3,10 @@
 [Documentation index](README.md) · [Repository entry](../README.md)
 
 `Operator` exposes a name, exact kind signatures, and a context-aware evaluate
-method. Registries belong to a compiler instance. Built-in names and duplicate
+method. An absent operand skips the operator unless the rule set uses
+`MissingNull`; the operator then receives `Null()` and must declare a matching
+null signature or the evaluation fails with a type mismatch. A redacted
+evaluation error exposes an underlying engine code through `Error.Cause`. Registries belong to a compiler instance. Built-in names and duplicate
 custom names cannot be replaced, and no process-global registry exists.
 Use that compiler's `MarshalCanonical`, `CanonicalHash`, and `ParseJSON` methods
 for stored definitions containing custom operator names; package-level
@@ -37,7 +40,8 @@ success.
 
 Exact optional domain adapters are isolated nested modules:
 
-- [`adapters/math`](../adapters/math) provides exact decimal ordering.
+- [`adapters/math`](../adapters/math) provides go-math decimal ordering over
+  tagged strings; the core `Decimal` kind needs no adapter.
 - [`adapters/temporal`](../adapters/temporal) provides period relations
   and instant membership.
 - [`adapters/measurement`](../adapters/measurement) provides exact

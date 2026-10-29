@@ -1,7 +1,8 @@
 // Package ruleengine compiles typed propositions and evaluates them over
 // immutable fact snapshots. Start with DefaultLimits, NewPath, NewContext and
 // NewCompiler; compile before reusing a Plan. The repository-owned JSON AST
-// grammar is version 1, exposed through ParseJSON and the jsonast facade.
+// grammars are versions 1 and 2, exposed through ParseJSON and the jsonast
+// facade.
 //
 // Built-in state is immutable; custom predicates/operators and cache/resolver
 // callbacks remain caller-owned trust boundaries. They must supply concurrency

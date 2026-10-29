@@ -17,13 +17,51 @@ const (
 	ErrorOnMultiple
 )
 
+// RuleOrder selects how Compile orders rules for evaluation.
+type RuleOrder uint8
+
+const (
+	// OrderPriority orders by descending Priority, then ascending ID. It is the
+	// zero value and the only order before this option existed; canonical JSON
+	// and hashes omit it.
+	OrderPriority RuleOrder = iota
+	// OrderDeclared evaluates rules in input slice order. Priority is retained
+	// and serialized as metadata but does not affect evaluation.
+	OrderDeclared
+)
+
+// MissingMode selects how comparisons treat an operand that resolves to
+// Missing: an absent fact path or a literal Missing value. It applies to compiled plans; direct Predicate.Evaluate calls always
+// use MissingFalse. Exists reports presence in every mode.
+type MissingMode uint8
+
+const (
+	// MissingFalse makes a comparison with an absent operand false without
+	// invoking the operator, including negated operators and custom operators.
+	// It is the zero value; canonical JSON and hashes omit it.
+	MissingFalse MissingMode = iota
+	// MissingNull resolves an absent operand to Null before operator dispatch,
+	// exactly as if null had been supplied. Built-in and custom operators then
+	// apply their ordinary kind checks, so a Null/Int comparison is a
+	// type_mismatch evaluation error.
+	MissingNull
+	// MissingUnknown makes a comparison with an absent operand Unknown under
+	// three-valued Kleene logic: Not keeps Unknown, All is false if any child is
+	// false and otherwise Unknown if any child is Unknown, and Any is true if any
+	// child is true and otherwise Unknown if any child is Unknown. A rule matches
+	// only when its proposition is true. Constants, Exists and custom predicates
+	// are always known.
+	MissingUnknown
+)
+
 // Rule is a proposition with stable metadata and optional derived facts.
 type Rule struct {
 	// ID is nonempty and unique within the set; Compile validates its byte limit.
 	ID RuleID
 	// Namespace is optional metadata, not a path or authorization scope.
 	Namespace string
-	// Priority orders rules descending, with ascending ID breaking ties.
+	// Priority orders rules descending, with ascending ID breaking ties, under
+	// OrderPriority. Under OrderDeclared it is metadata only.
 	Priority int
 	// Tags are unique bounded metadata strings; Compile copies the slice.
 	Tags []string
@@ -43,6 +81,10 @@ type RuleSet struct {
 	Strategy ConflictStrategy
 	// Rules are validated and ordered by Compile; custom predicate state is not copied.
 	Rules []Rule
+	// Order selects evaluation order; its zero value is OrderPriority.
+	Order RuleOrder
+	// Missing selects absent-operand semantics; its zero value is MissingFalse.
+	Missing MissingMode
 }
 
 // Predicate evaluates a snapshot. Implementations must supply bounded,
@@ -172,7 +214,8 @@ type comparisonPredicate struct {
 // Compare creates a typed binary comparison without validation. Compile checks
 // operators and known literal kinds; variable kinds are checked at evaluation.
 // Custom operators require a compiled plan; direct Evaluate uses only built-ins.
-// Missing values produce false, including for negated comparison operators.
+// Missing values produce false, including for negated comparison operators;
+// a compiled plan applies its RuleSet.Missing mode instead.
 // Time ordering uses UnixNano; unlike equality, its valid range is restricted.
 // left and right must be non-nil; nil can panic during Compile or evaluation.
 func Compare(operator OperatorName, left, right Operand) Predicate {

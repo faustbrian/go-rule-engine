@@ -8,7 +8,8 @@ No. It has no permit, deny, role, permission, principal, or combining defaults.
 
 ## Is missing equal to null?
 
-No. Missing is returned only for absent paths. Null is an explicit supplied
+No, unless a rule set selects `MissingNull`, which compares absent operands
+as null. Missing is returned only for absent paths. Null is an explicit supplied
 value.
 
 ## Are numeric strings coerced?
