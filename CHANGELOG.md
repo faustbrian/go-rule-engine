@@ -5,36 +5,6 @@ Keep a Changelog and semantic versioning.
 
 ## Unreleased
 
-### Added
-
-- Add `RuleSet.Order` with `OrderPriority` (default, unchanged) and
-  `OrderDeclared`, which evaluates rules in input slice order and keeps
-  `Priority` as metadata.
-- Add `RuleSet.Missing` with `MissingFalse` (default, unchanged),
-  `MissingNull`, which resolves absent operands to `Null()` before built-in or
-  custom operator dispatch, and `MissingUnknown`, which applies Kleene
-  three-valued logic and matches a rule only on true. `Explanation.Unknown`
-  records unknown propositions.
-- Add the exact `KindDecimal` value kind: `Decimal(text)` accepts the RFC 8259
-  number grammar, `Value.DecimalText` returns the original text, and built-in
-  equality, membership and ordering compare exact values without floats.
-  New `Limits.MaxDecimalBytes` (default 258) and `Limits.MaxDecimalExponent`
-  (default 6144) bound decimal text and magnitude; zero rejects decimals so
-  existing hand-built `Limits` remain valid.
-- Add `Error.Cause`, which reports the underlying engine code of a redacted
-  rule evaluation error without changing its `evaluation_error` code.
-- Add JSON grammar version 2 with root `order` and `missing` members and
-  `{"type":"decimal","decimal":"1.50"}` values. Canonical output writes
-  version 2 only when one of these is used; version 1 documents reject them.
-
-### Compatibility
-
-- Canonical JSON bytes and hashes of every definition that uses default order,
-  default missing mode and no decimals are unchanged. Readers older than this
-  release reject version 2 definitions as an unsupported version.
-- `KindDecimal` is appended after `KindList`; existing kind numbers are
-  unchanged. Code that switches exhaustively over `Kind` should add a case.
-
 ### Documentation
 
 - Clarify source contracts for borrowed extensions, cooperative cancellation,
@@ -109,6 +79,39 @@ Keep a Changelog and semantic versioning.
 
 - Replace archived monorepo links and completed execution artifacts with a
   standalone, human-oriented documentation structure.
+
+## 2.1.0 - 2026-10-29
+
+### Added
+
+- Add `RuleSet.Order` with `OrderPriority` (default, unchanged) and
+  `OrderDeclared`, which evaluates rules in input slice order and keeps
+  `Priority` as metadata.
+- Add `RuleSet.Missing` with `MissingFalse` (default, unchanged),
+  `MissingNull`, which resolves absent operands to `Null()` before built-in or
+  custom operator dispatch, and `MissingUnknown`, which applies Kleene
+  three-valued logic and matches a rule only on true. `Explanation.Unknown`
+  records unknown propositions.
+- Add the exact `KindDecimal` value kind: `Decimal(text)` accepts the RFC 8259
+  number grammar, `Value.DecimalText` returns the original text, and built-in
+  equality, membership and ordering compare exact values without floats.
+  New `Limits.MaxDecimalBytes` (default 258) and `Limits.MaxDecimalExponent`
+  (default 6144) bound decimal text and magnitude. Zero values stay valid so
+  existing hand-built `Limits` keep validating: a zero `MaxDecimalBytes`
+  rejects every decimal.
+- Add `Error.Cause`, which reports the underlying engine code of a redacted
+  rule evaluation error without changing its `evaluation_error` code.
+- Add JSON grammar version 2 with root `order` and `missing` members and
+  `{"type":"decimal","decimal":"1.50"}` values. Canonical output writes
+  version 2 only when one of these is used; version 1 documents reject them.
+
+### Compatibility
+
+- Canonical JSON bytes and hashes of every definition that uses default order,
+  default missing mode and no decimals are unchanged. Readers older than this
+  release reject version 2 definitions as an unsupported version.
+- `KindDecimal` is appended after `KindList`; existing kind numbers are
+  unchanged. Code that switches exhaustively over `Kind` should add a case.
 
 ## 2.0.2 - 2026-10-22
 
