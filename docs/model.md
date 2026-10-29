@@ -11,7 +11,8 @@ string, time, duration, list, or decimal. `Decimal(text)` accepts the RFC 8259
 JSON number grammar and keeps the original text, available through
 `DecimalText`. Values are immutable: `List` copies the caller's slice once,
 `ListValue` and `Interface` return copies, and contexts, literals and
-operators share list storage instead of recopying it. `Equal` matches the
+operators share list storage instead of recopying it. `ListLen` and `ListAt`
+read elements without copying or allocating. `Equal` matches the
 `equal` operator for two values of the same non-missing kind; values of
 different kinds are unequal rather than a type mismatch, and missing equals
 missing.

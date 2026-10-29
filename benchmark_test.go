@@ -156,3 +156,54 @@ func BenchmarkPlanInList256(b *testing.B) {
 		}
 	}
 }
+
+// BenchmarkCustomOperatorList256 evaluates a compiled plan whose custom
+// operator scans a 256-entry literal list with ListLen and ListAt.
+func BenchmarkCustomOperatorList256(b *testing.B) {
+	list, facts := benchmarkList(b)
+	plan := listMemberPlan(b, list, "code")
+	ctx := context.Background()
+	b.ReportAllocs()
+	b.ResetTimer()
+	for range b.N {
+		if result := plan.Evaluate(ctx, facts); result.Decision != ruleengine.Unmatched {
+			b.Fatalf("Evaluate() = %#v", result)
+		}
+	}
+}
+
+// listValueMemberOperator is the copying ListValue variant kept for comparison.
+type listValueMemberOperator struct{ listMemberOperator }
+
+func (listValueMemberOperator) Evaluate(_ context.Context, left, right ruleengine.Value) (bool, error) {
+	items, _ := right.ListValue()
+	for _, item := range items {
+		if item.Equal(left) {
+			return true, nil
+		}
+	}
+	return false, nil
+}
+
+// BenchmarkCustomOperatorListValue256 is the same scan through ListValue,
+// which copies the list on every call.
+func BenchmarkCustomOperatorListValue256(b *testing.B) {
+	list, facts := benchmarkList(b)
+	compiler, err := ruleengine.NewCompilerWithOperators(ruleengine.DefaultLimits(), listValueMemberOperator{})
+	if err != nil {
+		b.Fatal(err)
+	}
+	set := ruleengine.RuleSet{ID: "custom", Rules: []ruleengine.Rule{{ID: "member", When: ruleengine.Compare("list_member", ruleengine.Variable(ruleengine.MustPath("code")), ruleengine.Literal(list))}}}
+	plan, _, err := compiler.Compile(context.Background(), set)
+	if err != nil {
+		b.Fatal(err)
+	}
+	ctx := context.Background()
+	b.ReportAllocs()
+	b.ResetTimer()
+	for range b.N {
+		if result := plan.Evaluate(ctx, facts); result.Decision != ruleengine.Unmatched {
+			b.Fatalf("Evaluate() = %#v", result)
+		}
+	}
+}

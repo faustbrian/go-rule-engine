@@ -11,6 +11,9 @@ Keep a Changelog and semantic versioning.
   predicate or allocating. It matches the `equal` operator for two values of
   the same non-missing kind; values of different kinds are unequal rather than
   a type mismatch, and missing equals missing.
+- Add `Value.ListLen` and `Value.ListAt`, which read list elements without
+  copying or allocating. `ListValue` still returns a fresh copy on every call,
+  so custom operators on hot paths should use the new accessors.
 
 ### Changed
 

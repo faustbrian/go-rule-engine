@@ -131,13 +131,32 @@ func (v Value) DurationValue() (time.Duration, bool) {
 
 // ListValue returns a copy of the elements and whether the kind matches.
 // Mutating the returned slice does not change v; nested list elements are
-// immutable Values and need no copy.
+// immutable Values and need no copy. The copy allocates on every call; hot
+// paths such as custom operators should read lists with ListLen and ListAt.
 func (v Value) ListValue() ([]Value, bool) {
 	values, ok := v.listItems()
 	if !ok {
 		return nil, false
 	}
 	return append(make([]Value, 0, len(values)), values...), true
+}
+
+// ListLen returns the number of list elements and whether the kind matches.
+// It does not allocate.
+func (v Value) ListLen() (int, bool) {
+	values, ok := v.listItems()
+	return len(values), ok
+}
+
+// ListAt returns the element at index and whether v is a list with that
+// index. The element is an immutable Value, so no copy is made and the call
+// does not allocate; an out-of-range index or non-list returns Missing, false.
+func (v Value) ListAt(index int) (Value, bool) {
+	values, ok := v.listItems()
+	if !ok || index < 0 || index >= len(values) {
+		return Missing(), false
+	}
+	return values[index], true
 }
 
 // Equal reports whether v and other have the same kind and value. For two

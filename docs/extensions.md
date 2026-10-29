@@ -6,7 +6,10 @@
 method. An absent operand skips the operator unless the rule set uses
 `MissingNull`; the operator then receives `Null()` and must declare a matching
 null signature or the evaluation fails with a type mismatch. A redacted
-evaluation error exposes an underlying engine code through `Error.Cause`. Registries belong to a compiler instance. Built-in names and duplicate
+evaluation error exposes an underlying engine code through `Error.Cause`.
+Operators that read list operands should use `Value.ListLen` and
+`Value.ListAt`, which do not allocate; `ListValue` copies the whole list on
+every call. Registries belong to a compiler instance. Built-in names and duplicate
 custom names cannot be replaced, and no process-global registry exists.
 Use that compiler's `MarshalCanonical`, `CanonicalHash`, and `ParseJSON` methods
 for stored definitions containing custom operator names; package-level
